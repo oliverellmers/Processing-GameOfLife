@@ -2,6 +2,8 @@ class RLEParser {
 
   Bitmap parse(String file) {
     Bitmap bmp = new Bitmap();
+    //    Pattern p = Pattern.compile("(\\d*)([bo]?)(\\d*)([bo]?).*");
+    Pattern p = Pattern.compile("(\\d*)([bo]?)");    
 
     if ( file != null ) {
       BufferedReader reader = null;      
@@ -27,39 +29,55 @@ class RLEParser {
               bmp.rows = Integer.parseInt(xdim);
               bmp.cols = Integer.parseInt(ydim);
             }
+            continue;
           }
-          
+
           //parsedata
-            println(l);
-            String dataTokens[] = l.split("\\$");
-            println(dataTokens.length);
-          
-          //bmp.rows = Integer.parseInt(x.trim());
-          //bmp.cols = Integer.parseInt(y.trim());
+          println(l);
+          String dataTokens[] = l.split("\\$");
+          int cursor = 0;
 
-          //println(bmp.rows + " ," + bmp.cols);
+          for (String dat : dataTokens ) {
+            Matcher m = p.matcher(dat);
+            println(dat);
 
-          /*if (l.charAt(0) == '[') {
-           int[] values = new int[2];
-           String[] tokens = l.split(",");
-           String text = tokens[0].replace("\n", "").replace("\r", "");
-           values[0] = Integer.parseInt(text.substring(1, text.length()));
-           
-           text =  tokens[1].replace("\n", "").replace("\r", "");
-           values[1] = Integer.parseInt(text.substring(0, text.length()-1));
-           data.add(values);
-           } 
-           else {
-           data.add(Integer.parseInt(l.replace("\n", "").replace("\r", "")));
-           }*/
-        }
-      } 
-      catch( IOException e ) {
-        println("error parsing");
-        println(e);
+            while (m.find ()) { 
+              if (m.group(0).length() > 0 ) {
+                int count = 0;
+
+                //parse number
+                if (m.group(1).length() > 0) {
+                  count = Integer.parseInt(m.group(1));
+                } else {
+                  count = 1;
+                }
+
+                //parse cell type (dead or alive initially)
+                if (m.group(2).length() > 0) {
+                  if (m.group(2).equals("b")) {
+                    println("dead cells");
+                    cursor += count;
+                  } 
+                  else if (m.group(2).equals("o")) {
+                    //enter in live cells starting at the current cursor location
+                    println("adding " + count + " live cells");
+                  }
+                }
+                print("overall length = " + m.group(0).length() +"  #1: " + m.group(1).length() +" #2: " + m.group(2).length() + " ");
+              }
+              cursor = 0;
+              println();
+              println("\t: " + dat);
+            }
+          }
+        } 
       }
+        catch( IOException e ) {
+          println("error parsing");
+          println(e);
+        }
+      }
+      return bmp;
     }
-    return bmp;
   }
-}
 

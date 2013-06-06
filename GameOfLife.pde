@@ -6,7 +6,7 @@ import java.util.regex.*;
 // -=-=-=-=--=-==-=-=-=-=-=-=
 // -=-=- OUTPUT DATA -=-=--=-
 // -=-=-=-=--=-==-=-=-=-=-=-=
-boolean SAVE_OUTPUT = true;
+boolean SAVE_OUTPUT = false;
 
 //data file
 String outputDirectory = "out";
@@ -27,6 +27,7 @@ int rows = 50, cols = 50;
 int gWidth = 800, gHeight = 800;
 RLECodec encoder = new RLECodec();
 RLELoader rleLoader = new RLELoader();
+RLEParser parser = new RLEParser();
 
 void setup() {
   size(800, 800);
@@ -36,6 +37,10 @@ void setup() {
 
   bitmap = new Bitmap(width/2 - gWidth/2, height/2 - gHeight/2, gWidth, gHeight, rows, cols);
   initBitmap();
+  
+    String rlefile = loadFile();
+    parser.parse(rlefile);
+  noLoop();  
 }
 
 void draw() {
@@ -113,12 +118,17 @@ void keyPressed() {
     bitmap.save(outputFile);
   }
   else if ( key == 'o' || key =='O') {
+    String rlefile = loadFile();
+    parser.parse(rlefile);
+    
+    /*
     ArrayList<Integer> data =rleLoader.loadFile();
     if (data != null) {
       println(data);
       bitmap.clear();
       bitmap.setPixels(data);
     }
+    */
   }
 }
 
@@ -202,3 +212,19 @@ ArrayList<Integer> calculateLifeValue( Bitmap b ) {
   return next;
 }
 
+
+ 
+ String loadFile() {
+    String path = FileUtils.showFileDialog(
+    frame, 
+    "An RLE file to load...", 
+    dataPath(""), 
+    new String[] { 
+      ".rle", ".txt"
+    }
+    , 
+    FileDialog.LOAD
+      );   
+      
+      return path;
+ }

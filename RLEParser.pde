@@ -33,8 +33,8 @@ class RLEParser {
               String xdim = tokens[0].split("=")[1].trim(); 
               String ydim = tokens[1].split("=")[1].trim();
 
-              rows = Integer.parseInt(xdim);
-              cols = Integer.parseInt(ydim);
+              cols = Integer.parseInt(xdim);
+              rows = Integer.parseInt(ydim);
 
               if ( rows * cols > destPixelCount || rows > destRows || cols > destCols ) {
                 println("**ERROR** cannont parse " + file + " into bitmap. Wrong size");

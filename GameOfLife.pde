@@ -121,8 +121,12 @@ void mousePressed() {
 }
 
 void keyPressed() {
-  if (key == 's' || key == 'S') {
-    println("saving bitmap to " + outputFile);
+  if(key == 's' || key == 'S') {
+   println("saving frame = " + frame );
+   saveFrame("screengrabs/grab#####.png"); 
+  }
+  if (key == 'e' || key == 'E') {
+    println("exporting bitmap to " + outputFile);
     bitmap.save(outputFile);
   }
   else if ( key == 'o' || key =='O') {

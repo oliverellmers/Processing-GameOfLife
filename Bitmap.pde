@@ -102,6 +102,12 @@ class Bitmap {
       }
     }
   }
+  
+  public void setPixel(int pixel, Integer value) {
+    if(pixel < getPixelCount() ) {
+      pixelValues.set(pixel, value);
+    }
+  }
 
   public int getBorderedOffset(int p) {
     int r = p / cols;

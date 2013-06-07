@@ -37,17 +37,16 @@ void setup() {
 
   bitmap = new Bitmap(width/2 - gWidth/2, height/2 - gHeight/2, gWidth, gHeight, rows, cols);
   initBitmap();
-  
-    String rlefile = loadFile();
-    parser.parse(rlefile);
-  noLoop();  
+
+  //String rlefile = loadFile();
+  //parser.parse(rlefile);
 }
 
 void draw() {
   background(0);
   bitmap.draw();
 
-  if (frameCount % 60 == 0 ) {
+  if (frameCount % 30 == 0 ) {
     bitmap.setPixels(calculateLifeValue(bitmap));    
 
     if (SAVE_OUTPUT) {
@@ -74,22 +73,31 @@ void initBitmap() {
     dummyPixels.add(0);
   }
 
-  //row of pixels
-  int size = 11;
-  int ind = floor((rows / 2 ) - size / 2) * cols;
-  ind +=  floor((cols / 2 )) - 2;
-  for ( int j=0; j < size; ++j) {
-    for (int i=ind ; i < ind + 5; ++i) {
-      dummyPixels.set(i, 1);
-    }
-    ind += cols;
-  }
+  /* pattern of horizontal lines in the center
+   //row of pixels
+   int size = 11;
+   int ind = floor((rows / 2 ) - size / 2) * cols;
+   ind +=  floor((cols / 2 )) - 2;
+   for ( int j=0; j < size; ++j) {
+   for (int i=ind ; i < ind + 5; ++i) {
+   dummyPixels.set(i, 1);
+   }
+   ind += cols;
+   } 
+   */
 
-  //  dummyPixels.set(0, 1); 
-  //  dummyPixels.set(rows*cols -1, 1);
-  //  for (int j=testRow * cols; i < testRow*cols + cols; ++i) {
-  //    for( int i= ) {
-  //    }
+  /* Test glider */
+  int ind = 500;
+  dummyPixels.set(ind+1, 1); 
+  ind += cols;
+  dummyPixels.set(ind+2, 1); 
+  ind += cols;
+  dummyPixels.set(ind, 1); 
+  ++ind;
+  dummyPixels.set(ind, 1); 
+  ++ind;
+  dummyPixels.set(ind, 1); 
+  ++ind;
 
   bitmap.setPixels(dummyPixels);
 }
@@ -119,16 +127,18 @@ void keyPressed() {
   }
   else if ( key == 'o' || key =='O') {
     String rlefile = loadFile();
-    parser.parse(rlefile);
-    
+    ArrayList<Integer> parsedPixels = parser.parse(rlefile, bitmap.rows, bitmap.cols, bitmap.getPixelCount());
+    bitmap.setPixels(parsedPixels);
+
+
     /*
     ArrayList<Integer> data =rleLoader.loadFile();
-    if (data != null) {
-      println(data);
-      bitmap.clear();
-      bitmap.setPixels(data);
-    }
-    */
+     if (data != null) {
+     println(data);
+     bitmap.clear();
+     bitmap.setPixels(data);
+     }
+     */
   }
 }
 
@@ -213,18 +223,19 @@ ArrayList<Integer> calculateLifeValue( Bitmap b ) {
 }
 
 
- 
- String loadFile() {
-    String path = FileUtils.showFileDialog(
-    frame, 
-    "An RLE file to load...", 
-    dataPath(""), 
-    new String[] { 
-      ".rle", ".txt"
-    }
-    , 
-    FileDialog.LOAD
-      );   
-      
-      return path;
- }
+
+String loadFile() {
+  String path = FileUtils.showFileDialog(
+  frame, 
+  "An RLE file to load...", 
+  dataPath(""), 
+  new String[] { 
+    ".rle", ".txt"
+  }
+  , 
+  FileDialog.LOAD
+    );   
+
+  return path;
+}
+

@@ -131,9 +131,8 @@ void keyPressed() {
   }
   else if ( key == 'o' || key =='O') {
     String rlefile = loadFile();
-    ArrayList<Integer> parsedPixels = parser.parse(rlefile, bitmap.rows, bitmap.cols, bitmap.getPixelCount());
-    bitmap.setPixels(parsedPixels);
-
+    RLEPattern pattern;
+    pattern = parser.parse(rlefile, bitmap.rows, bitmap.cols, bitmap.getPixelCount());
 
     /*
     ArrayList<Integer> data =rleLoader.loadFile();

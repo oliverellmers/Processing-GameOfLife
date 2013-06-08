@@ -32,8 +32,11 @@ class RLEPattern {
    
    for(int j=0; j < rows; ++j) {
      for(int i=0; i < cols; ++i) {
-       ret += pixels.get(j*cols + i ) == 0 ? zeroValue : oneValue;
-       ret += separator;
+       int ind = j * cols + i;
+       if( ind < pixels.size() ) {
+         ret += pixels.get(j*cols + i ) == 0 ? zeroValue : oneValue;
+         ret += separator;
+       }
      }
      ret += "\n";
    }

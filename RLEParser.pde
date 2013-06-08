@@ -1,15 +1,14 @@
 class RLEParser {
   Pattern p = Pattern.compile("(\\d*)([bo]?)!?");
 
-  ArrayList<Integer> parse(String file, int destRows, int destCols, int destPixelCount) {
+
+  RLEPattern parse(String file, int destRows, int destCols, int destPixelCount) {
+    RLEPattern rlePattern = new RLEPattern();
+    
     ArrayList<Integer> ret = new ArrayList<Integer>();
     for(int i=0; i < destPixelCount; ++i) {
       ret.add(0);
     }
-
-    int rows = 0;
-    int cols = 0;
-    int insertionIndex = 0;
 
 
     if ( file != null ) {
@@ -33,15 +32,15 @@ class RLEParser {
               String xdim = tokens[0].split("=")[1].trim(); 
               String ydim = tokens[1].split("=")[1].trim();
 
-              cols = Integer.parseInt(xdim);
-              rows = Integer.parseInt(ydim);
+              rlePattern.cols = Integer.parseInt(xdim);
+              rlePattern.rows = Integer.parseInt(ydim);
 
               if ( rows * cols > destPixelCount || rows > destRows || cols > destCols ) {
                 println("**ERROR** cannont parse " + file + " into bitmap. Wrong size");
               }
-              int insertRow = destRows / 2 - rows / 2;
-              int insertCol = destCols / 2 - cols / 2;
-              insertionIndex = insertRow * destCols + insertCol;
+//              int insertRow = destRows / 2 - rows / 2;
+//              int insertCol = destCols / 2 - cols / 2;
+//              insertionIndex = insertRow * destCols + insertCol;
             }
             //there should only be one line like this so continue with main parse loop
             continue;
@@ -50,9 +49,11 @@ class RLEParser {
           //parse data and insert into bitmap
 
           String dataTokens[] = l.split("\\$");
-          for (String dat : dataTokens ) {
-            Matcher m = p.matcher(dat);
+          for (String rleLine : dataTokens ) {
+            println(rleLine);
+            Matcher m = p.matcher(rleLine);
             ArrayList<Integer> data = new ArrayList<Integer>();
+            
             while (m.find ()) { 
               if (m.group(0).length() > 0 ) {          
                 int count = 0;
@@ -67,7 +68,8 @@ class RLEParser {
                 //parse cell type (dead or alive)
                 if (m.group(2).length() > 0) {
                   boolean isAlive = m.group(2).equals("o");
-
+                  String status = isAlive ? "o" : "b";
+                  print(count + status);
                   for (int i=0; i<count; ++i) {
                     if (isAlive) {
                       data.add(1);
@@ -79,20 +81,9 @@ class RLEParser {
                 }
               }
             }
-            int ind = insertionIndex;
-            for (Integer d : data ) {
-              ret.set(ind, d);
-              ++ind;
-            }
-            insertionIndex += destCols;
+            println("$" + data);
+            rlePattern.addRow(data);
           }
-
-
-
-
-
-          //move the insertion index to the next row
-          //          insertionIndex += into.cols;
         }
       }
       catch( IOException e ) {
@@ -100,7 +91,8 @@ class RLEParser {
         println(e);
       }
     }
-    return ret;
+    println("parsed pattern:\n"+rlePattern);
+    return rlePattern;
   }
 }
 

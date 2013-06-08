@@ -2,7 +2,7 @@ class RLEParser {
   Pattern p = Pattern.compile("(\\d*)([bo]?)!?");
 
 
-  RLEPattern parse(String file, int destRows, int destCols, int destPixelCount) {
+  RLEPattern parse(String file) {
     RLEPattern rlePattern = new RLEPattern();
     int rowsParsed = 0;
 
@@ -30,9 +30,7 @@ class RLEParser {
               rlePattern.cols = Integer.parseInt(xdim);
               rlePattern.rows = Integer.parseInt(ydim);
 
-              if ( rows * cols > destPixelCount || rows > destRows || cols > destCols ) {
-                println("**ERROR** cannont parse " + file + " into bitmap. Wrong size");
-              }
+
 //              int insertRow = destRows / 2 - rows / 2;
 //              int insertCol = destCols / 2 - cols / 2;
 //              insertionIndex = insertRow * destCols + insertCol;

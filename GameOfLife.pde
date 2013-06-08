@@ -178,7 +178,7 @@ ArrayList<Integer> calculateLifeValue( Bitmap b ) {
 
 
 
-String loadFile() {
+void loadFile() {
   String path = FileUtils.showFileDialog(
   frame, 
   "An RLE file to load...", 
@@ -190,6 +190,10 @@ String loadFile() {
   FileDialog.LOAD
     );   
 
-  return path;
+  RLEPattern pattern;
+  pattern = parser.parse(path);
+  Bitmap p = new Bitmap(pattern, gWidth, gHeight, rows, cols, rows/2 - pattern.rows/2, cols/2 - pattern.cols/2);
+  bitmap.setPixels(p.getPixels());
+  bitmap.draw();
 }
 

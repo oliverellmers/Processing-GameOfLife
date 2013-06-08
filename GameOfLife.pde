@@ -36,10 +36,7 @@ void setup() {
   outputFile = outputDirectory +"/" +fileName;
 
   bitmap = new Bitmap(width/2 - gWidth/2, height/2 - gHeight/2, gWidth, gHeight, rows, cols);
-  initBitmap();
-
-  //String rlefile = loadFile();
-  //parser.parse(rlefile);
+  loadFile();
 }
 
 void draw() {
@@ -67,40 +64,6 @@ void saveData() {
   ++outFileCounter;
 }
 
-void initBitmap() {
-  ArrayList<Integer> dummyPixels = new ArrayList<Integer>(rows*cols);
-  for (int i=0; i < rows*cols; ++i) { 
-    dummyPixels.add(0);
-  }
-
-  /* pattern of horizontal lines in the center
-   //row of pixels
-   int size = 11;
-   int ind = floor((rows / 2 ) - size / 2) * cols;
-   ind +=  floor((cols / 2 )) - 2;
-   for ( int j=0; j < size; ++j) {
-   for (int i=ind ; i < ind + 5; ++i) {
-   dummyPixels.set(i, 1);
-   }
-   ind += cols;
-   } 
-   */
-
-  /* Test glider */
-  int ind = 500;
-  dummyPixels.set(ind+1, 1); 
-  ind += cols;
-  dummyPixels.set(ind+2, 1); 
-  ind += cols;
-  dummyPixels.set(ind, 1); 
-  ++ind;
-  dummyPixels.set(ind, 1); 
-  ++ind;
-  dummyPixels.set(ind, 1); 
-  ++ind;
-
-  bitmap.setPixels(dummyPixels);
-}
 
 void randomBitmap() {
   ArrayList<Integer> a = new ArrayList<Integer>();
@@ -130,22 +93,6 @@ void keyPressed() {
     bitmap.save(outputFile);
   }
   else if ( key == 'o' || key =='O') {
-    String rlefile = loadFile();
-    RLEPattern pattern;
-    pattern = parser.parse(rlefile, bitmap.rows, bitmap.cols, bitmap.getPixelCount());
-    
-    Bitmap p = new Bitmap(pattern, gWidth, gHeight, rows, cols, rows/2 - pattern.rows/2 ,cols/2 - pattern.cols/2);
-    bitmap.setPixels(p.getPixels());
-    bitmap.draw();
-
-    /*
-    ArrayList<Integer> data =rleLoader.loadFile();
-     if (data != null) {
-     println(data);
-     bitmap.clear();
-     bitmap.setPixels(data);
-     }
-     */
   }
 }
 

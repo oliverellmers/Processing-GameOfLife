@@ -7,6 +7,11 @@ class RLEPattern {
    pixels = new ArrayList<Integer>();
  } 
  
+ RLEPattern(int size) {
+   this();
+   rows = cols = int(sqrt(size));
+ }
+ 
  int getWidth() { return cols; }
  int getHeight() { return rows; }
  

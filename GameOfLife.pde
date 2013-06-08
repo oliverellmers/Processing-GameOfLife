@@ -239,6 +239,7 @@ void oscEvent(OscMessage msg) {
     if(m.matches() ) {
       if(msg.get(0).floatValue() == 1 ) {
         println("PLAY");
+        lemur.setPattern();
       } else {
         println("STOP");
       }

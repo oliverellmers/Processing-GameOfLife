@@ -4,7 +4,13 @@ class RLEParser {
 
   RLEPattern parse(String file) {
     RLEPattern rlePattern = new RLEPattern();
+    
+    ArrayList<ArrayList<Integer>> parseTree = new ArrayList();
 
+    if ( file == null ) {
+      println("no file to parse");
+      return null;
+    }
 
 
     BufferedReader reader = null;      
@@ -12,6 +18,7 @@ class RLEParser {
     try {
       String l = "";      
 
+      reader = FileUtils.createReader(new File(file));
 
       //remember rle contains int and int[]
       while ( ( l = reader.readLine ()) != null) {
@@ -76,13 +83,20 @@ class RLEParser {
                     data.add(0);
                   }
                 }
+              } 
+              else { // condition for ##$ e.g. blanklines
+                  //add the current line to the parseTree
+                  parseTree.add(data);
+
+                  for(int i=1; i < count-1; ++i ) {
+                    data = new ArrayList<Integer>();
+                    data.add(0);
+                    parseTree.add(data);                    
+                  }
               }
             }
           }
           parseTree.add(data);
-//          rlePattern.addRow(data);
-//          println(rlePattern.debugRow(rowsParsed));            
-//          ++rowsParsed;
         }
       }
       int rowsParsed = 0;

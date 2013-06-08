@@ -4,12 +4,7 @@ class RLEParser {
 
   RLEPattern parse(String file, int destRows, int destCols, int destPixelCount) {
     RLEPattern rlePattern = new RLEPattern();
-    
-    ArrayList<Integer> ret = new ArrayList<Integer>();
-    for(int i=0; i < destPixelCount; ++i) {
-      ret.add(0);
-    }
-
+    int rowsParsed = 0;
 
     if ( file != null ) {
       BufferedReader reader = null;      
@@ -46,11 +41,16 @@ class RLEParser {
             continue;
           }
 
-          //parse data and insert into bitmap
-
-          String dataTokens[] = l.split("\\$");
+          //parse data
+          l.trim();
+          String dataLine = l;
+          while( ( l = reader.readLine() ) != null ) {
+            l.trim();
+            dataLine += l;
+          }
+         
+          String dataTokens[] = dataLine.split("\\$");
           for (String rleLine : dataTokens ) {
-            println(rleLine);
             Matcher m = p.matcher(rleLine);
             ArrayList<Integer> data = new ArrayList<Integer>();
             
@@ -69,7 +69,7 @@ class RLEParser {
                 if (m.group(2).length() > 0) {
                   boolean isAlive = m.group(2).equals("o");
                   String status = isAlive ? "o" : "b";
-                  print(count + status);
+//                  print(count + status);
                   for (int i=0; i<count; ++i) {
                     if (isAlive) {
                       data.add(1);
@@ -81,8 +81,8 @@ class RLEParser {
                 }
               }
             }
-            println("$" + data);
             rlePattern.addRow(data);
+            ++rowsParsed;
           }
         }
       }
@@ -91,8 +91,7 @@ class RLEParser {
         println(e);
       }
     }
-    println("parsed pattern:\n"+rlePattern);
-    return rlePattern;
+    println("parsed pattern:\n"+rlePattern);return rlePattern;
   }
 }
 

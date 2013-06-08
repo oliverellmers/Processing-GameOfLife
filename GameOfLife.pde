@@ -133,6 +133,9 @@ void keyPressed() {
     String rlefile = loadFile();
     RLEPattern pattern;
     pattern = parser.parse(rlefile, bitmap.rows, bitmap.cols, bitmap.getPixelCount());
+    Bitmap p = new Bitmap(pattern, gWidth, gHeight, rows, cols,false);
+    bitmap.setPixels(p.getPixels());
+    bitmap.draw();
 
     /*
     ArrayList<Integer> data =rleLoader.loadFile();

@@ -2,6 +2,8 @@ import toxi.util.*;
 import java.awt.FileDialog;
 import java.io.File;
 import java.util.regex.*;
+import oscP5.*;
+import netP5.*;
 
 // -=-=-=-=--=-==-=-=-=-=-=-=
 // -=-=- OUTPUT DATA -=-=--=-
@@ -29,12 +31,32 @@ RLEParser parser = new RLEParser();
 
 boolean paused = false;
 
+// -=-=-=-=--=-==-=-=-
+OscP5 osc;
+int listenPort = 8000;
+
+// -=-=-=-=--=-==-=-=-
+LemurController lemur;
+int lemurSize = 9;  //number of rows = number of cols
+Pattern padButtonRE = Pattern.compile("\\/CustomButton(\\d+)\\/x");
+Pattern controlButtonRE = Pattern.compile("\\/Control\\/play");
+
+
+// -=-=-=-=--=-==-=-=--=-=-=-=--=-==-=-=--=-=-=-=--=-==-=-=-
+
+// -=-=-=-=--=-==-=-=-
+//  CODE
+// -=-=-=-=--=-==-=-=-
+
 void setup() {
   size(1024, 1024);
   rectMode(CENTER);
   outputDirectory = sketchPath("") + "out";
   outputFile = outputDirectory +"/" +fileName;
-
+  
+  osc = new OscP5(this,listenPort);
+  lemur = new LemurController(lemurSize);
+  
   bitmap = new Bitmap(width/2 - gWidth/2, height/2 - gHeight/2, gWidth, gHeight, rows, cols);
   loadFile();
 }
@@ -198,3 +220,30 @@ void loadFile() {
   }
 }
 
+
+//--=-=-=-=-=-=-=-=-=-=
+//  OSC
+//--=-=-=-=-=-=-=-=-=-=
+void oscEvent(OscMessage msg) {
+  /* get and print the address pattern and the typetag of the received OscMessage */
+  println("### received an osc message with addrpattern "+msg.addrPattern()+" and typetag "+msg.typetag());
+//  lemur.handleMessage(theOscMessage);
+
+    String addr = msg.addrPattern();
+    Matcher m = padButtonRE.matcher(addr);
+      
+    if (m.matches()) {
+      lemur.setPadState(Integer.parseInt(m.group(1)), int(msg.get(0).floatValue()));
+    }
+    m = controlButtonRE.matcher(addr);
+    if(m.matches() ) {
+      if(msg.get(0).floatValue() == 1 ) {
+        println("PLAY");
+      } else {
+        println("STOP");
+      }
+    }
+
+  
+  msg.print();
+}

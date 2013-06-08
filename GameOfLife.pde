@@ -25,8 +25,6 @@ boolean DEBUG = false;
 Bitmap bitmap, fileInput;
 int rows = 60, cols = 60;
 int gWidth = 1024, gHeight = 1024;
-RLECodec encoder = new RLECodec();
-RLELoader rleLoader = new RLELoader();
 RLEParser parser = new RLEParser();
 
 boolean paused = false;

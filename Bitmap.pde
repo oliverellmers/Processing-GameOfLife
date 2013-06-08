@@ -7,7 +7,7 @@ class Bitmap {
   int size;
   ArrayList<Integer> pixelValues;
   ArrayList<Integer> borderPixelValues; //shadow of pixelValues with 1 cell border around it
-  RLECodec encoder = new RLECodec();
+ 
 
 
   //
@@ -149,9 +149,6 @@ class Bitmap {
     return borderPixelValues;
   }
 
-  public ArrayList getCompressedPixelArray() {
-    return encoder.encode(pixelValues);
-  }
 
   public int getPixelCount() { 
     return size;

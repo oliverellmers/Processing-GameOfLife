@@ -32,7 +32,6 @@ boolean paused = false;
 void setup() {
   size(1024, 1024);
   rectMode(CENTER);
-  ellipseMode(CORNER);
   outputDirectory = sketchPath("") + "out";
   outputFile = outputDirectory +"/" +fileName;
 

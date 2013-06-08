@@ -23,15 +23,18 @@ boolean DEBUG = false;
 // -=-=-=-=--=-==-=-=-
 
 Bitmap bitmap, fileInput;
-int rows = 50, cols = 50;
-int gWidth = 800, gHeight = 800;
+int rows = 60, cols = 60;
+int gWidth = 1024, gHeight = 1024;
 RLECodec encoder = new RLECodec();
 RLELoader rleLoader = new RLELoader();
 RLEParser parser = new RLEParser();
 
+boolean paused = false;
+
 void setup() {
-  size(800, 800);
+  size(1024, 1024);
   rectMode(CENTER);
+  ellipseMode(CORNER);
   outputDirectory = sketchPath("") + "out";
   outputFile = outputDirectory +"/" +fileName;
 
@@ -43,7 +46,7 @@ void draw() {
   background(0);
   bitmap.draw();
 
-  if (frameCount % 30 == 0 ) {
+  if (frameCount % 10 == 0 && !paused ) {
     bitmap.setPixels(calculateLifeValue(bitmap));    
 
     if (SAVE_OUTPUT) {
@@ -84,26 +87,22 @@ void mousePressed() {
 }
 
 void keyPressed() {
-  if(key == 's' || key == 'S') {
-   println("saving frame = " + frame );
-   saveFrame("screengrabs/grab#####.png"); 
+  if (key == 's' || key == 'S') {
+    println("saving frame = " + frame );
+    saveFrame("screengrabs/grab#####.png");
   }
   if (key == 'e' || key == 'E') {
     println("exporting bitmap to " + outputFile);
     bitmap.save(outputFile);
   }
   else if ( key == 'o' || key =='O') {
+    loadFile();
+  }
+  else if ( key  == 'p' || key =='P') {
+    paused = !paused;
   }
 }
 
-private void handleFileLoaded() {
-}
-
-
-// -=-=-=-=-= Output to file -=-=-=-=-==-
-
-
-// -=-=-=-=-= Output to OSC ==-
 
 
 // -=-=-=-=-= Life ==-
@@ -117,14 +116,17 @@ ArrayList<Integer> calculateLifeValue( Bitmap b ) {
   ArrayList<Integer> pixels = b.getPixels();
   ArrayList<Integer> next = new ArrayList<Integer>(b.getPixelCount());
 
+  //kernel array
   int[] k = {
     -(cols + 1), -cols, -(cols-1), 
     -1, 1, 
     (cols - 1), cols, (cols+1)
     };
 
+    //convolution array
     int[] conv = new int[8];
-
+  //use the border pixels array to run algorithm
+  //this accounts for the pixels on the edge of the image
   for ( int i=0; i < b.getPixelCount(); ++i ) {
     int offset = b.getBorderedOffset( i );
 

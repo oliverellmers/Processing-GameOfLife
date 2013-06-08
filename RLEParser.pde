@@ -4,7 +4,7 @@ class RLEParser {
 
   RLEPattern parse(String file) {
     RLEPattern rlePattern = new RLEPattern();
-    
+
     ArrayList<ArrayList<Integer>> parseTree = new ArrayList();
 
     if ( file == null ) {
@@ -12,9 +12,7 @@ class RLEParser {
       return null;
     }
 
-
     BufferedReader reader = null;      
-
     try {
       String l = "";      
 
@@ -35,11 +33,6 @@ class RLEParser {
 
             rlePattern.cols = Integer.parseInt(xdim);
             rlePattern.rows = Integer.parseInt(ydim);
-
-
-            //              int insertRow = destRows / 2 - rows / 2;
-            //              int insertCol = destCols / 2 - cols / 2;
-            //              insertionIndex = insertRow * destCols + insertCol;
           }
           //there should only be one line like this so continue with main parse loop
           continue;
@@ -53,13 +46,12 @@ class RLEParser {
           dataLine += l;
         }
 
-
         String dataTokens[] = dataLine.split("\\$");
-        for (String rleLine : dataTokens ) {
-          println(rleLine);
-          Matcher m = p.matcher(rleLine);
-          ArrayList<Integer> data = new ArrayList<Integer>();
 
+        for (String rleLine : dataTokens ) {
+          ArrayList<Integer> data = new ArrayList<Integer>();          
+
+          Matcher m = p.matcher(rleLine);
           while (m.find ()) { 
             if (m.group(0).length() > 0 ) {          
               int count = 0;
@@ -85,14 +77,14 @@ class RLEParser {
                 }
               } 
               else { // condition for ##$ e.g. blanklines
-                  //add the current line to the parseTree
-                  parseTree.add(data);
+                //add the current line to the parseTree
+                parseTree.add(data);
 
-                  for(int i=1; i < count-1; ++i ) {
-                    data = new ArrayList<Integer>();
-                    data.add(0);
-                    parseTree.add(data);                    
-                  }
+                for (int i=1; i < count-1; ++i ) {
+                  data = new ArrayList<Integer>();
+                  data.add(0);
+                  parseTree.add(data);
+                }
               }
             }
           }
@@ -100,17 +92,15 @@ class RLEParser {
         }
       }
       int rowsParsed = 0;
-      for( ArrayList<Integer> parseData : parseTree ) {
+      for ( ArrayList<Integer> parseData : parseTree ) {
         rlePattern.addRow(parseData);
-          println(rlePattern.debugRow(rowsParsed));            
-          ++rowsParsed;        
+        //          println(rlePattern.debugRow(rowsParsed));            
+        ++rowsParsed;
       }
     }
     catch( Exception e ) {
       println("error parsing" + e);
     }
-    
-    
     println("parsed pattern:\n"+rlePattern);
     return rlePattern;
   }

@@ -190,10 +190,12 @@ void loadFile() {
   FileDialog.LOAD
     );   
 
-  RLEPattern pattern;
-  pattern = parser.parse(path);
-  Bitmap p = new Bitmap(pattern, gWidth, gHeight, rows, cols, rows/2 - pattern.rows/2, cols/2 - pattern.cols/2);
-  bitmap.setPixels(p.getPixels());
-  bitmap.draw();
+  if (path != null) {
+    RLEPattern pattern;
+    pattern = parser.parse(path);
+    Bitmap p = new Bitmap(pattern, gWidth, gHeight, rows, cols, rows/2 - pattern.rows/2, cols/2 - pattern.cols/2);
+    bitmap.setPixels(p.getPixels());
+    bitmap.draw();
+  }
 }
 

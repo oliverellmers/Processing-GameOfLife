@@ -247,7 +247,8 @@ class Bitmap {
     float _y = lerp(pos.y, pos.y + dim.y, jnorm);
 
     //shift by 1 pixel and shorten 1 pixel for border
-    rect( _x+1, _y+1, cellDim.x-2, cellDim.y-2);
+    ellipse(_x+1, _y+1, cellDim.x-2, cellDim.y-2); 
+//    rect( _x+1, _y+1, cellDim.x-2, cellDim.y-2);
   }
 }
 

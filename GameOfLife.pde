@@ -1,6 +1,8 @@
 import toxi.util.*;
 import java.awt.FileDialog;
 import java.io.File;
+import java.util.Map;
+import java.util.HashMap;
 import java.util.regex.*;
 import oscP5.*;
 import netP5.*;
@@ -41,6 +43,8 @@ int lemurSize = 9;  //number of rows = number of cols
 Pattern padButtonRE = Pattern.compile("\\/CustomButton(\\d+)\\/x");
 Pattern controlButtonRE = Pattern.compile("\\/Control\\/play");
 
+String configurationFile = "data/config.xml";
+Config config;
 
 // -=-=-=-=--=-==-=-=--=-=-=-=--=-==-=-=--=-=-=-=--=-==-=-=-
 
@@ -51,6 +55,8 @@ Pattern controlButtonRE = Pattern.compile("\\/Control\\/play");
 void setup() {
   size(1024, 1024);
   rectMode(CENTER);
+  
+  config = new Config(configurationFile);
   outputDirectory = sketchPath("") + "out";
   outputFile = outputDirectory +"/" +fileName;
   
@@ -65,6 +71,7 @@ void draw() {
   background(0);
   bitmap.draw();
 
+  
   if (frameCount % 10 == 0 && !paused ) {
     bitmap.setPixels(calculateLifeValue(bitmap));    
 

@@ -40,8 +40,8 @@ int listenPort = 8000;
 // -=-=-=-=--=-==-=-=-
 LemurController lemur;
 int lemurSize = 9;  //number of rows = number of cols
-Pattern padButtonRE = Pattern.compile("\\/CustomButton(\\d+)\\/x");
-Pattern controlButtonRE = Pattern.compile("\\/Control\\/play");
+Pattern padButtonRE; 
+Pattern controlButtonRE;
 
 String configurationFile = "data/config.xml";
 Config config;
@@ -232,26 +232,7 @@ void loadFile() {
 //  OSC
 //--=-=-=-=-=-=-=-=-=-=
 void oscEvent(OscMessage msg) {
-  /* get and print the address pattern and the typetag of the received OscMessage */
-  println("### received an osc message with addrpattern "+msg.addrPattern()+" and typetag "+msg.typetag());
-//  lemur.handleMessage(theOscMessage);
-
-    String addr = msg.addrPattern();
-    Matcher m = padButtonRE.matcher(addr);
-      
-    if (m.matches()) {
-      lemur.setPadState(Integer.parseInt(m.group(1)), int(msg.get(0).floatValue()));
-    }
-    m = controlButtonRE.matcher(addr);
-    if(m.matches() ) {
-      if(msg.get(0).floatValue() == 1 ) {
-        println("PLAY");
-        lemur.setPattern();
-      } else {
-        println("STOP");
-      }
-    }
-
-  
-  msg.print();
+//  println("### received an osc message with addrpattern "+msg.addrPattern()+" and typetag "+msg.typetag());  
+  lemur.handleMessage(msg);  
+//  msg.print();
 }

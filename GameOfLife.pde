@@ -3,6 +3,7 @@ import java.awt.FileDialog;
 import java.io.File;
 import java.util.Map;
 import java.util.HashMap;
+
 import java.util.regex.*;
 import oscP5.*;
 import netP5.*;
@@ -27,7 +28,7 @@ boolean DEBUG = false;
 // -=-=-=-=--=-==-=-=-
 
 Bitmap bitmap, fileInput;
-int rows = 60, cols = 60;
+int rows, cols;
 int gWidth = 1024, gHeight = 1024;
 RLEParser parser = new RLEParser();
 
@@ -43,6 +44,7 @@ int lemurSize = 9;  //number of rows = number of cols
 Pattern padButtonRE; 
 Pattern controlButtonRE;
 
+// -=-=-=-=--=-==-=-=-
 String configurationFile = "data/config.xml";
 Config config;
 
@@ -52,11 +54,12 @@ Config config;
 //  CODE
 // -=-=-=-=--=-==-=-=-
 
+
 void setup() {
-  size(1024, 1024);
+  size(1024, 1024,P2D);
   rectMode(CENTER);
+  initialize();
   
-  config = new Config(configurationFile);
   outputDirectory = sketchPath("") + "out";
   outputFile = outputDirectory +"/" +fileName;
   
@@ -67,10 +70,17 @@ void setup() {
   loadFile();
 }
 
+void initialize() {
+  config = new Config(configurationFile);
+  
+  rows = Integer.parseInt(config.getValue("gridRows"));
+  cols = Integer.parseInt(config.getValue("gridCols"));
+  
+}
+
 void draw() {
   background(0);
   bitmap.draw();
-
   
   if (frameCount % 10 == 0 && !paused ) {
     bitmap.setPixels(calculateLifeValue(bitmap));    

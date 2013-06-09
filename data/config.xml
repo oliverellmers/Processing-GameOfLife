@@ -1,5 +1,17 @@
 <?xml version="1.0"?>
 <config>
+	<!--	APP config	-->	
+	<param>
+		<key>gridRows</key>
+		<value>100</value>
+		<type>String</type>
+	</param>
+	<param>
+		<key>gridCols</key>
+		<value>100</value>
+		<type>String</type>
+	</param>
+	<!--	LEMUR config	-->
 	<param>
 		<key>lemurPadButtonPattern</key>
 		<value>\\/CustomButton(\\d+)\\/x</value>

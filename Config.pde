@@ -36,10 +36,12 @@ class Config implements ConfigInterface {
     }
   }
 
-  public String getValue(String key) {
+  public String getValue(String aKey) {
     String value = null;
-    if (configProperties.containsKey(key) ) {
-      value = configProperties.get(key);
+    if (configProperties.containsKey(aKey) ) {
+      value = configProperties.get(aKey);
+    } else {
+      println("**UNKNOWN KEY = " + aKey );
     }
     return value;
   }

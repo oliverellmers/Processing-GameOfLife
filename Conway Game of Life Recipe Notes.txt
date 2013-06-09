@@ -1,0 +1,86 @@
+Conway Game of Life Recipes:
+
+* Glider - (glider.png)
+http://conwaylife.com/wiki/Glider
+Spaceship
+Period: 4
+Speed c /4
+Heat 4
+
+* Undecomino (undecomino_glider_gen.png)
+Glider Generator
+
+
+* Lightweight Space ship (Lwss.png) 
+Spaceship
+Period: 4
+Speed: c/2
+Heat: 11
+http://conwaylife.com/wiki/LWSS
+
+* Middleweight Spaceship (mwss.png)
+Period: 4
+Speed: c/2
+Heat: 15
+
+
+* Snacker (osciallator)
+http://www.ericweisstein.com/encyclopedias/life/Snacker.html
+
+* Domino Spark (oscillator)
+http://www.ericweisstein.com/encyclopedias/life/Snacker.html
+
+* O-Pentomino
+http://www.ericweisstein.com/encyclopedias/life/O-Pentomino.html
+
+# Queen Bee Shuttle (QueenBeeshuttle.png)
+Oscillator / Shuttle
+Period: 30
+Heat: 17.9
+Volatility: .96
+http://www.ericweisstein.com/encyclopedias/life/QueenBeeShuttle.html
+
+* Queen Bee (Queenbee.png)
+Methuselah
+Lifespan 191 generations
+
+* R-Pentomino
+Methuselah
+Lifespan: 1103 generations
+http://http://conwaylife.com/wiki/R-pentomino
+
+* Rabbits
+Methuselah
+Lifespan: 17,331 generations
+
+http://www.ericweisstein.com/encyclopedias/life/QueenBee.html
+
+
+* Kok's Galaxy
+Period: 8
+Heat: 39
+Volatility: 1.00
+http://conwaylife.com/wiki/Kok%27s_galaxy
+
+
+* Edge Shooter
+http://www.ericweisstein.com/encyclopedias/life/EdgeShooter.html
+
+* Gosper Glider Gun
+http://conwaylife.com/wiki/Gosper_glider_gun
+
+
+* Pentadecathlon (Pentadecathlon.png) 
+(oscialltor 15 series)
+Period: 15
+Heat: 22.4
+Volatility:
+http://conwaylife.com/wiki/Pentadecathalon
+
+http://conwaylife.com/wiki/Pentadecathlon
+
+* 124P37 **
+http://conwaylife.com/wiki/124P37
+
+* Big Glider ***
+http://conwaylife.com/wiki/Big_glider

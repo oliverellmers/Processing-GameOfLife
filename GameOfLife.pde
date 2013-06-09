@@ -41,8 +41,7 @@ int listenPort = 8000;
 // -=-=-=-=--=-==-=-=-
 LemurController lemur;
 int lemurSize = 9;  //number of rows = number of cols
-Pattern padButtonRE; 
-Pattern controlButtonRE;
+
 
 // -=-=-=-=--=-==-=-=-
 String configurationFile = "data/config.xml";
@@ -244,5 +243,5 @@ void loadFile() {
 void oscEvent(OscMessage msg) {
 //  println("### received an osc message with addrpattern "+msg.addrPattern()+" and typetag "+msg.typetag());  
   lemur.handleMessage(msg);  
-//  msg.print();
+  msg.print();
 }

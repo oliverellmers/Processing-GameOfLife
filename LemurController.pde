@@ -1,7 +1,9 @@
 class LemurController {
 
   //MOVE TO MODEL
-
+  Pattern padButtonRE; 
+  Pattern controlButtonRE;
+  
   ArrayList<Integer> pads;
 
   LemurController(int padCount) {

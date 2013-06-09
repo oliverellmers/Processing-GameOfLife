@@ -203,7 +203,7 @@ void loadFile() {
   String path = FileUtils.showFileDialog(
   frame, 
   "An RLE file to load...", 
-  dataPath(""), 
+  dataPath("") +"/rle", 
   new String[] { 
     ".rle", ".txt"
   }

@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<config>
+	<param id="0" species="Capra hircus">Goat</param>
+	<param id="1" species="Panthera pardus">Leopard</param>
+	<param id="2" species="Equus zebra">Zebra</param>
+</config>

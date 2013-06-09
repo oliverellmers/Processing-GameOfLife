@@ -188,7 +188,8 @@ class Bitmap {
 
   public void draw() {
     if (showGrid) {
-      stroke(125,50);
+      stroke(50,10);
+      noFill();
       for (float u = 0.0; u <= 1.0; u += uStep) {
         float _x = lerp(pos.x, pos.x + dim.x, u);
         line(_x, pos.y, _x, pos.y + dim.y);
@@ -239,9 +240,8 @@ class Bitmap {
   }
 
   private void plot(int i, int j) {
-    fill(100, 100, 10);
     noStroke();
-//    stroke(150, 150, 5);
+    fill(150, 150, 5);
     float inorm = (i + 0.5)/cols;
     float jnorm = (j + 0.5)/rows;
 

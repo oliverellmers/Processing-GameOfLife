@@ -1,7 +1,12 @@
 import toxi.util.*;
 import java.awt.FileDialog;
 import java.io.File;
+import java.util.Map;
+import java.util.HashMap;
+
 import java.util.regex.*;
+import oscP5.*;
+import netP5.*;
 
 // -=-=-=-=--=-==-=-=-=-=-=-=
 // -=-=- OUTPUT DATA -=-=--=-
@@ -23,26 +28,60 @@ boolean DEBUG = false;
 // -=-=-=-=--=-==-=-=-
 
 Bitmap bitmap, fileInput;
-int rows = 60, cols = 60;
+int rows, cols;
 int gWidth = 1024, gHeight = 1024;
 RLEParser parser = new RLEParser();
 
 boolean paused = false;
 
+// -=-=-=-=--=-==-=-=-
+OscP5 osc;
+int listenPort = 8000;
+
+// -=-=-=-=--=-==-=-=-
+LemurController lemur;
+int lemurSize = 9;  //number of rows = number of cols
+Pattern padButtonRE; 
+Pattern controlButtonRE;
+
+// -=-=-=-=--=-==-=-=-
+String configurationFile = "data/config.xml";
+Config config;
+
+// -=-=-=-=--=-==-=-=--=-=-=-=--=-==-=-=--=-=-=-=--=-==-=-=-
+
+// -=-=-=-=--=-==-=-=-
+//  CODE
+// -=-=-=-=--=-==-=-=-
+
+
 void setup() {
-  size(1024, 1024);
+  size(1024, 1024,P2D);
   rectMode(CENTER);
+  initialize();
+  
   outputDirectory = sketchPath("") + "out";
   outputFile = outputDirectory +"/" +fileName;
-
+  
+  osc = new OscP5(this,listenPort);
+  lemur = new LemurController(lemurSize);
+  
   bitmap = new Bitmap(width/2 - gWidth/2, height/2 - gHeight/2, gWidth, gHeight, rows, cols);
   loadFile();
+}
+
+void initialize() {
+  config = new Config(configurationFile);
+  
+  rows = Integer.parseInt(config.getValue("gridRows"));
+  cols = Integer.parseInt(config.getValue("gridCols"));
+  
 }
 
 void draw() {
   background(0);
   bitmap.draw();
-
+  
   if (frameCount % 10 == 0 && !paused ) {
     bitmap.setPixels(calculateLifeValue(bitmap));    
 
@@ -181,7 +220,7 @@ void loadFile() {
   String path = FileUtils.showFileDialog(
   frame, 
   "An RLE file to load...", 
-  dataPath(""), 
+  dataPath("") +"/rle", 
   new String[] { 
     ".rle", ".txt"
   }
@@ -198,3 +237,12 @@ void loadFile() {
   }
 }
 
+
+//--=-=-=-=-=-=-=-=-=-=
+//  OSC
+//--=-=-=-=-=-=-=-=-=-=
+void oscEvent(OscMessage msg) {
+//  println("### received an osc message with addrpattern "+msg.addrPattern()+" and typetag "+msg.typetag());  
+  lemur.handleMessage(msg);  
+//  msg.print();
+}

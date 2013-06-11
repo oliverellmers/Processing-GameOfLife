@@ -57,6 +57,7 @@ Config config;
 
 void setup() {
   size(1024, 1024, P2D);
+  frameRate(30);
   rectMode(CENTER);
   initialize();
 
@@ -83,10 +84,11 @@ void initialize() {
 
 void draw() {
   background(0);
-  //  bitmap.update();
+  
+  bitmap.update();
   bitmap.draw();
 
-  if (frameCount % 15 == 0 && !paused ) {
+  if (frameCount % 5 == 0 && !paused ) {
     calculateLifeValue(bitmap);
     bitmap.setPixels(next.getPixels());    
 

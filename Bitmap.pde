@@ -145,9 +145,9 @@ class Bitmap {
   }
 
   public void update() {
-    //    for( BitmapCell bmp : bitmapCells ) {
-    //      bmp.update();
-    //    }
+    for ( BitmapCell bmp : borderPixelValues ) {
+      bmp.update();
+    }
   }
 
   public void draw() {

@@ -12,6 +12,7 @@ import netP5.*;
 // -=-=- OUTPUT DATA -=-=--=-
 // -=-=-=-=--=-==-=-=-=-=-=-=
 boolean SAVE_OUTPUT = false;
+boolean OSC_CONNECT  = false;
 
 //data file
 String outputDirectory = "out";
@@ -27,7 +28,7 @@ boolean DEBUG = false;
 
 // -=-=-=-=--=-==-=-=-
 
-Bitmap bitmap, fileInput;
+Bitmap bitmap, next;
 int rows, cols;
 int gWidth = 1024, gHeight = 1024;
 RLEParser parser = new RLEParser();
@@ -55,34 +56,39 @@ Config config;
 
 
 void setup() {
-  size(1024, 1024,P2D);
+  size(1024, 1024, P2D);
   rectMode(CENTER);
   initialize();
-  
+
   outputDirectory = sketchPath("") + "out";
   outputFile = outputDirectory +"/" +fileName;
-  
-  osc = new OscP5(this,listenPort);
+
+  if(OSC_CONNECT) {
+  osc = new OscP5(this, listenPort);
   lemur = new LemurController(lemurSize);
-  
+  }
+
   bitmap = new Bitmap(width/2 - gWidth/2, height/2 - gHeight/2, gWidth, gHeight, rows, cols);
+  next = new Bitmap(width/2 - gWidth/2, height/2 - gHeight/2, gWidth, gHeight, rows, cols);
+
   loadFile();
 }
 
 void initialize() {
   config = new Config(configurationFile);
-  
+
   rows = Integer.parseInt(config.getValue("gridRows"));
   cols = Integer.parseInt(config.getValue("gridCols"));
-  
 }
 
 void draw() {
   background(0);
+  //  bitmap.update();
   bitmap.draw();
-  
-  if (frameCount % 10 == 0 && !paused ) {
-    bitmap.setPixels(calculateLifeValue(bitmap));    
+
+  if (frameCount % 15 == 0 && !paused ) {
+    calculateLifeValue(bitmap);
+    bitmap.setPixels(next.getPixels());    
 
     if (SAVE_OUTPUT) {
       String f = String.format(outputFile + "%05d" + fileExtension, outFileCounter);
@@ -104,16 +110,14 @@ void saveData() {
 
 
 void randomBitmap() {
-  ArrayList<Integer> a = new ArrayList<Integer>();
   for (int i=0; i < bitmap.getPixelCount(); ++i ) {
     if (random(1.0) < 0.5 ) {
-      a.add(1);
+      bitmap.getPixel(i).setValue(1);
     } 
     else {
-      a.add(0);
+      bitmap.getPixel(i).setValue(0);
     }
-  }  
-  bitmap.setPixels(a);
+  }
 }
 
 
@@ -143,16 +147,13 @@ void keyPressed() {
 // -=-=-=-=-= Life ==-
 // Rule B3/S23
 
-ArrayList<Integer> calculateLifeValue( Bitmap b ) {
+void calculateLifeValue( Bitmap b ) {
+  next.clear();
   int p = 0;
-  // add 2 for the extra columns of the border
-  int cols = int(b.cols) + 2; 
-  ArrayList<Integer> borderPixels = b.getBorderPixelArray();
-  ArrayList<Integer> pixels = b.getPixels();
-  ArrayList<Integer> next = new ArrayList<Integer>(b.getPixelCount());
-
+  int cols = b.getCols(); 
+  
   //kernel array
-  int[] k = {
+  int[] kernel = {
     -(cols + 1), -cols, -(cols-1), 
     -1, 1, 
     (cols - 1), cols, (cols+1)
@@ -160,60 +161,61 @@ ArrayList<Integer> calculateLifeValue( Bitmap b ) {
 
     //convolution array
     int[] conv = new int[8];
-  //use the border pixels array to run algorithm
-  //this accounts for the pixels on the edge of the image
-  for ( int i=0; i < b.getPixelCount(); ++i ) {
-    int offset = b.getBorderedOffset( i );
 
-    int neighborhood = 0;
+  for ( int i=1; i < b.getRows()-1; ++i ) {
+    for ( int j=1; j < cols-1; ++j ) {
+      
+      int neighborhood = 0;
+      int index = i * b.getCols() + j;
+      if (DEBUG)
+        print("::"+i);
 
-    if (DEBUG)
-      print("::"+i);
-
-    for ( int j = 0; j < conv.length; ++j) {
-      conv[j] = borderPixels.get(k[j] + offset);
-      neighborhood |= conv[j] << (conv.length - 1 - j);
-    }    
-
-    if (DEBUG)
-      print("    " + Integer.toBinaryString(neighborhood));
-
-    //Hamming Weight implementation - from stackoverflow -- 
-    //http://stackoverflow.com/questions/8871204/count-number-of-1s-in-binary-representation
-    int count = 0;
-    while ( neighborhood > 0 ) {
-      count = count + 1;
-      neighborhood = neighborhood & ( neighborhood - 1);
-    }
-    String result = "";
-    if ( pixels.get(i) == 1 ) { //alive
-      if (count <= 1 || count > 3 ) { //death
-        result = "death";
-        next.add(0);
-      } 
-      else {
-        result = "survive";
-        next.add(1);
-      }
-    } 
-    else {
-      if (count == 3) {
-        result = "born";
-        next.add(1);
-      } 
-      else {
-        next.add(0);
-      }
-    }
-    if (DEBUG) {
-      print(" count = " + count); 
-      println("   result = " + result);
+      for ( int k = 0; k < conv.length; ++k) {
+        conv[k] = b.getPixel( kernel[k] + index ).getValue();
+        neighborhood |= conv[k] << (conv.length - 1 - k);
+      }    
+      int score = scorePixel(neighborhood, b.getPixel(i,j));
+      next.setPixel(i,j,score);
+        
+      if (DEBUG)
+        print("    " + Integer.toBinaryString(neighborhood));
     }
   }
-  return next;
 }
 
 
+    //Hamming Weight implementation - from stackoverflow -- 
+    //http://stackoverflow.com/questions/8871204/count-number-of-1s-in-binary-representation
+
+int scorePixel(int neighborhood, BitmapCell bmp) {
+  int score = -1;
+  int count = 0;
+  while ( neighborhood > 0 ) {
+    count = count + 1;
+    neighborhood = neighborhood & ( neighborhood - 1);
+  }
+  String result = "";
+  if ( bmp.getValue() == 1 ) { //alive
+    if (count <= 1 || count > 3 ) { //death
+      result = "death";
+      score = 0;
+    } 
+    else {
+      result = "survive";
+      score = 1;
+    }
+  } 
+  else {
+    if (count == 3) {
+      result = "born";
+      score = 1;
+    } 
+    else {
+      score  = 0;
+    }
+  } 
+  return score;
+}
 
 void loadFile() {
   String path = FileUtils.showFileDialog(
@@ -226,6 +228,8 @@ void loadFile() {
   , 
   FileDialog.LOAD
     );   
+
+//String path = dataPath("") +"/rle/glider.rle";
 
   if (path != null) {
     RLEPattern pattern;
@@ -241,7 +245,8 @@ void loadFile() {
 //  OSC
 //--=-=-=-=-=-=-=-=-=-=
 void oscEvent(OscMessage msg) {
-//  println("### received an osc message with addrpattern "+msg.addrPattern()+" and typetag "+msg.typetag());  
+  //  println("### received an osc message with addrpattern "+msg.addrPattern()+" and typetag "+msg.typetag());  
   lemur.handleMessage(msg);  
   msg.print();
 }
+

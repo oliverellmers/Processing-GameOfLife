@@ -7,14 +7,14 @@ class BitmapCell {
   String shape = ELLIPSE;
 
   float targetAlpha, alpha;
-  float alphaEasing = 0.9;
+  float alphaEasing = 0.1;
 
   int r = 150;
   int g = 150;
   int b = 5;
 
   BitmapCell(int i, int j, float ax, float ay, float w, float h) {
-    targetAlpha = alpha = 255;
+    targetAlpha = alpha = 0;
     value = 0;
     index = new PVector(i, j);
     dimension = new PVector(w, h);
@@ -25,14 +25,14 @@ class BitmapCell {
 
   void update() {
     alpha += (targetAlpha - alpha ) * alphaEasing;
-    if ( alpha < 1.0 ) {
-      alpha = 0;
-    }
+//    if ( alpha < 1.0 ) {
+//      alpha = 0;
+//    }
   }
 
   void draw() {
     noStroke();
-    fill(r, g, b);//, int(alpha));
+    fill(r, g, b, alpha);
 
     if (alpha > 0 ) {
       if (shape.equals(ELLIPSE)) {

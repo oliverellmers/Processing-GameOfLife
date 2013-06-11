@@ -4,6 +4,12 @@ class Config implements ConfigInterface {
   private final String VALUE_NODE = "value";
   private final String TYPE_NODE = "type";
   
+  //Properties
+  static final String APP_ROWS = "gridRows";
+  static final String APP_COLS = "gridCols";
+  
+  
+  
   Map<String, String> configProperties = new HashMap<String, String>();
 
   Config(String configFile) {
@@ -45,5 +51,6 @@ class Config implements ConfigInterface {
     }
     return value;
   }
+
 }
 

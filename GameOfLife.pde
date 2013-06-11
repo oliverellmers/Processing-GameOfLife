@@ -26,6 +26,8 @@ int outFileCounter = 0;
 
 boolean DEBUG = false;
 
+
+
 // -=-=-=-=--=-==-=-=-
 
 Bitmap bitmap, next;
@@ -64,11 +66,13 @@ void setup() {
   outputDirectory = sketchPath("") + "out";
   outputFile = outputDirectory +"/" +fileName;
 
-  if(OSC_CONNECT) {
-  osc = new OscP5(this, listenPort);
-  lemur = new LemurController(lemurSize);
+  if (OSC_CONNECT) {
+    osc = new OscP5(this, listenPort);
+    lemur = new LemurController(lemurSize);
   }
 
+
+  
   bitmap = new Bitmap(width/2 - gWidth/2, height/2 - gHeight/2, gWidth, gHeight, rows, cols);
   next = new Bitmap(width/2 - gWidth/2, height/2 - gHeight/2, gWidth, gHeight, rows, cols);
 
@@ -77,14 +81,16 @@ void setup() {
 
 void initialize() {
   config = new Config(configurationFile);
-
-  rows = Integer.parseInt(config.getValue("gridRows"));
-  cols = Integer.parseInt(config.getValue("gridCols"));
+  
+  rows = Integer.parseInt(config.getValue(Config.APP_ROWS));
+  println("config rows = " + rows );
+  cols = Integer.parseInt(config.getValue(Config.APP_COLS));
+  println("config cols = " + cols );  
 }
 
 void draw() {
   background(0);
-  
+
   bitmap.update();
   bitmap.draw();
 
@@ -151,9 +157,8 @@ void keyPressed() {
 
 void calculateLifeValue( Bitmap b ) {
   next.clear();
-  int p = 0;
   int cols = b.getCols(); 
-  
+
   //kernel array
   int[] kernel = {
     -(cols + 1), -cols, -(cols-1), 
@@ -166,7 +171,7 @@ void calculateLifeValue( Bitmap b ) {
 
   for ( int i=1; i < b.getRows()-1; ++i ) {
     for ( int j=1; j < cols-1; ++j ) {
-      
+
       int neighborhood = 0;
       int index = i * b.getCols() + j;
       if (DEBUG)
@@ -176,9 +181,9 @@ void calculateLifeValue( Bitmap b ) {
         conv[k] = b.getPixel( kernel[k] + index ).getValue();
         neighborhood |= conv[k] << (conv.length - 1 - k);
       }    
-      int score = scorePixel(neighborhood, b.getPixel(i,j));
-      next.setPixel(i,j,score);
-        
+      int score = scorePixel(neighborhood, b.getPixel(i, j));
+      next.setPixel(i, j, score);
+
       if (DEBUG)
         print("    " + Integer.toBinaryString(neighborhood));
     }
@@ -186,8 +191,8 @@ void calculateLifeValue( Bitmap b ) {
 }
 
 
-    //Hamming Weight implementation - from stackoverflow -- 
-    //http://stackoverflow.com/questions/8871204/count-number-of-1s-in-binary-representation
+//Hamming Weight implementation - from stackoverflow -- 
+//http://stackoverflow.com/questions/8871204/count-number-of-1s-in-binary-representation
 
 int scorePixel(int neighborhood, BitmapCell bmp) {
   int score = -1;
@@ -231,7 +236,7 @@ void loadFile() {
   FileDialog.LOAD
     );   
 
-//String path = dataPath("") +"/rle/glider.rle";
+  //String path = dataPath("") +"/rle/glider.rle";
 
   if (path != null) {
     RLEPattern pattern;
@@ -251,4 +256,3 @@ void oscEvent(OscMessage msg) {
   lemur.handleMessage(msg);  
   msg.print();
 }
-

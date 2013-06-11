@@ -25,9 +25,6 @@ class BitmapCell {
 
   void update() {
     alpha += (targetAlpha - alpha ) * alphaEasing;
-//    if ( alpha < 1.0 ) {
-//      alpha = 0;
-//    }
   }
 
   void draw() {

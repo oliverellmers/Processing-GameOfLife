@@ -15,10 +15,10 @@ boolean SAVE_OUTPUT = false;
 boolean OSC_CONNECT  = false;
 
 //data file
-String outputDirectory = "out";
-String filePattern ="(.*)###(.*)";
-String fileName = "outputImage_";
-String fileExtension = ".png";
+//String outputDirectory = "out";
+//String filePattern ="(.*)###(.*)";
+//String fileName = "outputImage_";
+//String fileExtension = ".png";
 // -=-=-=-=--=-==-=-=-
 
 String outputFile;
@@ -63,9 +63,6 @@ void setup() {
   rectMode(CENTER);
   initialize();
 
-  outputDirectory = sketchPath("") + "out";
-  outputFile = outputDirectory +"/" +fileName;
-
   if (OSC_CONNECT) {
     osc = new OscP5(this, listenPort);
     lemur = new LemurController(lemurSize);
@@ -97,23 +94,7 @@ void draw() {
   if (frameCount % 5 == 0 && !paused ) {
     calculateLifeValue(bitmap);
     bitmap.setPixels(next.getPixels());    
-
-    if (SAVE_OUTPUT) {
-      String f = String.format(outputFile + "%05d" + fileExtension, outFileCounter);
-      saveFrame(f);
-      ++outFileCounter;
-      println("saving bitmap to " + f);
-    }
   }
-}
-
-void saveData() {
-  //to save to a new file each write
-
-  String f = dataPath("") + "\\"+
-    outputFile.replaceAll(filePattern, "$1" + String.format("%03d", outFileCounter) + "$2");
-  bitmap.save(f);
-  ++outFileCounter;
 }
 
 

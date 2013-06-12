@@ -2,12 +2,11 @@ class Config implements ConfigInterface {
   private final String PARAM_NODE = "param";
   private final String KEY_NODE = "key";
   private final String VALUE_NODE = "value";
-  private final String TYPE_NODE = "type";
   
   //Properties
-  static final String APP_ROWS = "gridRows";
-  static final String APP_COLS = "gridCols";
-  
+  static final String APP_GMATRIXSIZE = "gridMatrixSize";
+  static final String APP_GSIZE = "gridSize";
+  static final String APP_RENDERSPEED = "renderSpeed";  
   
   
   Map<String, String> configProperties = new HashMap<String, String>();
@@ -35,19 +34,20 @@ class Config implements ConfigInterface {
     for (int i = 0; i < params.length; i++) {
       String configKey   = params[i].getChild(KEY_NODE).getContent();
       String configValue = params[i].getChild(VALUE_NODE).getContent();
-      String configType  = params[i].getChild(TYPE_NODE).getContent();
-  
-      println(configKey + " " + configValue + "  " + configType);
       configProperties.put(configKey,configValue);
     }
   }
 
-  public String getValue(String aKey) {
+  public String getValue(String aKey) throws Exception{
     String value = null;
     if (configProperties.containsKey(aKey) ) {
       value = configProperties.get(aKey);
     } else {
       println("**UNKNOWN KEY = " + aKey );
+    }
+    
+    if( value == null ) {
+      throw new Exception("Configuration value not found for key" + aKey);
     }
     return value;
   }

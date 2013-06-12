@@ -2,24 +2,27 @@
 <config>
 	<!--	APP config	-->	
 	<param>
-		<key>gridRows</key>
-		<value>100</value>
-		<type>String</type>
+		<!-- rows and columns of grid -->
+		<key>gridMatrixSize</key> 
+		<value>100,100</value>
 	</param>
 	<param>
-		<key>gridCols</key>
-		<value>100</value>
-		<type>String</type>
+		<!-- grid in pixels -->
+		<key>gridSize</key>
+		<value>1024,1024</value>
+	</param>
+	<param>
+		<!-- number between 1 - 30; 30 is render once per second -->
+		<key>renderSpeed</key>
+		<value>30</value>
 	</param>
 	<!--	LEMUR config	-->
 	<param>
 		<key>lemurPadButtonPattern</key>
 		<value>\\/CustomButton(\\d+)\\/x</value>
-		<type>String</type>
 	</param>
 	<param>
 		<key>lemurControlButtonPattern</key>
 		<value>"\\/Control\\/play"</value>
-		<type></type>
 	</param>	
 </config>

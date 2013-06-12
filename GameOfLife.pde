@@ -28,11 +28,13 @@ boolean DEBUG = false;
 
 
 
-// -=-=-=-=--=-==-=-=-
+// -=-=-=CONFIG VARS with DEFAULTS
+int rows = 20, cols = 20;   //Default - Override in config file
+int gWidth = 100, gHeight = 100; //Default - Override in config file
+int renderSpeed = 5;
+
 
 Bitmap bitmap, next;
-int rows, cols;
-int gWidth = 1024, gHeight = 1024;
 RLEParser parser = new RLEParser();
 
 boolean paused = false;
@@ -57,6 +59,25 @@ Config config;
 // -=-=-=-=--=-==-=-=-
 
 
+void initialize() {
+  config = new Config(configurationFile);
+  try {
+    String[] matrixSize = config.getValue(Config.APP_GMATRIXSIZE).split(",");
+    rows = Integer.parseInt(matrixSize[0]);  
+    cols = Integer.parseInt(matrixSize[1]);
+    
+    String[] configSize = config.getValue(Config.APP_GSIZE).split(",");
+    gWidth = Integer.parseInt(configSize[0]);
+    gHeight = Integer.parseInt(configSize[1]);
+    println(gWidth + "," + gHeight);
+    
+    renderSpeed = Integer.parseInt(config.getValue( Config.APP_RENDERSPEED));
+  } 
+  catch (Exception e) {
+    println(e);
+  }
+}
+
 void setup() {
   size(1024, 1024, P2D);
   frameRate(30);
@@ -69,21 +90,13 @@ void setup() {
   }
 
 
-  
+
   bitmap = new Bitmap(width/2 - gWidth/2, height/2 - gHeight/2, gWidth, gHeight, rows, cols);
   next = new Bitmap(width/2 - gWidth/2, height/2 - gHeight/2, gWidth, gHeight, rows, cols);
 
   loadFile();
 }
 
-void initialize() {
-  config = new Config(configurationFile);
-  
-  rows = Integer.parseInt(config.getValue(Config.APP_ROWS));
-  println("config rows = " + rows );
-  cols = Integer.parseInt(config.getValue(Config.APP_COLS));
-  println("config cols = " + cols );  
-}
 
 void draw() {
   background(0);
@@ -91,9 +104,9 @@ void draw() {
   bitmap.update();
   bitmap.draw();
 
-  if (frameCount % 5 == 0 && !paused ) {
+  if (frameCount % renderSpeed == 0 && !paused ) {
     calculateLifeValue(bitmap);
-    bitmap.setPixels(next.getPixels());    
+    bitmap.setPixels(next.getPixels());
   }
 }
 
@@ -237,3 +250,4 @@ void oscEvent(OscMessage msg) {
   lemur.handleMessage(msg);  
   msg.print();
 }
+

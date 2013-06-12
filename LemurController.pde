@@ -3,7 +3,7 @@ class LemurController {
   //MOVE TO MODEL
   Pattern padButtonRE; 
   Pattern controlButtonRE;
-  
+
   ArrayList<Integer> pads;
 
   LemurController(int padCount) {
@@ -15,19 +15,24 @@ class LemurController {
   } 
 
   void initialize() {
-    String value = config.getValue("lemurPadButtonPattern");
-    if (value == null ) {
-      println("error getting config for lemurPadButtonPattern");
-    } 
-    else {
-      padButtonRE = Pattern.compile(value);
-    }    
+    try {
+      String value = config.getValue("lemurPadButtonPattern");
+      if (value == null ) {
+        println("error getting config for lemurPadButtonPattern");
+      } 
+      else {
+        padButtonRE = Pattern.compile(value);
+      }    
 
-    if (value == null ) {
-      value = config.getValue("lemurControlButtonPattern");
+      if (value == null ) {
+        value = config.getValue("lemurControlButtonPattern");
+      } 
+      else {
+        controlButtonRE = Pattern.compile(value);
+      }
     } 
-    else {
-      controlButtonRE = Pattern.compile(value);
+    catch(Exception e) {
+      println(e);
     }
   }
 

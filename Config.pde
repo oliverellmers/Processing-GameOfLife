@@ -17,10 +17,13 @@ class Config implements ConfigInterface {
   final String CELL_SHAPE = "cellShape";
 
   //Lemur Properties
-  final String LEMUR_PADSIZE   = "lemurPadSize";
-  final String LEMUR_PADADDR   = "lemurPadAddr";
+  final String LEMUR_PADSIZE   = "padDimensions";
   final String LEMUR_IPADDR    = "lemurIp";
   final String LEMUR_IN_PORT   = "lemurInPort";
+  final String LEMUR_PAD_ADDR  = "lemurPadName";
+  
+  
+  
   XML configXML;
   Config lemurConfig;
 
@@ -32,8 +35,6 @@ class Config implements ConfigInterface {
   Config(String configFile) {
     lemurConfig = new Config();    
     init(configFile);
-    
-//    lemurConfig.init();
   }
 
   private void init(String file) {
@@ -64,17 +65,18 @@ class Config implements ConfigInterface {
     }
     
     //parse lemur config
-    params = xml.getChildren(LEMUR_NODE);
-    if( params!= null) {
-      params = xml.getChildren(PARAM_NODE);
+    XML[] lemurParams = xml.getChildren(LEMUR_NODE);
+    if( lemurParams != null ) {
+      params = lemurParams[0].getChildren(PARAM_NODE);      
       
       for (int i = 0; i < params.length; i++) {
         String configKey   = params[i].getChild(KEY_NODE).getContent();
         String configValue = params[i].getChild(VALUE_NODE).getContent();
         lemurConfig.configProperties.put(configKey, configValue);
-      }
-      
+      } 
     }
+    
+    
   }
 
   public void init(XML xml) {
@@ -95,7 +97,7 @@ class Config implements ConfigInterface {
     }
 
     if ( value == null ) {
-      throw new Exception("Configuration value not found for key:: " + aKey +"\n***\n\n");
+      throw new Exception("Configuration value not found for key:: " + aKey +"\n***");
     }
     return value;
   }

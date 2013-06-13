@@ -41,12 +41,9 @@ int lemurSendPort = 8000;
 String lemurIPInAddr ="";
 
 // -=-=-=-=--=-==-=-=-
-LemurController lemur;
-LemurPad pad;
+LemurController lemurController;
 ConfigInterface lemurConfig;
 
-int lemurRows, lemurCols;
-String lemurPadAddr;
 
 // -=-=-=-=--=-==-=-=-
 String configurationFile = "data/config.xml";
@@ -63,6 +60,7 @@ Config config;
 void initialize() {
   config = new Config(configurationFile);
   lemurConfig = config.getLemurConfig();
+  lemurController = new LemurController(16*9);
 
   try {
     String[] matrixSize = config.getValue(config.APP_GMATRIXSIZE).split(",");
@@ -79,17 +77,20 @@ void initialize() {
     drawAsRectangle = config.getValue(config.CELL_SHAPE).equals(config.RECTANGLE_CELL); 
 
     //LEMUR configuration
-    String[] lemurPadSize = lemurConfig.getValue(config.LEMUR_PADSIZE).split(","); 
-    lemurRows = Integer.parseInt(lemurPadSize[0]);
-    lemurCols = Integer.parseInt(lemurPadSize[1]);
-    lemurPadAddr = lemurConfig.getValue(config.LEMUR_PADADDR);
     lemurIPInAddr = lemurConfig.getValue(config.LEMUR_IPADDR);
-    lemurSendPort = Integer.parseInt(config.getValue(config.LEMUR_IN_PORT));    
+    lemurSendPort = Integer.parseInt(lemurConfig.getValue(config.LEMUR_IN_PORT));
 
-    println(String.format("lemur -- rows:%d cols:%d padAddr: %s IP In Port: %s Send port: %d", lemurRows, lemurCols, lemurPadAddr, lemurIPInAddr, lemurSendPort));
+    String[] lemurPadSize = lemurConfig.getValue(config.LEMUR_PADSIZE).split(","); 
+    int lemurRows = Integer.parseInt(lemurPadSize[0]);
+    int lemurCols = Integer.parseInt(lemurPadSize[1]);   
+    String padRootName = lemurConfig.getValue(config.LEMUR_PAD_ADDR);
+    
+    lemurController.addSwitchPadController(padRootName,lemurRows*lemurCols);
+    
   } 
   catch (Exception e) {
     println(e);
+    println(e.getStackTrace());
   }
 }
 
@@ -103,8 +104,6 @@ void setup() {
 
   if (OSC_CONNECT) {
     osc = new OscP5(this, listenPort);
-    //    lemur = new LemurController(lemurSize);
-    pad = new LemurPad(lemurRows, lemurCols, lemurPadAddr);
   }
 
   bitmap = new Bitmap(width/2 - gWidth/2, height/2 - gHeight/2, gWidth, gHeight, rows, cols);
@@ -260,7 +259,7 @@ void loadFile() {
 //--=-=-=-=-=-=-=-=-=-=
 void oscEvent(OscMessage msg) {
   //  println("### received an osc message with addrpattern "+msg.addrPattern()+" and typetag "+msg.typetag());  
-  lemur.handleMessage(msg);  
+  lemurController.handleMessage(msg);  
   msg.print();
 }
 

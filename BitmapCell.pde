@@ -4,7 +4,7 @@ class BitmapCell {
   private PVector pos, index, dimension;
 
   float targetAlpha, alpha;
-  float alphaEasing = 0.1;
+  float alphaEasing = 0.8;
 
   int r = 150;
   int g = 150;

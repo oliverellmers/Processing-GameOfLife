@@ -2,23 +2,24 @@ class Config implements ConfigInterface {
   private final String PARAM_NODE = "param";
   private final String KEY_NODE = "key";
   private final String VALUE_NODE = "value";
-  public static final String RECTANGLE_CELL = "rectangle";
-  public static final String ELLIPSE_CELL = "ellipse";  
-  
+  public final String RECTANGLE_CELL = "rectangle";
+  public final String ELLIPSE_CELL = "ellipse";  
+
   //Application Properties
-  static final String APP_GMATRIXSIZE = "gridMatrixSize";
-  static final String APP_GSIZE = "gridSize";
-  static final String APP_RENDERSPEED = "renderSpeed";  
-  
+  final String APP_GMATRIXSIZE = "gridMatrixSize";
+  final String APP_GSIZE = "gridSize";
+  final String APP_RENDERSPEED = "renderSpeed";  
+
   //Bitmap Properties
-  static final String CELL_SHAPE = "cellShape";
-  
+  final String CELL_SHAPE = "cellShape";
+
   //Lemur Properties
-  static final String LEMUR_PADSIZE = "lemurPadSize";
-  static final String LEMUR_PADADDR = "lemurPadAddr";
-  
-  
-  
+  final String LEMUR_PADSIZE   = "lemurPadSize";
+  final String LEMUR_PADADDR   = "lemurPadAddr";
+  final String LEMUR_IPADDR    = "lemurIp";
+  final String LEMUR_IN_PORT   = "lemurInPort";
+
+
   Map<String, String> configProperties = new HashMap<String, String>();
 
   Config(String configFile) {
@@ -44,23 +45,23 @@ class Config implements ConfigInterface {
     for (int i = 0; i < params.length; i++) {
       String configKey   = params[i].getChild(KEY_NODE).getContent();
       String configValue = params[i].getChild(VALUE_NODE).getContent();
-      configProperties.put(configKey,configValue);
+      configProperties.put(configKey, configValue);
     }
   }
 
-  public String getValue(String aKey) throws Exception{
+  public String getValue(String aKey) throws Exception {
     String value = null;
     if (configProperties.containsKey(aKey) ) {
       value = configProperties.get(aKey);
-    } else {
+    } 
+    else {
       println("**UNKNOWN KEY = " + aKey );
     }
-    
-    if( value == null ) {
+
+    if ( value == null ) {
       throw new Exception("Configuration value not found for key" + aKey);
     }
     return value;
   }
-
 }
 

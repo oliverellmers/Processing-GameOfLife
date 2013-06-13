@@ -37,6 +37,8 @@ boolean paused = false;
 // -=-=-=-=--=-==-=-=-
 OscP5 osc;
 int listenPort = 8000;
+int lemurSendPort = 8000;
+String lemurIPInAddr ="";
 
 // -=-=-=-=--=-==-=-=-
 LemurController lemur;
@@ -60,24 +62,26 @@ Config config;
 void initialize() {
   config = new Config(configurationFile);
   try {
-    String[] matrixSize = config.getValue(Config.APP_GMATRIXSIZE).split(",");
+    String[] matrixSize = config.getValue(config.APP_GMATRIXSIZE).split(",");
     rows = Integer.parseInt(matrixSize[0]);  
     cols = Integer.parseInt(matrixSize[1]);
     
-    String[] configSize = config.getValue(Config.APP_GSIZE).split(",");
+    String[] configSize = config.getValue(config.APP_GSIZE).split(",");
     gWidth = Integer.parseInt(configSize[0]);
     gHeight = Integer.parseInt(configSize[1]);
     
-    renderSpeed = Integer.parseInt(config.getValue( Config.APP_RENDERSPEED));
+    renderSpeed = Integer.parseInt(config.getValue( config.APP_RENDERSPEED));
     
     //BITMAP configuration
-    drawAsRectangle = config.getValue(Config.CELL_SHAPE).equals(Config.RECTANGLE_CELL); 
+    drawAsRectangle = config.getValue(config.CELL_SHAPE).equals(config.RECTANGLE_CELL); 
  
     //LEMUR configuration
-    String[] lemurPadSize = config.getValue(Config.LEMUR_PADSIZE).split(","); 
+    String[] lemurPadSize = config.getValue(config.LEMUR_PADSIZE).split(","); 
     lemurRows = Integer.parseInt(lemurPadSize[0]);
     lemurCols = Integer.parseInt(lemurPadSize[1]);
-    lemurPadAddr = config.getValue(Config.LEMUR_PADADDR);
+    lemurPadAddr = config.getValue(config.LEMUR_PADADDR);
+    lemurIPInAddr = config.getValue(config.LEMUR_IPADDR);
+    lemurSendPort = Integer.parseInt(config.getValue(config.LEMUR_IN_PORT));    
        
   } 
   catch (Exception e) {

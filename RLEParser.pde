@@ -66,7 +66,7 @@ class RLEParser {
               //parse cell type (dead or alive)
               if (m.group(2).length() > 0) {
                 boolean isAlive = m.group(2).equals("o");
-                String status = isAlive ? "o" : "b";
+                
                 for (int i=0; i<count; ++i) {
                   if (isAlive) {
                     data.add(1);
@@ -91,11 +91,9 @@ class RLEParser {
           parseTree.add(data);
         }
       }
-      int rowsParsed = 0;
       for ( ArrayList<Integer> parseData : parseTree ) {
         rlePattern.addRow(parseData);
         //          println(rlePattern.debugRow(rowsParsed));            
-        ++rowsParsed;
       }
     }
     catch( Exception e ) {

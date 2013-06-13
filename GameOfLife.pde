@@ -12,13 +12,8 @@ import netP5.*;
 // -=-=- OUTPUT DATA -=-=--=-
 // -=-=-=-=--=-==-=-=-=-=-=-=
 boolean SAVE_OUTPUT = false;
-boolean OSC_CONNECT  = false;
+boolean OSC_CONNECT  = true;
 
-//data file
-//String outputDirectory = "out";
-//String filePattern ="(.*)###(.*)";
-//String fileName = "outputImage_";
-//String fileExtension = ".png";
 // -=-=-=-=--=-==-=-=-
 
 String outputFile;
@@ -29,7 +24,7 @@ boolean DEBUG = false;
 
 
 // -=-=-=CONFIG VARS with DEFAULTS
-int rows = 20, cols = 20;   //Default - Override in config file
+int rows = 30, cols = 15;   //Default - Override in config file
 int gWidth = 100, gHeight = 100; //Default - Override in config file
 int renderSpeed = 5;
 
@@ -45,12 +40,16 @@ int listenPort = 8000;
 
 // -=-=-=-=--=-==-=-=-
 LemurController lemur;
-int lemurSize = 9;  //number of rows = number of cols
+LemurPad pad;
 
+int lemurSize = 9;  //number of rows = number of cols
+int lemurRows, lemurCols;
+String lemurPadAddr;
 
 // -=-=-=-=--=-==-=-=-
 String configurationFile = "data/config.xml";
 Config config;
+
 
 // -=-=-=-=--=-==-=-=--=-=-=-=--=-==-=-=--=-=-=-=--=-==-=-=-
 
@@ -69,27 +68,37 @@ void initialize() {
     String[] configSize = config.getValue(Config.APP_GSIZE).split(",");
     gWidth = Integer.parseInt(configSize[0]);
     gHeight = Integer.parseInt(configSize[1]);
-    println(gWidth + "," + gHeight);
     
     renderSpeed = Integer.parseInt(config.getValue( Config.APP_RENDERSPEED));
+    
+    //BITMAP configuration
+    drawAsRectangle = config.getValue(Config.CELL_SHAPE).equals(Config.RECTANGLE_CELL); 
+ 
+    //LEMUR configuration
+    String[] lemurPadSize = config.getValue(Config.LEMUR_PADSIZE).split(","); 
+    lemurRows = Integer.parseInt(lemurPadSize[0]);
+    lemurCols = Integer.parseInt(lemurPadSize[1]);
+    lemurPadAddr = config.getValue(Config.LEMUR_PADADDR);
+       
   } 
   catch (Exception e) {
     println(e);
   }
 }
 
+
 void setup() {
-  size(1024, 1024, P2D);
+  size(1024, 768, P2D);
   frameRate(30);
   rectMode(CENTER);
+
   initialize();
 
   if (OSC_CONNECT) {
     osc = new OscP5(this, listenPort);
     lemur = new LemurController(lemurSize);
+    pad = new LemurPad(lemurRows, lemurCols, lemurPadAddr);
   }
-
-
 
   bitmap = new Bitmap(width/2 - gWidth/2, height/2 - gHeight/2, gWidth, gHeight, rows, cols);
   next = new Bitmap(width/2 - gWidth/2, height/2 - gHeight/2, gWidth, gHeight, rows, cols);
@@ -250,4 +259,11 @@ void oscEvent(OscMessage msg) {
   lemur.handleMessage(msg);  
   msg.print();
 }
+
+
+
+// -=-=-=-=--=-==-=-=-
+//  Static variables
+// -=-=-=-=--=-==-=-=-
+static boolean drawAsRectangle = true;
 

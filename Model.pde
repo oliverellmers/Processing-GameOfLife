@@ -1,5 +1,0 @@
-class Model {
- RLEPattern currentPattern;
-
-  
-}

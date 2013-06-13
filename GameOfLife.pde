@@ -43,6 +43,7 @@ String lemurIPInAddr ="";
 // -=-=-=-=--=-==-=-=-
 LemurController lemur;
 LemurPad pad;
+ConfigInterface lemurConfig;
 
 int lemurRows, lemurCols;
 String lemurPadAddr;
@@ -61,6 +62,8 @@ Config config;
 
 void initialize() {
   config = new Config(configurationFile);
+  lemurConfig = config.getLemurConfig();
+  
   try {
     String[] matrixSize = config.getValue(config.APP_GMATRIXSIZE).split(",");
     rows = Integer.parseInt(matrixSize[0]);  
@@ -76,13 +79,14 @@ void initialize() {
     drawAsRectangle = config.getValue(config.CELL_SHAPE).equals(config.RECTANGLE_CELL); 
  
     //LEMUR configuration
-    String[] lemurPadSize = config.getValue(config.LEMUR_PADSIZE).split(","); 
+    String[] lemurPadSize = lemurConfig.getValue(config.LEMUR_PADSIZE).split(","); 
     lemurRows = Integer.parseInt(lemurPadSize[0]);
     lemurCols = Integer.parseInt(lemurPadSize[1]);
-    lemurPadAddr = config.getValue(config.LEMUR_PADADDR);
-    lemurIPInAddr = config.getValue(config.LEMUR_IPADDR);
+    lemurPadAddr = lemurConfig.getValue(config.LEMUR_PADADDR);
+    lemurIPInAddr = lemurConfig.getValue(config.LEMUR_IPADDR);
     lemurSendPort = Integer.parseInt(config.getValue(config.LEMUR_IN_PORT));    
-       
+    
+    println(String.format("lemur -- rows:%d cols:%d padAddr: %s IP In Port: %s Send port: %d", lemurRows, lemurCols, lemurPadAddr,lemurIPInAddr,lemurSendPort));    
   } 
   catch (Exception e) {
     println(e);
@@ -263,6 +267,13 @@ void oscEvent(OscMessage msg) {
   msg.print();
 }
 
+
+// -=-=-=-=--=-==-=-=-
+//  Interfaces
+// -=-=-=-=--=-==-=-=-
+interface ConfigInterface {
+ public String getValue(String configKey) throws Exception; 
+}
 
 
 // -=-=-=-=--=-==-=-=-

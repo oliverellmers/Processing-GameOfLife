@@ -21,16 +21,30 @@
 		<value>rectangle</value> <!-- rectangle or ellipse -->
 	</param>	
 	<!--	LEMUR config	-->
-	<param>
-		<key>lemurControlButtonPattern</key>
-		<value>"\\/Control\\/play"</value>
-	</param>		
-	<param>
-		<key>lemurPadAddr</key>
-		<value>/Pixels/x</value>
-	</param>
-	<param>
-		<key>lemurRows,lemurCols</key>
-		<value>9,16</value>
-	</param>	
+	<lemurConfig>
+		<param>
+			<key>lemurPadSize</key>
+			<value>16,9</value>
+		</param>			
+		<param>
+			<key>lemurIp</key>
+			<value></value>
+		</param>	
+		<param>
+			<key>lemurInPort</key>
+			<value></value>
+		</param>		
+		<param>
+			<key>lemurControlButtonPattern</key>
+			<value>"\\/Control\\/play"</value>
+		</param>		
+		<param>
+			<key>lemurPadAddr</key>
+			<value>/Pixels/x</value>
+		</param>
+		<param>
+			<key>lemurRows,lemurCols</key>
+			<value>9,16</value>
+		</param>	
+	</lemurConfig>
 </config>

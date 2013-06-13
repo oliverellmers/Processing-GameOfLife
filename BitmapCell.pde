@@ -1,10 +1,7 @@
 class BitmapCell {
-  final String RECTANGLE = "rectangle";
-  final String ELLIPSE = "ellipse";
 
   private int value;
   private PVector pos, index, dimension;
-  String shape = ELLIPSE;
 
   float targetAlpha, alpha;
   float alphaEasing = 0.1;
@@ -32,12 +29,12 @@ class BitmapCell {
     fill(r, g, b, alpha);
 
     if (alpha > 0 ) {
-      if (shape.equals(ELLIPSE)) {
-        ellipse(pos.x+1, pos.y+1, dimension.x-2, dimension.y-2);
+      if (drawAsRectangle) {
+        //shift by 1 pixel and shorten 1 pixel for border      
+        rect( pos.x+1, pos.y+1, dimension.x-2, dimension.y-2);        
       }
       else {
-        //shift by 1 pixel and shorten 1 pixel for border      
-        rect( pos.x+1, pos.y+1, dimension.x-2, dimension.y-2);
+        ellipse(pos.x+1, pos.y+1, dimension.x-2, dimension.y-2);        
       }
     }
   }

@@ -1,4 +1,5 @@
 class Bitmap {
+
   private PVector pos, dim;
   private int rows;
   private int cols;
@@ -10,6 +11,7 @@ class Bitmap {
 
   //
   public Bitmap() {
+    initialize();
     pos = new PVector();
     dim = new PVector();
     cellDim = new PVector();
@@ -48,6 +50,13 @@ class Bitmap {
     }
   }  
 
+  private void initialize() {
+    try {
+    } 
+    catch( Exception e) {
+      println(e);
+    }
+  }
 
   public void clear() {
     for (int i=0; i < getPixelCount(); ++i ) {
@@ -152,8 +161,7 @@ class Bitmap {
 
   public void draw() {
     if (showGrid) {
-      stroke(50, 10);
-      noFill();
+      stroke(100, 100);
       for (float u = 0.0; u <= 1.0; u += uStep) {
         float _x = lerp(pos.x, pos.x + dim.x, u);
         line(_x, pos.y, _x, pos.y + dim.y);
@@ -225,8 +233,12 @@ class Bitmap {
     int index = i*j + j;
     //    bitmapCells.get(index).draw(_x,_y,cellDim);
     //shift by 1 pixel and shorten 1 pixel for border
-    ellipse(_x+1, _y+1, cellDim.x-2, cellDim.y-2); 
-    //    rect( _x+1, _y+1, cellDim.x-2, cellDim.y-2);
+    if (drawAsRectangle) {
+      rect( _x+1, _y+1, cellDim.x-2, cellDim.y-2);
+    } 
+    else {    
+      ellipse(_x+1, _y+1, cellDim.x-2, cellDim.y-2);
+    }
   }
 }
 

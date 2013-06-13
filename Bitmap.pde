@@ -212,33 +212,5 @@ class Bitmap {
     cellDim = new PVector(uStep * dim.x, vStep * dim.y);
   }
 
-  private void plot(int cell) {
-    if (cell < rows * cols) {
-      int i = cell % cols;
-      int j = cell / cols;
-      plot(i, j);
-    }
-  }
-
-  private void plot(int i, int j) {
-    noStroke();
-    fill(150, 150, 5);
-    float inorm = (i + 0.5)/cols;
-    float jnorm = (j + 0.5)/rows;
-
-    float _x = lerp(pos.x, pos.x + dim.x, inorm);
-    float _y = lerp(pos.y, pos.y + dim.y, jnorm);
-
-    //TODO:: this is a wasted calculation
-    int index = i*j + j;
-    //    bitmapCells.get(index).draw(_x,_y,cellDim);
-    //shift by 1 pixel and shorten 1 pixel for border
-    if (drawAsRectangle) {
-      rect( _x+1, _y+1, cellDim.x-2, cellDim.y-2);
-    } 
-    else {    
-      ellipse(_x+1, _y+1, cellDim.x-2, cellDim.y-2);
-    }
-  }
 }
 

@@ -42,7 +42,6 @@ int listenPort = 8000;
 LemurController lemur;
 LemurPad pad;
 
-int lemurSize = 9;  //number of rows = number of cols
 int lemurRows, lemurCols;
 String lemurPadAddr;
 
@@ -96,7 +95,7 @@ void setup() {
 
   if (OSC_CONNECT) {
     osc = new OscP5(this, listenPort);
-    lemur = new LemurController(lemurSize);
+//    lemur = new LemurController(lemurSize);
     pad = new LemurPad(lemurRows, lemurCols, lemurPadAddr);
   }
 

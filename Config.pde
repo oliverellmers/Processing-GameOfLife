@@ -2,11 +2,21 @@ class Config implements ConfigInterface {
   private final String PARAM_NODE = "param";
   private final String KEY_NODE = "key";
   private final String VALUE_NODE = "value";
+  public static final String RECTANGLE_CELL = "rectangle";
+  public static final String ELLIPSE_CELL = "ellipse";  
   
-  //Properties
+  //Application Properties
   static final String APP_GMATRIXSIZE = "gridMatrixSize";
   static final String APP_GSIZE = "gridSize";
   static final String APP_RENDERSPEED = "renderSpeed";  
+  
+  //Bitmap Properties
+  static final String CELL_SHAPE = "cellShape";
+  
+  //Lemur Properties
+  static final String LEMUR_PADSIZE = "lemurPadSize";
+  static final String LEMUR_PADADDR = "lemurPadAddr";
+  
   
   
   Map<String, String> configProperties = new HashMap<String, String>();

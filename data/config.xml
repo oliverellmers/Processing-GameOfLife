@@ -14,15 +14,23 @@
 	<param>
 		<!-- number between 1 - 30; 30 is render once per second -->
 		<key>renderSpeed</key>
-		<value>30</value>
+		<value>5</value>
 	</param>
-	<!--	LEMUR config	-->
 	<param>
-		<key>lemurPadButtonPattern</key>
-		<value>\\/CustomButton(\\d+)\\/x</value>
-	</param>
+		<key>cellShape</key>
+		<value>rectangle</value> <!-- rectangle or ellipse -->
+	</param>	
+	<!--	LEMUR config	-->
 	<param>
 		<key>lemurControlButtonPattern</key>
 		<value>"\\/Control\\/play"</value>
+	</param>		
+	<param>
+		<key>lemurPadAddr</key>
+		<value>/Pixels/x</value>
+	</param>
+	<param>
+		<key>lemurRows,lemurCols</key>
+		<value>9,16</value>
 	</param>	
 </config>

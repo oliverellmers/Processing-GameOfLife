@@ -275,6 +275,10 @@ interface ConfigInterface {
  public String getValue(String configKey) throws Exception; 
 }
 
+interface InterfaceLemurController {
+  boolean canHandleMessage(OscMessage msg);
+}
+
 
 // -=-=-=-=--=-==-=-=-
 //  Static variables

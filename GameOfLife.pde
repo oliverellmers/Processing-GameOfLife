@@ -63,21 +63,21 @@ Config config;
 void initialize() {
   config = new Config(configurationFile);
   lemurConfig = config.getLemurConfig();
-  
+
   try {
     String[] matrixSize = config.getValue(config.APP_GMATRIXSIZE).split(",");
     rows = Integer.parseInt(matrixSize[0]);  
     cols = Integer.parseInt(matrixSize[1]);
-    
+
     String[] configSize = config.getValue(config.APP_GSIZE).split(",");
     gWidth = Integer.parseInt(configSize[0]);
     gHeight = Integer.parseInt(configSize[1]);
-    
+
     renderSpeed = Integer.parseInt(config.getValue( config.APP_RENDERSPEED));
-    
+
     //BITMAP configuration
     drawAsRectangle = config.getValue(config.CELL_SHAPE).equals(config.RECTANGLE_CELL); 
- 
+
     //LEMUR configuration
     String[] lemurPadSize = lemurConfig.getValue(config.LEMUR_PADSIZE).split(","); 
     lemurRows = Integer.parseInt(lemurPadSize[0]);
@@ -85,8 +85,8 @@ void initialize() {
     lemurPadAddr = lemurConfig.getValue(config.LEMUR_PADADDR);
     lemurIPInAddr = lemurConfig.getValue(config.LEMUR_IPADDR);
     lemurSendPort = Integer.parseInt(config.getValue(config.LEMUR_IN_PORT));    
-    
-    println(String.format("lemur -- rows:%d cols:%d padAddr: %s IP In Port: %s Send port: %d", lemurRows, lemurCols, lemurPadAddr,lemurIPInAddr,lemurSendPort));    
+
+    println(String.format("lemur -- rows:%d cols:%d padAddr: %s IP In Port: %s Send port: %d", lemurRows, lemurCols, lemurPadAddr, lemurIPInAddr, lemurSendPort));
   } 
   catch (Exception e) {
     println(e);
@@ -103,7 +103,7 @@ void setup() {
 
   if (OSC_CONNECT) {
     osc = new OscP5(this, listenPort);
-//    lemur = new LemurController(lemurSize);
+    //    lemur = new LemurController(lemurSize);
     pad = new LemurPad(lemurRows, lemurCols, lemurPadAddr);
   }
 
@@ -211,20 +211,17 @@ int scorePixel(int neighborhood, BitmapCell bmp) {
     count = count + 1;
     neighborhood = neighborhood & ( neighborhood - 1);
   }
-  String result = "";
+
   if ( bmp.getValue() == 1 ) { //alive
     if (count <= 1 || count > 3 ) { //death
-      result = "death";
       score = 0;
     } 
     else {
-      result = "survive";
       score = 1;
     }
   } 
   else {
     if (count == 3) {
-      result = "born";
       score = 1;
     } 
     else {
@@ -272,7 +269,7 @@ void oscEvent(OscMessage msg) {
 //  Interfaces
 // -=-=-=-=--=-==-=-=-
 interface ConfigInterface {
- public String getValue(String configKey) throws Exception; 
+  public String getValue(String configKey) throws Exception;
 }
 
 interface InterfaceLemurController {

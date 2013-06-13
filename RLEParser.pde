@@ -101,7 +101,7 @@ class RLEParser {
     catch( Exception e ) {
       println("error parsing" + e);
     }
-    println("parsed pattern:\n"+rlePattern);
+//    println("parsed pattern:\n"+rlePattern);
     return rlePattern;
   }
 }

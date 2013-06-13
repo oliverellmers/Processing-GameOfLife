@@ -1,19 +1,28 @@
-class LemurController {
+class LemurController implements InterfaceLemurController{
 
+  
+   ArrayList<String> messageAddresses;
   //MOVE TO MODEL
   Pattern padButtonRE; 
   Pattern controlButtonRE;
 
 //  ArrayList<Integer> pads;
 
+  LemurController(ArrayList<String> oscAddresses) {
+    initialize();
+    messageAddresses = oscAddresses;  
+  }
+  
   LemurController(int padCount) {
     initialize();
+    messageAddresses = new ArrayList<String>();
 //    pads = new ArrayList(padCount);
 //    for (int i=0; i < padCount; ++i) {
 //      pads.add(0);
 //    }
   } 
 
+  
   void initialize() {
     try {
       String value = config.getValue("lemurPadButtonPattern");
@@ -52,6 +61,16 @@ class LemurController {
 //    println(pattern);
 //  }
 
+
+  boolean canHandleMessage(OscMessage msg) {
+    for(String a : messageAddresses ) {
+      if(msg.checkAddrPattern(a) == true) {
+        return true;
+      }
+    }
+    return false;
+  }
+  
   void handleMessage(OscMessage msg) {
     String addr = msg.addrPattern();    
     Matcher m = padButtonRE.matcher(addr);

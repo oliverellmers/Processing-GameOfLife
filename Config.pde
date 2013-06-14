@@ -19,11 +19,10 @@ class Config implements ConfigInterface {
   //Lemur Properties
   final String LEMUR_PAD_BTN_NAME  = "padButtonName";  
   final String LEMUR_PADSIZE   = "padDimensions";
-  final String LEMUR_IPADDR    = "lemurIp";
-  final String LEMUR_IN_PORT   = "lemurInPort";
-  
-  
-  
+  final String LEMUR_IPADDR      = "lemurIp";
+  final String LEMUR_IN_PORT     = "lemurInPort";
+  final String LEMUR_PLAY_BTN    = "playButton";
+  final String LEMUR_CLEAR_BTN   = "clearButton";
   
   XML configXML;
   Config lemurConfig;

@@ -52,7 +52,11 @@ public class LemurController implements InterfaceLemurController {
       //if button is on then nap the current pattern and send it to the bitmap
       //if button is off then what??
       int state = msg.get(0).floatValue() > 0 ? 1 : 0;
-      println("Play button handler state = " + state);
+      if(state == 1) {
+        println("Play button handler state = " + state);        
+        model.setBitmapPixels( model.getCurrentLemurPattern() );
+      }
+      
     }
     
     private void handleLemurClearBtn(OscMessage msg) {
@@ -72,7 +76,9 @@ public class LemurController implements InterfaceLemurController {
       for (LemurButton btn : model.getPad()) {
         if (btn.getName().equals(find)) {
           btn.setState( int(msg.get(0).floatValue()));
-          model.setPixel(count,btn.getState());          
+          model.setPatternPixel(count,btn.getState());
+
+          println("SwitchPadController::handleMessage\n" + model.getCurrentLemurPattern());           
           return true;
         }
         ++count;

@@ -82,7 +82,10 @@ void initialize() {
     int lemurCols = Integer.parseInt(lemurPadSize[1]);   
     String padRootName = lemurConfig.getValue(config.LEMUR_PAD_BTN_NAME);
 
-    model.initializePad(lemurRows, lemurCols, padRootName);
+    model.setLemurPlayBtnAddr(lemurConfig.getValue(config.LEMUR_PLAY_BTN));
+    model.setLemurClearBtnAddr(lemurConfig.getValue(config.LEMUR_CLEAR_BTN));    
+
+      model.initializePad(lemurRows, lemurCols, padRootName);
   } 
   catch (Exception e) {
     println(e);
@@ -174,10 +177,10 @@ void calculateLifeValue( Bitmap b ) {
     -(cols + 1), -cols, -(cols-1), 
     -1, 1, 
     (cols - 1), cols, (cols+1)
-    };
+  };
 
-    //convolution array
-    int[] conv = new int[8];
+  //convolution array
+  int[] conv = new int[8];
 
   for ( int i=1; i < b.getRows()-1; ++i ) {
     for ( int j=1; j < cols-1; ++j ) {

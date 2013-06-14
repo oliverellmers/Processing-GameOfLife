@@ -26,7 +26,15 @@
 		<param>
 			<key>padButtonName</key>
 			<value>btn</value>
-		</param>		
+		</param>
+		<param>
+			<key>playButton</key>
+			<value>btnPlay</value>
+		</param>	
+		<param>
+			<key>clearButton</key>
+			<value>btnClear</value>
+		</param>			
 		<param>
 			<key>padDimensions</key>
 			<value>9,16</value>

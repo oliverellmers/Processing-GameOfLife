@@ -3,6 +3,8 @@ class AppModel {
   private ArrayListPattern pattern;
   private Bitmap bitmap,next;
   
+  String playBtnAddr, clearBtnAddr;
+  
   AppModel() {
     padButtons = new ArrayList<LemurButton>();
   }
@@ -47,5 +49,21 @@ class AppModel {
   
   public Bitmap getBitmap() { return bitmap; }
   public Bitmap getNextBitmap() { return next; }
+  
+  public void setLemurPlayBtnAddr(String addrRoot) {
+    playBtnAddr = "/"+addrRoot+"/x";
+  }
+
+  public String getLemurPlayBtnAddr() {
+    return playBtnAddr;
+  }
+  
+  public void setLemurClearBtnAddr(String addrRoot) {
+    clearBtnAddr  = "/"+addrRoot+"/x";
+  }  
+  
+  public String getLemurClearBtnAddr() {
+    return clearBtnAddr;
+  }  
 }
 

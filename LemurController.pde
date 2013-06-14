@@ -9,10 +9,10 @@ public class LemurController implements InterfaceLemurController {
 
 
   LemurController() {
-    initialize();
     messageAddresses = new ArrayList<String>();
     controllers = new ArrayList<InterfaceLemurController>();
     controllers.add(  new SwitchPadController());
+    controllers.add( new ControlButtonController());
 
   } 
 
@@ -33,17 +33,35 @@ public class LemurController implements InterfaceLemurController {
   }
 
 
-//  private class ControlButtonController implements InterfaceLemurController {
-//  }
+  private class ControlButtonController implements InterfaceLemurController {
+    public boolean handleMessage(OscMessage msg) {
+      boolean handled = false;
+      if( msg.checkAddrPattern( model.getLemurPlayBtnAddr()) == true) {
+        handleLemurPlayBtn(msg);
+        handled = true;
+      } 
+      else if( msg.checkAddrPattern( model.getLemurClearBtnAddr()) == true) {
+        handleLemurClearBtn(msg);
+        handled = true;
+      }
+      
+      return handled;
+    }    
+    
+    private void handleLemurPlayBtn(OscMessage msg) {
+      //if button is on then nap the current pattern and send it to the bitmap
+      //if button is off then what??
+      int state = msg.get(0).floatValue() > 0 ? 1 : 0;
+      println("Play button handler state = " + state);
+    }
+    
+    private void handleLemurClearBtn(OscMessage msg) {
+    }
+  }
 
   private class SwitchPadController implements InterfaceLemurController {
-
-    SwitchPadController() {      
-    }
-
-
+    
     public boolean handleMessage(OscMessage msg) {
-      println("--button controller -- " + msg.addrPattern());
       //find the button with the address of this message
       int st = msg.addrPattern().indexOf("/")+1;
       int en = msg.addrPattern().lastIndexOf("/");

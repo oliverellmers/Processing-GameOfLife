@@ -50,8 +50,8 @@ public class LemurController implements InterfaceLemurController {
 
 
   boolean canHandleMessage(OscMessage msg) {
-    for (String a : messageAddresses ) {
-      if (msg.checkAddrPattern(a) == true) {
+    for (InterfaceLemurController lc : controllers ) {
+      if (lc.canHandleMessage(msg) == true) {
         return true;
       }
     }
@@ -102,13 +102,13 @@ public class LemurController implements InterfaceLemurController {
       
       addrs = new ArrayList<String>(padCount);
       for(int i=0; i<padCount; ++i) {
-        String a = addrRoot + i;
-       println("button address:: " + a); 
+        String a = "/" + addrRoot + i + "/x";
+        addrs.add(a); 
       }
     }
     
     boolean canHandleMessage(OscMessage msg) {
-      for (String a : messageAddresses ) {
+      for (String a : addrs ) {
         if (msg.checkAddrPattern(a) == true) {
           return true;
         }

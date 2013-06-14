@@ -17,10 +17,11 @@ class Config implements ConfigInterface {
   final String CELL_SHAPE = "cellShape";
 
   //Lemur Properties
+  final String LEMUR_PAD_BTN_NAME  = "padButtonName";  
   final String LEMUR_PADSIZE   = "padDimensions";
   final String LEMUR_IPADDR    = "lemurIp";
   final String LEMUR_IN_PORT   = "lemurInPort";
-  final String LEMUR_PAD_ADDR  = "lemurPadName";
+  
   
   
   

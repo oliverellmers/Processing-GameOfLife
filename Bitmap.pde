@@ -30,14 +30,16 @@ class Bitmap {
 
   public Bitmap(LifePattern pattern, int w, int h, int r, int c, int startRow, int startCol ) {
     this(0, 0, w, h, r, c);
-
+    
     int padding = (cols - pattern.getCols());
+    
     int cursor = 0;
 
     if ( startCol + pattern.getCols() <= cols && 
       (startRow * cols + startCol + pattern.getPixels().size() <= this.getPixelCount() )) {
       cursor = startRow * cols + startCol;
     }
+
 
     setPixel(0, pattern.getPixels().get(0));
     ++cursor;
@@ -50,11 +52,11 @@ class Bitmap {
     }
   }  
 
-      cursor = startRow * cols + startCol;
 //  public Bitmap(ArrayListPattern pattern, int w, int h, int r, int c, int startRow, int startCol ) {    
 //    this(0, 0, w, h, r, c);
 //
 //    int padding = (cols - pattern.cols);
+//    int cursor = 0;
 //
 //    if ( startCol + pattern.cols <= cols && 
 //      (startRow * cols + startCol + pattern.pixels.size() <= this.getPixelCount() )) {
@@ -67,6 +69,7 @@ class Bitmap {
 //      if ( i % pattern.cols == 0 ) {
 //        cursor += padding;
 //      }
+//      setPixel(cursor, pattern.pixels.get(i));
 //      ++cursor;
 //    }
 //  }
@@ -83,6 +86,19 @@ class Bitmap {
     for (int i=0; i < getPixelCount(); ++i ) {
       setPixel(i, 0);
     }
+  }
+
+  int getX() { 
+    return int(pos.x);
+  }
+  int getY() { 
+    return int(pos.y);
+  }
+  int getW() { 
+    return int(dim.x);
+  }
+  int getH() {
+    return int(dim.y);
   }
 
   int getCols() { 
@@ -108,6 +124,7 @@ class Bitmap {
   }
 
   public void setPixels(ArrayList<BitmapCell> cells) {
+   
     if (cells.size() == getPixelCount() ) {
       for (int i=0; i < cells.size(); ++i) {
         borderPixelValues.get(i).setValue(cells.get(i).getValue());
@@ -115,7 +132,7 @@ class Bitmap {
     }
   }
 
-  public void setPixel(int pixel, Integer value) {
+  public void setPixel(int pixel, Integer value) {   
     if (pixel < getPixelCount() ) {
       borderPixelValues.get(pixel).setValue(value);
     }
@@ -197,8 +214,12 @@ class Bitmap {
     }
 
     for (BitmapCell b : borderPixelValues ) {
-      if (b.getValue() > 0 )
+      if (b.getValue() > 0 ) {
+        
         b.draw();
+        
+                
+      }
     }
   }
 

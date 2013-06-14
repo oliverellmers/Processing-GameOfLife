@@ -106,7 +106,7 @@ void setup() {
   bitmap = new Bitmap(width/2 - gWidth/2, height/2 - gHeight/2, gWidth, gHeight, rows, cols);
   next = new Bitmap(width/2 - gWidth/2, height/2 - gHeight/2, gWidth, gHeight, rows, cols);
 
-  loadFile();
+//  loadFile();
 }
 
 
@@ -260,7 +260,8 @@ void oscEvent(OscMessage msg) {
 
 
   msg.print();
-  println("can handle message - " + lemurController.canHandleMessage(msg));  
+  println("can handle message - " + lemurController.canHandleMessage(msg)); 
+  lemurController.handleMessage(msg); 
 }
 
 
@@ -273,6 +274,7 @@ interface ConfigInterface {
 
 interface InterfaceLemurController {
   boolean canHandleMessage(OscMessage msg);
+  public void handleMessage(OscMessage msg);
 }
 
 

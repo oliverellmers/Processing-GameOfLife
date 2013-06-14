@@ -22,34 +22,27 @@
 	</param>	
 	<!--	LEMUR config	-->
 	<lemurConfig>
-		<param>
-			<key>lemurSwitchPadSize</key>
-			<value>16,9</value>
-		</param>
 		<!-- enter the root for the pad buttons-->
 		<param>
-			<key>lemurPadName</key>
+			<key>padButtonName</key>
 			<value>CustomButton</value>
-		</param>								
+		</param>		
+		<param>
+			<key>padDimensions</key>
+			<value>16,9</value>
+		</param>	
 		<param>
 			<key>lemurIp</key>
-			<value>123.456.789.0</value>
+			<value>169.254.175.247</value>
 		</param>	
 		<param>
 			<key>lemurInPort</key>
 			<value>8000</value>
-		</param>		
-		<param>
-			<key>lemurControlButtonPattern</key>
-			<value>"\\/Control\\/play"</value>
-		</param>		
+		</param>				
 		<param>
 			<key>lemurPadAddr</key>
 			<value>/Pixels/x</value>
 		</param>
-		<param>
-			<key>padDimensions</key>
-			<value>9,16</value>
-		</param>	
+
 	</lemurConfig>
 </config>

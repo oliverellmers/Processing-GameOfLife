@@ -37,8 +37,6 @@ boolean paused = false;
 // -=-=-=-=--=-==-=-=-
 OscP5 osc;
 int listenPort = 8000;
-int lemurSendPort = 8000;
-String lemurIPInAddr ="";
 
 // -=-=-=-=--=-==-=-=-
 LemurController lemurController;
@@ -77,16 +75,15 @@ void initialize() {
     drawAsRectangle = config.getValue(config.CELL_SHAPE).equals(config.RECTANGLE_CELL); 
 
     //LEMUR configuration
-    lemurIPInAddr = lemurConfig.getValue(config.LEMUR_IPADDR);
-    lemurSendPort = Integer.parseInt(lemurConfig.getValue(config.LEMUR_IN_PORT));
+    //    lemurIPInAddr = lemurConfig.getValue(config.LEMUR_IPADDR);
+    //    lemurSendPort = Integer.parseInt(lemurConfig.getValue(config.LEMUR_IN_PORT));
 
     String[] lemurPadSize = lemurConfig.getValue(config.LEMUR_PADSIZE).split(","); 
     int lemurRows = Integer.parseInt(lemurPadSize[0]);
     int lemurCols = Integer.parseInt(lemurPadSize[1]);   
-    String padRootName = lemurConfig.getValue(config.LEMUR_PAD_ADDR);
-    
-    lemurController.addSwitchPadController(padRootName,lemurRows*lemurCols);
-    
+    String padRootName = lemurConfig.getValue(config.LEMUR_PAD_BTN_NAME);
+
+    lemurController.addSwitchPadController(padRootName, lemurRows*lemurCols);
   } 
   catch (Exception e) {
     println(e);
@@ -259,8 +256,11 @@ void loadFile() {
 //--=-=-=-=-=-=-=-=-=-=
 void oscEvent(OscMessage msg) {
   //  println("### received an osc message with addrpattern "+msg.addrPattern()+" and typetag "+msg.typetag());  
-  lemurController.handleMessage(msg);  
+  //println("Lemur controller can handle message: " + lemurController.canHandleMessage(msg));
+
+
   msg.print();
+  println("can handle message - " + lemurController.canHandleMessage(msg));  
 }
 
 

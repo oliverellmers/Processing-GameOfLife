@@ -25,11 +25,11 @@
 		<!-- enter the root for the pad buttons-->
 		<param>
 			<key>padButtonName</key>
-			<value>CustomButton</value>
+			<value>btn</value>
 		</param>		
 		<param>
 			<key>padDimensions</key>
-			<value>16,9</value>
+			<value>9,16</value>
 		</param>	
 		<param>
 			<key>lemurIp</key>

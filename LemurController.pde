@@ -100,20 +100,16 @@ public class LemurController implements InterfaceLemurController {
       int en = msg.addrPattern().lastIndexOf("/");
 
       String find = msg.addrPattern().substring(st, en);
-      ArrayList<LemurButton> padButtons = model.getPad();
-      println(padButtons);
-      for (LemurButton btn : padButtons) {
+      
+      int count = 0;
+      for (LemurButton btn : model.getPad()) {
         if (btn.getName().equals(find)) {
-          print(btn.getState()); 
-          print( "   "  + msg.get(0).floatValue());
           btn.setState( int(msg.get(0).floatValue()));
-          println(" -- " + btn.getState());   
-
+          model.setPixel(count,btn.getState());          
           return true;
         }
+        ++count;
       }
-      //      String msgTo = msg.addrPattern().substring(msg.addrPattern().indexOf("/") - msg.addrPattern().lastIndexOf("/"));
-      //      println("MEssage to: " + msgTo);
       return false;
     }
   }

@@ -272,7 +272,7 @@ void oscEvent(OscMessage msg) {
 
   msg.print(); 
   println("message handled = " + lemurController.handleMessage(msg) ); 
-  println(model.getPattern());
+  
 }
 
 

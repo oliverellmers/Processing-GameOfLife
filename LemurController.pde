@@ -59,22 +59,12 @@ public class LemurController implements InterfaceLemurController {
   }
 
   void handleMessage(OscMessage msg) {
-    String addr = msg.addrPattern();    
-    Matcher m = padButtonRE.matcher(addr);
-
-    if (m.matches()) {
-      lemurController.setPadState(Integer.parseInt(m.group(1)), int(msg.get(0).floatValue()));
-    }
-    m = controlButtonRE.matcher(addr);
-    if (m.matches() ) {
-      if (msg.get(0).floatValue() == 1 ) {
-        println("PLAY");
-        //        lemur.setPattern();
-      } 
-      else {
-        println("STOP");
+    for (InterfaceLemurController lc : controllers ) {
+      if (lc.canHandleMessage(msg) == true) {
+        lc.handleMessage(msg);
+        break;
       }
-    }
+    }    
   }
 
   void getPads() {
@@ -97,13 +87,19 @@ public class LemurController implements InterfaceLemurController {
   
   private class SwitchPadController implements InterfaceLemurController {
     ArrayList<String> addrs;
+    ArrayList<LemurButton> padButtons;
     
     SwitchPadController(String addrRoot, int padCount) {      
+      padButtons = new ArrayList<LemurButton>();
       
       addrs = new ArrayList<String>(padCount);
       for(int i=0; i<padCount; ++i) {
-        String a = "/" + addrRoot + i + "/x";
-        addrs.add(a); 
+        String name = addrRoot + i;
+        String addr = "/" + name + "/x";
+        addrs.add(addr);
+       
+        LemurButton lb = new LemurButton(name); 
+        padButtons.add(lb);
       }
     }
     
@@ -115,6 +111,28 @@ public class LemurController implements InterfaceLemurController {
       }
       return false;
     }
+    
+    public void handleMessage(OscMessage msg) {
+      println("--button controller -- " + msg.addrPattern());
+      //find the button with the address of this message
+      int st = msg.addrPattern().indexOf("/")+1;
+      int en = msg.addrPattern().lastIndexOf("/");
+      
+      String find = msg.addrPattern().substring(st,en);
+      
+      for(LemurButton btn : padButtons) {
+        if(btn.getName().equals(find)) {
+          print(btn.getState()); 
+          print( "   "  + msg.get(0).floatValue());
+          btn.setState( int(msg.get(0).floatValue()));
+          println(" -- " + btn.getState());          
+          
+        }
+      }
+//      String msgTo = msg.addrPattern().substring(msg.addrPattern().indexOf("/") - msg.addrPattern().lastIndexOf("/"));
+//      println("MEssage to: " + msgTo);
+    }
+      
   }
 }
 

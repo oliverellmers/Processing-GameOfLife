@@ -1,7 +1,7 @@
 class AppModel {
-  ArrayList<LemurButton> padButtons; 
-  ArrayListPattern pattern;
-  Bitmap bitmap,next;
+  private ArrayList<LemurButton> padButtons; 
+  private ArrayListPattern pattern;
+  private Bitmap bitmap,next;
   
   AppModel() {
     padButtons = new ArrayList<LemurButton>();

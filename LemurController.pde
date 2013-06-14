@@ -3,7 +3,7 @@ public class LemurController implements InterfaceLemurController {
 
   ArrayList<String> messageAddresses;
   ArrayList<InterfaceLemurController> controllers;
-  
+
   //MOVE TO MODEL
   Pattern padButtonRE; 
   Pattern controlButtonRE;
@@ -21,7 +21,7 @@ public class LemurController implements InterfaceLemurController {
     initialize();
     messageAddresses = new ArrayList<String>();
     controllers = new ArrayList<InterfaceLemurController>();
-    
+
     //    pads = new ArrayList(padCount);
     //    for (int i=0; i < padCount; ++i) {
     //      pads.add(0);
@@ -49,22 +49,13 @@ public class LemurController implements InterfaceLemurController {
   //  }
 
 
-  boolean canHandleMessage(OscMessage msg) {
+  boolean handleMessage(OscMessage msg) {
     for (InterfaceLemurController lc : controllers ) {
-      if (lc.canHandleMessage(msg) == true) {
+      if (lc.handleMessage(msg) == true) {
         return true;
       }
     }
     return false;
-  }
-
-  void handleMessage(OscMessage msg) {
-    for (InterfaceLemurController lc : controllers ) {
-      if (lc.canHandleMessage(msg) == true) {
-        lc.handleMessage(msg);
-        break;
-      }
-    }    
   }
 
   void getPads() {
@@ -75,64 +66,56 @@ public class LemurController implements InterfaceLemurController {
     //      pads.set(index, int(state));
     //    }
   }
-  
+
   public void addSwitchPadController( String addrRoot, int padCount ) {
     SwitchPadController spc = new SwitchPadController(addrRoot, padCount);
     addController(spc);
   }
-  
+
   public void addController(InterfaceLemurController ctrl) {
     controllers.add(ctrl);
   }
-  
+
   private class SwitchPadController implements InterfaceLemurController {
     ArrayList<String> addrs;
-    ArrayList<LemurButton> padButtons;
-    
+    //    ArrayList<LemurButton> padButtons;
+
     SwitchPadController(String addrRoot, int padCount) {      
-      padButtons = new ArrayList<LemurButton>();
-      
-      addrs = new ArrayList<String>(padCount);
-      for(int i=0; i<padCount; ++i) {
-        String name = addrRoot + i;
-        String addr = "/" + name + "/x";
-        addrs.add(addr);
-       
-        LemurButton lb = new LemurButton(name); 
-        padButtons.add(lb);
-      }
+      //      padButtons = new ArrayList<LemurButton>();
+      //      for(int i=0; i<padCount; ++i) {
+      //        String name = addrRoot + i;
+      //        String addr = "/" + name + "/x";
+      //        addrs.add(addr);
+      //       
+      //        LemurButton lb = new LemurButton(name); 
+      //        padButtons.add(lb);
+      //      }
     }
-    
-    boolean canHandleMessage(OscMessage msg) {
-      for (String a : addrs ) {
-        if (msg.checkAddrPattern(a) == true) {
-          return true;
-        }
-      }
-      return false;
-    }
-    
-    public void handleMessage(OscMessage msg) {
+
+
+    public boolean handleMessage(OscMessage msg) {
       println("--button controller -- " + msg.addrPattern());
       //find the button with the address of this message
       int st = msg.addrPattern().indexOf("/")+1;
       int en = msg.addrPattern().lastIndexOf("/");
-      
-      String find = msg.addrPattern().substring(st,en);
-      
-      for(LemurButton btn : padButtons) {
-        if(btn.getName().equals(find)) {
+
+      String find = msg.addrPattern().substring(st, en);
+      ArrayList<LemurButton> padButtons = model.getPad();
+      println(padButtons);
+      for (LemurButton btn : padButtons) {
+        if (btn.getName().equals(find)) {
           print(btn.getState()); 
           print( "   "  + msg.get(0).floatValue());
           btn.setState( int(msg.get(0).floatValue()));
-          println(" -- " + btn.getState());          
-          
+          println(" -- " + btn.getState());   
+
+          return true;
         }
       }
-//      String msgTo = msg.addrPattern().substring(msg.addrPattern().indexOf("/") - msg.addrPattern().lastIndexOf("/"));
-//      println("MEssage to: " + msgTo);
+      //      String msgTo = msg.addrPattern().substring(msg.addrPattern().indexOf("/") - msg.addrPattern().lastIndexOf("/"));
+      //      println("MEssage to: " + msgTo);
+      return false;
     }
-      
   }
 }
 

@@ -41,7 +41,7 @@ int listenPort = 8000;
 // -=-=-=-=--=-==-=-=-
 LemurController lemurController;
 ConfigInterface lemurConfig;
-
+AppModel model;
 
 // -=-=-=-=--=-==-=-=-
 String configurationFile = "data/config.xml";
@@ -84,6 +84,7 @@ void initialize() {
     String padRootName = lemurConfig.getValue(config.LEMUR_PAD_BTN_NAME);
 
     lemurController.addSwitchPadController(padRootName, lemurRows*lemurCols);
+    model.initializePad(lemurRows,lemurCols,padRootName);
   } 
   catch (Exception e) {
     println(e);
@@ -96,7 +97,7 @@ void setup() {
   size(1024, 768, P2D);
   frameRate(30);
   rectMode(CENTER);
-
+  model = new AppModel();
   initialize();
 
   if (OSC_CONNECT) {
@@ -259,9 +260,8 @@ void oscEvent(OscMessage msg) {
   //println("Lemur controller can handle message: " + lemurController.canHandleMessage(msg));
 
 
-  msg.print();
-  println("can handle message - " + lemurController.canHandleMessage(msg)); 
-  lemurController.handleMessage(msg); 
+  msg.print(); 
+  println("message handled = " + lemurController.handleMessage(msg) ); 
 }
 
 
@@ -273,8 +273,7 @@ interface ConfigInterface {
 }
 
 interface InterfaceLemurController {
-  boolean canHandleMessage(OscMessage msg);
-  public void handleMessage(OscMessage msg);
+  public boolean handleMessage(OscMessage msg);
 }
 
 

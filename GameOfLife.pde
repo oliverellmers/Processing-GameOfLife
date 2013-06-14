@@ -22,13 +22,6 @@ int outFileCounter = 0;
 boolean DEBUG = false;
 
 
-
-// -=-=-=CONFIG VARS with DEFAULTS
-int rows = 30, cols = 15;   //Default - Override in config file
-int gWidth = 100, gHeight = 100; //Default - Override in config file
-int renderSpeed = 5;
-
-
 RLEParser parser = new RLEParser();
 
 boolean paused = false;
@@ -61,14 +54,14 @@ void initialize() {
 
   try {
     String[] matrixSize = config.getValue(config.APP_GMATRIXSIZE).split(",");
-    rows = Integer.parseInt(matrixSize[0]);  
-    cols = Integer.parseInt(matrixSize[1]);
+    model.setRows(Integer.parseInt(matrixSize[0]));  
+    model.setCols(Integer.parseInt(matrixSize[1]));
 
     String[] configSize = config.getValue(config.APP_GSIZE).split(",");
-    gWidth = Integer.parseInt(configSize[0]);
-    gHeight = Integer.parseInt(configSize[1]);
+    model.setGridWidth(Integer.parseInt(configSize[0]));
+    model.setGridHeight(Integer.parseInt(configSize[1]));
 
-    renderSpeed = Integer.parseInt(config.getValue( config.APP_RENDERSPEED));
+    model.setRenderSpeed(Integer.parseInt(config.getValue( config.APP_RENDERSPEED)));
 
     //BITMAP configuration
     drawAsRectangle = config.getValue(config.CELL_SHAPE).equals(config.RECTANGLE_CELL); 
@@ -94,6 +87,11 @@ void initialize() {
 }
 
 void initializeModel() {
+  int gWidth = model.getGridWidth();
+  int gHeight = model.getGridHeight();
+  int rows = model.getRows();
+  int cols = model.getCols();
+  
   model.setBitmap( new Bitmap(width/2 - gWidth/2, height/2 - gHeight/2, gWidth, gHeight, rows, cols) );
   model.setNextBitmap( new Bitmap(width/2 - gWidth/2, height/2 - gHeight/2, gWidth, gHeight, rows, cols) );
 }
@@ -123,9 +121,10 @@ void draw() {
   model.getBitmap().update();
   model.getBitmap().draw();
 
-  if (frameCount % renderSpeed == 0 && !paused ) {
+  if (frameCount % model.getRenderSpeed() == 0 && !paused ) {
     calculateLifeValue(model.getBitmap());
     model.getBitmap().setPixels(model.getNextBitmap().getPixels());
+    
   }
 }
 
@@ -247,6 +246,11 @@ void loadFile() {
     );   
 
   //String path = dataPath("") +"/rle/glider.rle";
+  int gWidth = model.getGridWidth();
+  int gHeight = model.getGridHeight();
+  int rows = model.getRows();
+  int cols = model.getCols();
+
 
   if (path != null) {
     RLEPattern pattern;

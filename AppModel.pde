@@ -1,4 +1,11 @@
 class AppModel {
+  // -=-=-=CONFIG VARS with DEFAULTS
+  int rows = 30, cols = 15;   //Default - Override in config file
+  int gWidth = 100, gHeight = 100; //Default - Override in config file
+  int renderSpeed = 5;
+
+
+
   private ArrayList<LemurButton> padButtons; 
   private ArrayListPattern pattern;
   private Bitmap bitmap,next;
@@ -65,5 +72,40 @@ class AppModel {
   public String getLemurClearBtnAddr() {
     return clearBtnAddr;
   }  
+
+  public int getRows() { 
+    return rows;
+  }
+  public void setRows(int r) { 
+    rows = r;
+  }
+
+  public int getCols() { 
+    return cols;
+  }
+  public void setCols(int c) { 
+    cols = c;
+  }  
+
+  public int getGridWidth() { 
+    return gWidth;
+  }
+  public void setGridWidth(int w) { 
+    gWidth = w;
+  }  
+
+  public int getGridHeight() { 
+    return gHeight;
+  }
+  public void setGridHeight(int h) { 
+    gHeight = h;
+  }
+
+  public int getRenderSpeed() { 
+    return renderSpeed;
+  }
+  public void setRenderSpeed( int s ) { 
+    renderSpeed = s;
+  }
 }
 

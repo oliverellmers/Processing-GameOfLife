@@ -50,27 +50,26 @@ class Bitmap {
     }
   }  
 
-  public Bitmap(ArrayListPattern pattern, int w, int h, int r, int c, int startRow, int startCol ) {    
-    this(0, 0, w, h, r, c);
-
-    int padding = (cols - pattern.cols);
-    int cursor = 0;
-
-    if ( startCol + pattern.cols <= cols && 
-      (startRow * cols + startCol + pattern.pixels.size() <= this.getPixelCount() )) {
       cursor = startRow * cols + startCol;
-    }
-
-    setPixel(0, pattern.pixels.get(0));
-    ++cursor;
-    for (int i=1; i < pattern.pixels.size(); ++i ) {
-      if ( i % pattern.cols == 0 ) {
-        cursor += padding;
-      }
-      setPixel(cursor, pattern.pixels.get(i));
-      ++cursor;
-    }
-  }
+//  public Bitmap(ArrayListPattern pattern, int w, int h, int r, int c, int startRow, int startCol ) {    
+//    this(0, 0, w, h, r, c);
+//
+//    int padding = (cols - pattern.cols);
+//
+//    if ( startCol + pattern.cols <= cols && 
+//      (startRow * cols + startCol + pattern.pixels.size() <= this.getPixelCount() )) {
+//      cursor = startRow * cols + startCol;
+//    }
+//
+//    setPixel(0, pattern.pixels.get(0));
+//    ++cursor;
+//    for (int i=1; i < pattern.pixels.size(); ++i ) {
+//      if ( i % pattern.cols == 0 ) {
+//        cursor += padding;
+//      }
+//      ++cursor;
+//    }
+//  }
 
   private void initialize() {
     try {

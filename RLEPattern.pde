@@ -1,7 +1,7 @@
-class RLEPattern {
- int rows;
- int cols;
- ArrayList<Integer> pixels;
+class RLEPattern  implements LifePattern {
+ private int rows;
+ private int cols;
+ private ArrayList<Integer> pixels;
   
  RLEPattern() {
    pixels = new ArrayList<Integer>();
@@ -11,6 +11,11 @@ class RLEPattern {
    this();
    rows = cols = int(sqrt(size));
  }
+ 
+ int getCols() { return cols; }
+ int getRows() { return rows; }
+ ArrayList<Integer> getPixels() { return pixels; }
+ 
  
  int getWidth() { return cols; }
  int getHeight() { return rows; }

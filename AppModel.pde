@@ -1,6 +1,7 @@
 class AppModel {
   ArrayList<LemurButton> padButtons; 
   ArrayListPattern pattern;
+  Bitmap bitmap,next;
   
   AppModel() {
     padButtons = new ArrayList<LemurButton>();
@@ -36,5 +37,15 @@ class AppModel {
   
   ArrayListPattern getPattern() { return pattern; }  
   
+  public void setBitmap(Bitmap b) {
+    bitmap = b;
+  }
+  
+  public void setNextBitmap(Bitmap b) {
+    next = b;
+  }
+  
+  public Bitmap getBitmap() { return bitmap; }
+  public Bitmap getNextBitmap() { return next; }
 }
 

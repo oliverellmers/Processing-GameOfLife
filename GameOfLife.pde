@@ -29,7 +29,6 @@ int gWidth = 100, gHeight = 100; //Default - Override in config file
 int renderSpeed = 5;
 
 
-Bitmap bitmap, next;
 RLEParser parser = new RLEParser();
 
 boolean paused = false;
@@ -58,7 +57,7 @@ Config config;
 void initialize() {
   config = new Config(configurationFile);
   lemurConfig = config.getLemurConfig();
-  lemurController = new LemurController(16*9);
+  lemurController = new LemurController();
 
   try {
     String[] matrixSize = config.getValue(config.APP_GMATRIXSIZE).split(",");
@@ -83,8 +82,7 @@ void initialize() {
     int lemurCols = Integer.parseInt(lemurPadSize[1]);   
     String padRootName = lemurConfig.getValue(config.LEMUR_PAD_BTN_NAME);
 
-    lemurController.addSwitchPadController(padRootName, lemurRows*lemurCols);
-    model.initializePad(lemurRows,lemurCols,padRootName);
+    model.initializePad(lemurRows, lemurCols, padRootName);
   } 
   catch (Exception e) {
     println(e);
@@ -92,45 +90,50 @@ void initialize() {
   }
 }
 
+void initializeModel() {
+  model.setBitmap( new Bitmap(width/2 - gWidth/2, height/2 - gHeight/2, gWidth, gHeight, rows, cols) );
+  model.setNextBitmap( new Bitmap(width/2 - gWidth/2, height/2 - gHeight/2, gWidth, gHeight, rows, cols) );
+}
 
 void setup() {
   size(1024, 768, P2D);
   frameRate(30);
   rectMode(CENTER);
   model = new AppModel();
+
   initialize();
+  initializeModel();  
 
   if (OSC_CONNECT) {
     osc = new OscP5(this, listenPort);
   }
 
-  bitmap = new Bitmap(width/2 - gWidth/2, height/2 - gHeight/2, gWidth, gHeight, rows, cols);
-  next = new Bitmap(width/2 - gWidth/2, height/2 - gHeight/2, gWidth, gHeight, rows, cols);
 
-//  loadFile();
+
+  //  loadFile();
 }
 
 
 void draw() {
   background(0);
 
-  bitmap.update();
-  bitmap.draw();
+  model.getBitmap().update();
+  model.getBitmap().draw();
 
   if (frameCount % renderSpeed == 0 && !paused ) {
-    calculateLifeValue(bitmap);
-    bitmap.setPixels(next.getPixels());
+    calculateLifeValue(model.getBitmap());
+    model.getBitmap().setPixels(model.getNextBitmap().getPixels());
   }
 }
 
 
 void randomBitmap() {
-  for (int i=0; i < bitmap.getPixelCount(); ++i ) {
+  for (int i=0; i < model.getBitmap().getPixelCount(); ++i ) {
     if (random(1.0) < 0.5 ) {
-      bitmap.getPixel(i).setValue(1);
+      model.getBitmap().getPixel(i).setValue(1);
     } 
     else {
-      bitmap.getPixel(i).setValue(0);
+      model.getBitmap().getPixel(i).setValue(0);
     }
   }
 }
@@ -147,7 +150,7 @@ void keyPressed() {
   }
   if (key == 'e' || key == 'E') {
     println("exporting bitmap to " + outputFile);
-    bitmap.save(outputFile);
+    model.getBitmap().save(outputFile);
   }
   else if ( key == 'o' || key =='O') {
     loadFile();
@@ -163,7 +166,7 @@ void keyPressed() {
 // Rule B3/S23
 
 void calculateLifeValue( Bitmap b ) {
-  next.clear();
+  model.getNextBitmap().clear();
   int cols = b.getCols(); 
 
   //kernel array
@@ -189,7 +192,7 @@ void calculateLifeValue( Bitmap b ) {
         neighborhood |= conv[k] << (conv.length - 1 - k);
       }    
       int score = scorePixel(neighborhood, b.getPixel(i, j));
-      next.setPixel(i, j, score);
+      model.getNextBitmap().setPixel(i, j, score);
 
       if (DEBUG)
         print("    " + Integer.toBinaryString(neighborhood));
@@ -246,8 +249,8 @@ void loadFile() {
     RLEPattern pattern;
     pattern = parser.parse(path);
     Bitmap p = new Bitmap(pattern, gWidth, gHeight, rows, cols, rows/2 - pattern.rows/2, cols/2 - pattern.cols/2);
-    bitmap.setPixels(p.getPixels());
-    bitmap.draw();
+    model.getBitmap().setPixels(p.getPixels());
+    model.getBitmap().draw();
   }
 }
 
@@ -262,6 +265,7 @@ void oscEvent(OscMessage msg) {
 
   msg.print(); 
   println("message handled = " + lemurController.handleMessage(msg) ); 
+  println(model.getPattern());
 }
 
 

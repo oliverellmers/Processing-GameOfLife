@@ -1,4 +1,4 @@
-class ArrayListPattern {
+class ArrayListPattern implements LifePattern {
  ArrayList<Integer> pixels;
  int rows, cols;
  
@@ -37,4 +37,9 @@ class ArrayListPattern {
    
    return ret;
  } 
+ 
+ int getRows() { return rows; }
+ int getCols() { return cols; }
+ 
+ ArrayList<Integer> getPixels() { return pixels; }
 }

@@ -28,7 +28,29 @@ class Bitmap {
     initPixelValues();
   } 
 
-  public Bitmap(RLEPattern pattern, int w, int h, int r, int c, int startRow, int startCol ) {
+  public Bitmap(LifePattern pattern, int w, int h, int r, int c, int startRow, int startCol ) {
+    this(0, 0, w, h, r, c);
+
+    int padding = (cols - pattern.getCols());
+    int cursor = 0;
+
+    if ( startCol + pattern.getCols() <= cols && 
+      (startRow * cols + startCol + pattern.getPixels().size() <= this.getPixelCount() )) {
+      cursor = startRow * cols + startCol;
+    }
+
+    setPixel(0, pattern.getPixels().get(0));
+    ++cursor;
+    for (int i=1; i < pattern.getPixels().size(); ++i ) {
+      if ( i % pattern.getCols() == 0 ) {
+        cursor += padding;
+      }
+      setPixel(cursor, pattern.getPixels().get(i));
+      ++cursor;
+    }
+  }  
+
+  public Bitmap(ArrayListPattern pattern, int w, int h, int r, int c, int startRow, int startCol ) {    
     this(0, 0, w, h, r, c);
 
     int padding = (cols - pattern.cols);
@@ -48,7 +70,7 @@ class Bitmap {
       setPixel(cursor, pattern.pixels.get(i));
       ++cursor;
     }
-  }  
+  }
 
   private void initialize() {
     try {
@@ -211,6 +233,5 @@ class Bitmap {
     vStep = 1.0 / rows;
     cellDim = new PVector(uStep * dim.x, vStep * dim.y);
   }
-
 }
 

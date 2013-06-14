@@ -276,6 +276,11 @@ interface InterfaceLemurController {
   public boolean handleMessage(OscMessage msg);
 }
 
+interface LifePattern {
+  public int getCols();
+  public int getRows();
+  public ArrayList<Integer> getPixels();
+}
 
 // -=-=-=-=--=-==-=-=-
 //  Static variables

@@ -139,7 +139,7 @@ class Bitmap {
   }
 
   public void setPixel(int i, int j, Integer value ) {
-    int pixel = i * getCols() + j;
+    int pixel = j * getCols() + i;
     setPixel(pixel, value);
   }
 

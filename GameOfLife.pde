@@ -194,7 +194,7 @@ void calculateLifeValue( Bitmap b ) {
         neighborhood |= conv[k] << (conv.length - 1 - k);
       }    
       int score = scorePixel(neighborhood, b.getPixel(i, j));
-      model.getNextBitmap().setPixel(i, j, score);
+      model.getNextBitmap().setPixel(j, i, score);
 
       if (DEBUG)
         print("    " + Integer.toBinaryString(neighborhood));

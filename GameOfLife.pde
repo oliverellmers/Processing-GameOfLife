@@ -247,39 +247,8 @@ int scorePixel(int neighborhood, BitmapCell bmp) {
 }
 
 void loadFile() {
-  String path = FileUtils.showFileDialog(
-  frame, 
-  "An RLE file to load...", 
-  dataPath("") +"/rle", 
-  new String[] { 
-    ".rle", ".txt"
-  }
-  , 
-  FileDialog.LOAD
-    );   
-
-  //String path = dataPath("") +"/rle/glider.rle";
-
-  parseFile(path);
+  lemurController.loadFile();
 }
-
-void parseFile(String path) {
-  if (path != null) {
-    int gWidth = model.getGridWidth();
-    int gHeight = model.getGridHeight();
-    int rows = model.getRows();
-    int cols = model.getCols();
-    
-    RLEPattern pattern;
-    pattern = parser.parse(path);
-    Bitmap p = new Bitmap(pattern, gWidth, gHeight, rows, cols, rows/2 - pattern.rows/2, cols/2 - pattern.cols/2);
-    println("loaded Pattern:\n" + pattern );    
-
-    model.getBitmap().setPixels(p.getPixels());    
-    model.getBitmap().draw();
-  }
-}
-
 
 //--=-=-=-=-=-=-=-=-=-=
 //  OSC

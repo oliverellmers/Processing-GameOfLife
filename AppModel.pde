@@ -11,6 +11,8 @@ class AppModel {
   private Bitmap bitmap, next;
 
   String playBtnAddr, clearBtnAddr;
+  
+  boolean paused = false;
 
   AppModel() {
     padButtons = new ArrayList<LemurButton>();
@@ -49,9 +51,9 @@ class AppModel {
   }  
 
   public void setBitmapPixels(LifePattern pattern ) {
-
     Bitmap b = new Bitmap( pattern, bitmap.getW(), bitmap.getH(), model.getRows(), model.getCols(), model.getRows() / 2 - pattern.getRows() / 2, model.getCols() / 2 - pattern.getCols() / 2 );
 
+    println(b.getPixelCount() +" vs "+ getBitmap().getPixelCount());  
     bitmap.setPixels( b.getPixels() );
     bitmap.draw();
   }
@@ -82,6 +84,14 @@ class AppModel {
   public void setLemurClearBtnAddr(String addrRoot) {
     clearBtnAddr  = "/"+addrRoot+"/x";
   }  
+
+  public void setPause(boolean b) {
+    paused = b;
+  }
+  
+  public boolean isPaused() {
+    return paused;
+  }
 
   public String getLemurClearBtnAddr() {
     return clearBtnAddr;

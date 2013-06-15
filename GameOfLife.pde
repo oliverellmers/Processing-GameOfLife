@@ -24,7 +24,6 @@ boolean DEBUG = false;
 
 RLEParser parser = new RLEParser();
 
-boolean paused = false;
 
 // -=-=-=-=--=-==-=-=-
 OscP5 osc;
@@ -78,7 +77,7 @@ void initialize() {
     model.setLemurPlayBtnAddr(lemurConfig.getValue(config.LEMUR_PLAY_BTN));
     model.setLemurClearBtnAddr(lemurConfig.getValue(config.LEMUR_CLEAR_BTN));    
 
-      model.initializePad(lemurRows, lemurCols, padRootName);
+    model.initializePad(lemurRows, lemurCols, padRootName);
   } 
   catch (Exception e) {
     println(e);
@@ -91,7 +90,7 @@ void initializeModel() {
   int gHeight = model.getGridHeight();
   int rows = model.getRows();
   int cols = model.getCols();
-  
+
   model.setBitmap( new Bitmap(width/2 - gWidth/2, height/2 - gHeight/2, gWidth, gHeight, rows, cols) );
   model.setNextBitmap( new Bitmap(width/2 - gWidth/2, height/2 - gHeight/2, gWidth, gHeight, rows, cols) );
 }
@@ -121,10 +120,9 @@ void draw() {
   model.getBitmap().update();
   model.getBitmap().draw();
 
-  if (frameCount % model.getRenderSpeed() == 0 && !paused ) {
+  if (frameCount % model.getRenderSpeed() == 0 && !model.isPaused() ) {
     calculateLifeValue(model.getBitmap());
     model.getBitmap().setPixels(model.getNextBitmap().getPixels());
-    
   }
 }
 
@@ -146,6 +144,7 @@ void mousePressed() {
 }
 
 void keyPressed() {
+  
   if (key == 's' || key == 'S') {
     println("saving frame = " + frame );
     saveFrame("screengrabs/grab#####.png");
@@ -158,7 +157,7 @@ void keyPressed() {
     loadFile();
   }
   else if ( key  == 'p' || key =='P') {
-    paused = !paused;
+    model.setPause( !model.isPaused() );
   }
 }
 
@@ -176,10 +175,10 @@ void calculateLifeValue( Bitmap b ) {
     -(cols + 1), -cols, -(cols-1), 
     -1, 1, 
     (cols - 1), cols, (cols+1)
-  };
+    };
 
-  //convolution array
-  int[] conv = new int[8];
+    //convolution array
+    int[] conv = new int[8];
 
   for ( int i=1; i < b.getRows()-1; ++i ) {
     for ( int j=1; j < cols-1; ++j ) {
@@ -256,7 +255,9 @@ void loadFile() {
     RLEPattern pattern;
     pattern = parser.parse(path);
     Bitmap p = new Bitmap(pattern, gWidth, gHeight, rows, cols, rows/2 - pattern.rows/2, cols/2 - pattern.cols/2);
-    model.getBitmap().setPixels(p.getPixels());
+    println("loaded Pattern:\n" + pattern );    
+
+    model.getBitmap().setPixels(p.getPixels());    
     model.getBitmap().draw();
   }
 }

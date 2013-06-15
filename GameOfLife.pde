@@ -68,6 +68,7 @@ void initialize() {
     drawAsRectangle = config.getValue(config.CELL_SHAPE).equals(config.RECTANGLE_CELL); 
 
     //LEMUR configuration
+    model.setLemurMenuAddrPattern(lemurConfig.getValue(config.LEMUR_PATTERN_MENU_ADDR));
     //    lemurIPInAddr = lemurConfig.getValue(config.LEMUR_IPADDR);
     //    lemurSendPort = Integer.parseInt(lemurConfig.getValue(config.LEMUR_IN_PORT));
 

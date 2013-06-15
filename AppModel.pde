@@ -12,9 +12,11 @@ class AppModel {
   private ArrayListPattern pattern;
   private Bitmap bitmap, next;
 
-  String playBtnAddr, clearBtnAddr;
+  String playBtnAddr, clearBtnAddr, patternMenuAddr;
 
   boolean paused = true;
+
+  String[] patternFiles;
 
   AppModel() {
     padButtons = new ArrayList<LemurButton>();
@@ -129,6 +131,18 @@ class AppModel {
     clearBtnAddr  = "/"+addrRoot+"/x";
   }  
 
+  public void setLemurMenuAddrPattern(String addrRoot) {
+    patternMenuAddr = formatAddrPattern(addrRoot, "selection");// ;addrRoot;
+  }
+  
+  public String getLemurMenuAddrPattern() {
+    return patternMenuAddr;
+  }
+  
+  private String formatAddrPattern(String addr,String variable) {
+    return String.format("/%s/%s",addr,variable);
+  }
+  
   public void setPause(boolean b) {
     paused = b;
   }
@@ -174,6 +188,18 @@ class AppModel {
   }
   public void setRenderSpeed( int s ) { 
     renderSpeed = s;
+  }
+  
+  public void setPatternFiles(String[] fs) {
+    patternFiles = fs;
+  }
+  
+  public String getPatternFile(int i) {
+    String ret = null;
+    if(i < patternFiles.length) {
+      ret = patternFiles[i];
+    }
+   return ret; 
   }
 }
 

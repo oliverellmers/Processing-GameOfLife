@@ -270,9 +270,11 @@ void oscEvent(OscMessage msg) {
   //println("Lemur controller can handle message: " + lemurController.canHandleMessage(msg));
 
 
-  msg.print(); 
-  println("message handled = " + lemurController.handleMessage(msg) ); 
-  
+  boolean handled = lemurController.handleMessage(msg);
+  if (!handled) {
+    println("** OSC message NOT handled = " +  handled);    
+    msg.print();
+  }
 }
 
 

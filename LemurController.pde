@@ -62,7 +62,7 @@ public class LemurController implements InterfaceLemurController {
         
       } else if (state == PAUSE ) {
         println("Play button handler state = " + state);
-        model.setPause(true);        
+        model.setPause(!model.isPaused());        
         handled = true;
       }
       return handled;

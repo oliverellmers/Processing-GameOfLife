@@ -25,7 +25,7 @@
 		<!-- enter the root for the pad buttons-->
 		<param>
 			<key>padButtonName</key>
-			<value>btn</value>
+			<value>SwitchPad/btn</value>
 		</param>
 		<param>
 			<key>playButton</key>

@@ -21,8 +21,9 @@
 		<value>rectangle</value> <!-- rectangle or ellipse -->
 	</param>	
 	<param>
+		<!-- the path is relative to the sketch's dataPath -->
 		<key>rlePath</key>
-		<value>data/rle</value>
+		<value>rle</value>
 	</param>
 	<!--	LEMUR config	-->
 	<lemurConfig>

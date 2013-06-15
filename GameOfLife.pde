@@ -73,7 +73,7 @@ void initialize() {
 
     String[] patternFiles = lemurConfig.getValue(config.PATTERN_FILE_NAME).split(",");
     for (int i=0; i < patternFiles.length; ++i) {
-      patternFiles[i] = patternFilePath + "/" + patternFiles[i];
+      patternFiles[i] = dataPath(patternFilePath) +"/" + patternFiles[i];
     }
 
     model.setPatternFiles(patternFiles);
@@ -257,6 +257,7 @@ void oscEvent(OscMessage msg) {
   //  println("### received an osc message with addrpattern "+msg.addrPattern()+" and typetag "+msg.typetag());  
   //println("Lemur controller can handle message: " + lemurController.canHandleMessage(msg));
 
+msg.print();
   boolean handled = lemurController.handleMessage(msg);
   if (!handled) {
     println("** OSC message NOT handled ---> " );    

@@ -61,6 +61,8 @@ void initialize() {
     model.setGridHeight(Integer.parseInt(configSize[1]));
 
     model.setRenderSpeed(Integer.parseInt(config.getValue( config.APP_RENDERSPEED)));
+    
+    model.initializeBitmap();      
 
     //BITMAP configuration
     drawAsRectangle = config.getValue(config.CELL_SHAPE).equals(config.RECTANGLE_CELL); 
@@ -85,15 +87,7 @@ void initialize() {
   }
 }
 
-void initializeModel() {
-  int gWidth = model.getGridWidth();
-  int gHeight = model.getGridHeight();
-  int rows = model.getRows();
-  int cols = model.getCols();
 
-  model.setBitmap( new Bitmap(width/2 - gWidth/2, height/2 - gHeight/2, gWidth, gHeight, rows, cols) );
-  model.setNextBitmap( new Bitmap(width/2 - gWidth/2, height/2 - gHeight/2, gWidth, gHeight, rows, cols) );
-}
 
 void setup() {
   size(1024, 768, P2D);
@@ -102,7 +96,7 @@ void setup() {
   model = new AppModel();
 
   initialize();
-  initializeModel();  
+
 
   if (OSC_CONNECT) {
     osc = new OscP5(this, listenPort);

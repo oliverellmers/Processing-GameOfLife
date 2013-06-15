@@ -33,6 +33,16 @@ class AppModel {
     }
   }
 
+  void initializeBitmap() {
+    int gWidth = model.getGridWidth();
+    int gHeight = model.getGridHeight();
+    int rows = model.getRows();
+    int cols = model.getCols();
+
+    model.setBitmap( new Bitmap(width/2 - gWidth/2, height/2 - gHeight/2, gWidth, gHeight, rows, cols) );
+    model.setNextBitmap( new Bitmap(width/2 - gWidth/2, height/2 - gHeight/2, gWidth, gHeight, rows, cols) );
+  }  
+
   void parsePattern(ArrayList<Integer> values, int rows, int cols) {
     pattern = new ArrayListPattern(rows, cols);
     if ( rows*cols <= values.size() ) {

@@ -120,7 +120,8 @@ class AppModel {
   }
 
   public void setLemurPlayBtnAddr(String addrRoot) {
-    playBtnAddr = "/"+addrRoot+"/x";
+    playBtnAddr = formatAddrPattern(addrRoot, "x"); //"/"+addrRoot+"/x";
+    
   }
 
   public String getLemurPlayBtnAddr() {
@@ -128,7 +129,7 @@ class AppModel {
   }
 
   public void setLemurClearBtnAddr(String addrRoot) {
-    clearBtnAddr  = "/"+addrRoot+"/x";
+    clearBtnAddr  = formatAddrPattern(addrRoot, "x"); //"/"+addrRoot+"/x";
   }  
 
   public void setLemurMenuAddrPattern(String addrRoot) {

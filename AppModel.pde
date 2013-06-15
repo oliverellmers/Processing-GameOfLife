@@ -4,15 +4,15 @@ class AppModel {
   int gWidth = 100, gHeight = 100; //Default - Override in config file
   int renderSpeed = 5;
 
-
+  PVector lemurInsertionRange = new PVector();
 
   private ArrayList<LemurButton> padButtons; 
   private ArrayListPattern pattern;
   private Bitmap bitmap, next;
 
   String playBtnAddr, clearBtnAddr;
-  
-  boolean paused = false;
+
+  boolean paused = true;
 
   AppModel() {
     padButtons = new ArrayList<LemurButton>();
@@ -63,9 +63,14 @@ class AppModel {
   public void setBitmapPixels(LifePattern pattern ) {
     Bitmap b = new Bitmap( pattern, bitmap.getW(), bitmap.getH(), model.getRows(), model.getCols(), model.getRows() / 2 - pattern.getRows() / 2, model.getCols() / 2 - pattern.getCols() / 2 );
 
-    println(b.getPixelCount() +" vs "+ getBitmap().getPixelCount());  
     bitmap.setPixels( b.getPixels() );
     bitmap.draw();
+  }
+
+  public void setBitmapPixelFromLemur(float normalizedPosition, int value ) {
+    int i = floor(normalizedPosition*bitmap.getPixelCount() ); //floor(lerp(lemurInsertionRange.x,lemurInsertionRange.y, normalizedPosition));
+    
+    bitmap.setPixel(i, value);
   }
 
   public void setBitmap(Bitmap b) {
@@ -75,7 +80,13 @@ class AppModel {
   public void setNextBitmap(Bitmap b) {
     next = b;
   }
+  
+  public void setLemurInsertionRange(float begin, float end) {
+    lemurInsertionRange.x = begin;
+    lemurInsertionRange.y = end;
+  }
 
+   public PVector getLemurInsertionRange() {return lemurInsertionRange;}
   public Bitmap getBitmap() { 
     return bitmap;
   }
@@ -98,7 +109,7 @@ class AppModel {
   public void setPause(boolean b) {
     paused = b;
   }
-  
+
   public boolean isPaused() {
     return paused;
   }
@@ -107,6 +118,9 @@ class AppModel {
     return clearBtnAddr;
   }  
 
+  /*
+    get the bitmap rows
+  */
   public int getRows() { 
     return rows;
   }
@@ -114,6 +128,10 @@ class AppModel {
     rows = r;
   }
 
+
+  /*
+    get the bitmap cols
+  */
   public int getCols() { 
     return cols;
   }

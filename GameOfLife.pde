@@ -67,7 +67,16 @@ void initialize() {
     //BITMAP configuration
     drawAsRectangle = config.getValue(config.CELL_SHAPE).equals(config.RECTANGLE_CELL); 
 
+
     //LEMUR configuration
+    String patternFilePath = config.getValue(config.APP_RLE_PATH);
+
+    String[] patternFiles = lemurConfig.getValue(config.PATTERN_FILE_NAME).split(",");
+    for (int i=0; i < patternFiles.length; ++i) {
+      patternFiles[i] = patternFilePath + "/" + patternFiles[i];
+    }
+
+    model.setPatternFiles(patternFiles);
     model.setLemurMenuAddrPattern(lemurConfig.getValue(config.LEMUR_PATTERN_MENU_ADDR));
     //    lemurIPInAddr = lemurConfig.getValue(config.LEMUR_IPADDR);
     //    lemurSendPort = Integer.parseInt(lemurConfig.getValue(config.LEMUR_IN_PORT));

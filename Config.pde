@@ -17,13 +17,13 @@ class Config implements ConfigInterface {
   //Bitmap Properties
   final String CELL_SHAPE = "cellShape";
 
-  //Lemur Properties
-  final String LEMUR_PAD_BTN_NAME  = "padButtonName";  
-  final String LEMUR_PADSIZE   = "padDimensions";
-  final String LEMUR_IPADDR      = "lemurIp";
-  final String LEMUR_IN_PORT     = "lemurInPort";
-  final String LEMUR_PLAY_BTN    = "playButton";
-  final String LEMUR_CLEAR_BTN   = "clearButton";
+  //Lemur Key Names from Config file 
+  final String LEMUR_PAD_BTN_NAME           = "padButtonName";  
+  final String LEMUR_PADSIZE                = "padDimensions";
+  final String LEMUR_IPADDR                 = "lemurIp";
+  final String LEMUR_IN_PORT                = "lemurInPort";
+  final String LEMUR_PLAY_BTN               = "playButton";
+  final String LEMUR_CLEAR_BTN              = "clearButton";
   final String LEMUR_PATTERN_MENU_ADDR                   = "patternMenuAddr";
   final String LEMUR_MENU_SELECTION        = "patternMenuSelection";  
   final String PATTERN_FILE_NAME            = "patternFileNames";

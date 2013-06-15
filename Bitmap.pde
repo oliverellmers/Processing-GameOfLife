@@ -32,14 +32,13 @@ class Bitmap {
     this(0, 0, w, h, r, c);
     
     int padding = (cols - pattern.getCols());
-    
     int cursor = 0;
 
     if ( startCol + pattern.getCols() <= cols && 
       (startRow * cols + startCol + pattern.getPixels().size() <= this.getPixelCount() )) {
       cursor = startRow * cols + startCol;
     }
-
+    
 
     setPixel(0, pattern.getPixels().get(0));
     ++cursor;
@@ -47,7 +46,7 @@ class Bitmap {
       
       if ( i % pattern.getCols() == 0 ) {
         cursor += padding;
-        println("");
+    
       }
       setPixel(cursor, pattern.getPixels().get(i));
       ++cursor;

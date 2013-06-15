@@ -13,6 +13,7 @@ public class LemurController implements InterfaceLemurController {
     controllers = new ArrayList<InterfaceLemurController>();
     controllers.add(  new SwitchPadController());
     controllers.add( new ControlButtonController());
+    controllers.add( new MenuController());
 
   } 
 
@@ -98,5 +99,18 @@ public class LemurController implements InterfaceLemurController {
       return false;
     }
   }
+  
+  
+  private class MenuController implements InterfaceLemurController {
+    public boolean handleMessage(OscMessage msg) {
+      if(msg.checkAddrPattern(model.getLemurMenuAddrPattern()) == true) {
+        
+        return true;
+        
+      }
+      return false;
+    }
+  }
+  
 }
 

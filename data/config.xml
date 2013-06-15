@@ -20,6 +20,10 @@
 		<key>cellShape</key>
 		<value>rectangle</value> <!-- rectangle or ellipse -->
 	</param>	
+	<param>
+		<key>rlePath</key>
+		<value>data/rle</value>
+	</param>
 	<!--	LEMUR config	-->
 	<lemurConfig>
 		<!-- enter the root for the pad buttons-->
@@ -51,6 +55,17 @@
 			<key>lemurPadAddr</key>
 			<value>/Pixels/x</value>
 		</param>
-
+		<param>
+			<key>patternMenuAddr</key>
+			<value>mnuPattern</value>
+		</param>
+		<param>
+			<key>patternMenuSelection</key>
+			<value>bigGlider,glider,gosperGliderGun,queenBeeLoop,queenBeeShuttle,p246GliderShuttle</value>
+		</param>	
+		<param>
+			<key>patternFileNames</key>
+			<value>bigglider.rle,glider.rle,gosperglidergun.rle,queenbeeloop.rle,queenbeeshuttle.rle,p246glidershuttle.rle</value>	
+		</param>
 	</lemurConfig>
 </config>

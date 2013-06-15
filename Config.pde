@@ -12,6 +12,7 @@ class Config implements ConfigInterface {
   final String APP_GMATRIXSIZE = "gridMatrixSize";
   final String APP_GSIZE = "gridSize";
   final String APP_RENDERSPEED = "renderSpeed";  
+  final String APP_RLE_PATH = "rlePath";
 
   //Bitmap Properties
   final String CELL_SHAPE = "cellShape";
@@ -23,6 +24,9 @@ class Config implements ConfigInterface {
   final String LEMUR_IN_PORT     = "lemurInPort";
   final String LEMUR_PLAY_BTN    = "playButton";
   final String LEMUR_CLEAR_BTN   = "clearButton";
+  final String LEMUR_PATTERN_MENU_ADDR                   = "patternMenuAddr";
+  final String LEMUR_MENU_SELECTION        = "patternMenuSelection";  
+  final String PATTERN_FILE_NAME            = "patternFileNames";
   
   XML configXML;
   Config lemurConfig;

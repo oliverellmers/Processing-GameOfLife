@@ -27,7 +27,7 @@ class AppModel {
     pattern = new ArrayListPattern(padRows, padCols);
 
     for (int i=0; i<padCount; ++i) {      
-      LemurButton lb = new LemurButton(padRootName + i); 
+      LemurButton lb = new LemurButton(padRootName, i); 
       padButtons.add(lb);
       pattern.setValue(i, 0);
     }

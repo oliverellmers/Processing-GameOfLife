@@ -44,8 +44,10 @@ class Bitmap {
     setPixel(0, pattern.getPixels().get(0));
     ++cursor;
     for (int i=1; i < pattern.getPixels().size(); ++i ) {
+      
       if ( i % pattern.getCols() == 0 ) {
         cursor += padding;
+        println("");
       }
       setPixel(cursor, pattern.getPixels().get(i));
       ++cursor;
@@ -171,6 +173,26 @@ class Bitmap {
   public String toString() {
     return borderPixelValues.toString();
   }
+  
+  public String imageString() {
+   String ret = "";
+   String separator = "   ";
+   String zeroValue = ".";
+   String oneValue = "1";
+   
+   for(int j=0; j < rows; ++j) {
+     for(int i=0; i < cols; ++i) {
+       int ind = j * cols + i;
+       if( ind < getPixels().size() ) {
+         ret += getPixels().get(j*cols + i ).getValue() == 0 ? zeroValue : oneValue;
+         ret += separator;
+       }
+     }
+     ret += "\n";
+   }
+   
+   return ret;    
+  }
 
   public void save(String filename) {
     PrintWriter output = createWriter(filename);
@@ -214,11 +236,8 @@ class Bitmap {
     }
 
     for (BitmapCell b : borderPixelValues ) {
-      if (b.getValue() > 0 ) {
-        
-        b.draw();
-        
-                
+      if (b.getValue() > 0 ) {        
+        b.draw();                
       }
     }
   }
@@ -239,6 +258,7 @@ class Bitmap {
       float _y = lerp(pos.y, pos.y + dim.y, jnorm);
 
       BitmapCell bmp = new BitmapCell(currentR, currentC, _x, _y, cellDim.x, cellDim.y);
+      
       bmp.setValue(0);
       borderPixelValues.add( bmp );
     }

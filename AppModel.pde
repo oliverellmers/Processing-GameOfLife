@@ -4,7 +4,9 @@ class AppModel {
   int gWidth = 100, gHeight = 100; //Default - Override in config file
   int renderSpeed = 5;
 
-  PVector lemurInsertionRange = new PVector();
+  int lemurInsertIndex;
+  int lemurColOffset = 0;
+  int lemurRows = 9, lemurCols =16;
 
   private ArrayList<LemurButton> padButtons; 
   private ArrayListPattern pattern;
@@ -23,6 +25,9 @@ class AppModel {
   }
 
   void initializePad(int padRows, int padCols, String padRootName) {
+    lemurRows = padRows;
+    lemurCols = padCols;
+    
     int padCount = padRows * padCols;
     pattern = new ArrayListPattern(padRows, padCols);
 
@@ -67,10 +72,14 @@ class AppModel {
     bitmap.draw();
   }
 
-  public void setBitmapPixelFromLemur(float normalizedPosition, int value ) {
-    int i = floor(normalizedPosition*bitmap.getPixelCount() ); //floor(lerp(lemurInsertionRange.x,lemurInsertionRange.y, normalizedPosition));
+  public void setBitmapPixelFromLemur(LemurButton btn ) {
+    int r = btn.getId() / lemurCols;
+    int c = btn.getId() % lemurCols;
+    int offset = r * getBitmap().getCols()+ c;//lemurColOffset + c;
     
-    bitmap.setPixel(i, value);
+    int i = lemurInsertIndex + offset;
+  println("setBitmapPixelFromLemur:: "+i + " row of btn = " + r);
+    bitmap.setPixel(i, btn.getState());
   }
 
   public void setBitmap(Bitmap b) {
@@ -80,13 +89,27 @@ class AppModel {
   public void setNextBitmap(Bitmap b) {
     next = b;
   }
+
+  public void setLemurColOffset( int offset ) {
+    lemurColOffset = offset;
+  }
   
-  public void setLemurInsertionRange(float begin, float end) {
-    lemurInsertionRange.x = begin;
-    lemurInsertionRange.y = end;
+  public int getLemurColOffset() { return lemurColOffset; }
+  
+  public void setLemurInsertIndex(int i) {
+    lemurInsertIndex = i;
+  }
+  
+  public int  getLemurInsertIndex() { return lemurInsertIndex;}  
+
+  public int getLemurRows() { 
+    return lemurRows;
+  }
+  public int getLemurCols() { 
+    return lemurCols;
   }
 
-   public PVector getLemurInsertionRange() {return lemurInsertionRange;}
+
   public Bitmap getBitmap() { 
     return bitmap;
   }
@@ -118,9 +141,6 @@ class AppModel {
     return clearBtnAddr;
   }  
 
-  /*
-    get the bitmap rows
-  */
   public int getRows() { 
     return rows;
   }
@@ -128,10 +148,6 @@ class AppModel {
     rows = r;
   }
 
-
-  /*
-    get the bitmap cols
-  */
   public int getCols() { 
     return cols;
   }

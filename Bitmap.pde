@@ -232,8 +232,8 @@ class Bitmap {
       int currentC = i % cols;
       int currentR = i / cols;      
 
-      float inorm = (currentR + 0.5)/cols;
-      float jnorm = (currentC + 0.5)/rows;
+      float inorm = (currentC + 0.5)/cols;
+      float jnorm = (currentR + 0.5)/rows;
 
       float _x = lerp(pos.x, pos.x + dim.x, inorm);
       float _y = lerp(pos.y, pos.y + dim.y, jnorm);

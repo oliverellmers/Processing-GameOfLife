@@ -80,7 +80,6 @@ class AppModel {
     int offset = r * getBitmap().getCols()+ c;//lemurColOffset + c;
     
     int i = lemurInsertIndex + offset;
-  println("setBitmapPixelFromLemur:: "+i + " row of btn = " + r);
     bitmap.setPixel(i, btn.getState());
   }
 

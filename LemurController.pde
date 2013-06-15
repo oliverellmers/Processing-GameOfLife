@@ -87,8 +87,11 @@ public class LemurController implements InterfaceLemurController {
         if (btn.getName().equals(find)) {
           btn.setState( int(msg.get(0).floatValue()));
           model.setPatternPixel(count,btn.getState());
+          println("SwitchPadController::handleMessage\n" + model.getCurrentLemurPattern());
 
-          println("SwitchPadController::handleMessage\n" + model.getCurrentLemurPattern());           
+          float normInd = float(btn.id) / model.getPad().size(); 
+          println("normalized Index = " + normInd);
+          model.setBitmapPixelFromLemur(normInd, btn.getState());          
           return true;
         }
         ++count;

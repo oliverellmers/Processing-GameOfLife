@@ -80,6 +80,17 @@ void initialize() {
     model.setLemurClearBtnAddr(lemurConfig.getValue(config.LEMUR_CLEAR_BTN));    
 
     model.initializePad(lemurRows, lemurCols, padRootName);
+    
+    //center the lemurPad grid on the Bitmap
+    float insertRow = model.getRows() / 2 - lemurRows / 2; 
+    float insertCol = model.getCols() / 2 - lemurCols / 2;
+    float insertIndex = insertRow * model.getCols() + insertCol;
+    float endIndex = insertIndex + lemurRows*lemurCols; 
+    
+    if( endIndex <= model.getBitmap().getPixelCount() ) {
+      model.setLemurInsertionRange(insertIndex, endIndex);
+      println("Model lemur insertion range = " + model.getLemurInsertionRange());
+    } 
   } 
   catch (Exception e) {
     println(e);

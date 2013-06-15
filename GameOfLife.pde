@@ -61,7 +61,7 @@ void initialize() {
     model.setGridHeight(Integer.parseInt(configSize[1]));
 
     model.setRenderSpeed(Integer.parseInt(config.getValue( config.APP_RENDERSPEED)));
-    
+
     model.initializeBitmap();      
 
     //BITMAP configuration
@@ -78,6 +78,8 @@ void initialize() {
 
     model.setPatternFiles(patternFiles);
     model.setLemurMenuAddrPattern(lemurConfig.getValue(config.LEMUR_PATTERN_MENU_ADDR));
+
+
     //    lemurIPInAddr = lemurConfig.getValue(config.LEMUR_IPADDR);
     //    lemurSendPort = Integer.parseInt(lemurConfig.getValue(config.LEMUR_IN_PORT));
 
@@ -90,26 +92,22 @@ void initialize() {
     model.setLemurPlayBtnAddr(lemurConfig.getValue(config.LEMUR_PLAY_BTN));
     model.setLemurClearBtnAddr(lemurConfig.getValue(config.LEMUR_CLEAR_BTN));    
     model.initializePad(lemurRows, lemurCols, padRootName);
-    
+
     //center the lemurPad grid on the Bitmap
-    
+
     int insertRow = model.getRows() / 2 - lemurRows / 2; 
     int insertCol = model.getCols() / 2 - lemurCols / 2;    
-    
+
     model.setLemurInsertIndex(insertRow * model.getBitmap().getCols() + insertCol);
 
     int offset = model.getBitmap().getCols() - model.getLemurCols() ;
     model.setLemurColOffset(offset );
-    
-  
   } 
   catch (Exception e) {
     println(e);
     println(e.getStackTrace());
   }
 }
-
-
 
 void setup() {
   size(1024, 768, P2D);
@@ -160,7 +158,7 @@ void mousePressed() {
 }
 
 void keyPressed() {
-  
+
   if (key == 's' || key == 'S') {
     println("saving frame = " + frame );
     saveFrame("screengrabs/grab#####.png");
@@ -261,13 +259,17 @@ void loadFile() {
     );   
 
   //String path = dataPath("") +"/rle/glider.rle";
-  int gWidth = model.getGridWidth();
-  int gHeight = model.getGridHeight();
-  int rows = model.getRows();
-  int cols = model.getCols();
 
+  parseFile(path);
+}
 
+void parseFile(String path) {
   if (path != null) {
+    int gWidth = model.getGridWidth();
+    int gHeight = model.getGridHeight();
+    int rows = model.getRows();
+    int cols = model.getCols();
+    
     RLEPattern pattern;
     pattern = parser.parse(path);
     Bitmap p = new Bitmap(pattern, gWidth, gHeight, rows, cols, rows/2 - pattern.rows/2, cols/2 - pattern.cols/2);
@@ -286,10 +288,9 @@ void oscEvent(OscMessage msg) {
   //  println("### received an osc message with addrpattern "+msg.addrPattern()+" and typetag "+msg.typetag());  
   //println("Lemur controller can handle message: " + lemurController.canHandleMessage(msg));
 
-
   boolean handled = lemurController.handleMessage(msg);
   if (!handled) {
-    println("** OSC message NOT handled = " +  handled);    
+    println("** OSC message NOT handled ---> " );    
     msg.print();
   }
 }

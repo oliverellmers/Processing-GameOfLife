@@ -34,32 +34,42 @@ public class LemurController implements InterfaceLemurController {
 
 
   private class ControlButtonController implements InterfaceLemurController {
+    final int PLAY = 1;
+    final int PAUSE = 0;
+    
     public boolean handleMessage(OscMessage msg) {
       boolean handled = false;
       if( msg.checkAddrPattern( model.getLemurPlayBtnAddr()) == true) {
-        handleLemurPlayBtn(msg);
-        handled = true;
+        handled = handleLemurPlayBtn(msg);
+        
       } 
       else if( msg.checkAddrPattern( model.getLemurClearBtnAddr()) == true) {
-        handleLemurClearBtn(msg);
-        handled = true;
+        handled = handleLemurClearBtn(msg);
       }
       
       return handled;
     }    
     
-    private void handleLemurPlayBtn(OscMessage msg) {
+    private boolean handleLemurPlayBtn(OscMessage msg) {
       //if button is on then nap the current pattern and send it to the bitmap
       //if button is off then what??
+      boolean handled = false;
       int state = msg.get(0).floatValue() > 0 ? 1 : 0;
-      if(state == 1) {
+      if(state == PLAY) {
         println("Play button handler state = " + state);        
         model.setBitmapPixels( model.getCurrentLemurPattern() );
+        handled = true;
+        
+      } else if (state == PAUSE ) {
+        println("Play button handler state = " + state);
+        model.setPause(true);        
+        handled = true;
       }
-      
+      return handled;
     }
     
-    private void handleLemurClearBtn(OscMessage msg) {
+    private boolean handleLemurClearBtn(OscMessage msg) {
+      return false;
     }
   }
 

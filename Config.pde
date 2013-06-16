@@ -28,6 +28,7 @@ class Config implements ConfigInterface {
   final String LEMUR_PATTERN_MENU_ADDR     = "patternMenuAddr";
   final String LEMUR_MENU_SELECTION        = "patternMenuSelection";  
   final String PATTERN_FILE_NAME            = "patternFileNames";
+  final String LEMUR_FILE_LOADED_PLAY_BTN =  "playFileLoadedButton";
   
   XML configXML;
   Config lemurConfig;

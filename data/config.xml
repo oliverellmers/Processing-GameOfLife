@@ -30,19 +30,19 @@
 		<!-- enter the root for the pad buttons-->
 		<param>
 			<key>padButtonName</key>
-			<value>SwitchPad/btn</value>
+			<value>/SwitchPad/btn</value>
 		</param>
 		<param>
 			<key>playButton</key>
-			<value>btnPlay</value>
+			<value>/btnPlay</value>
 		</param>	
 		<param>
 			<key>pauseButton</key>
-			<value>btnPause</value>
+			<value>/btnPause</value>
 		</param>		
 		<param>
 			<key>clearButton</key>
-			<value>btnClear</value>
+			<value>/btnClear</value>
 		</param>			
 		<param>
 			<key>padDimensions</key>
@@ -62,7 +62,7 @@
 		</param>
 		<param>
 			<key>patternMenuAddr</key>
-			<value>mnuPattern</value>
+			<value>/mnuPattern</value>
 		</param>
 		<param>
 			<key>patternMenuSelection</key>
@@ -71,6 +71,10 @@
 		<param>
 			<key>patternFileNames</key>
 			<value>bigglider.rle,glider.rle,gosperglidergun.rle,queenbeeloop.rle,queenbeeshuttle.rle,p246glidershuttle.rle</value>	
+		</param>
+		<param>
+			<key>playFileLoadedButton</key>
+			<value>/loadedFileContainer/btnPlayFileLoaded</value>
 		</param>
 	</lemurConfig>
 </config>

@@ -49,27 +49,20 @@ public class LemurController implements InterfaceLemurController {
       return handled;
     }    
 
-    private boolean handleLemurPlayBtn(OscMessage msg) {
-      //if button is on then nap the current pattern and send it to the bitmap
-      //if button is off then what??
-      boolean handled = false;
-      int state = msg.get(0).floatValue() > 0 ? 1 : 0;
-      if (state == PLAY) {
-        println("Play button handler state = " + state);   
+    private boolean handleLemurPlayBtn(OscMessage msg) {   
         model.setPlaying(true);     
         model.setBitmapPixels( model.getCurrentLemurPattern() );
-        handled = true;
-      } 
-      else if (state == PAUSE ) {
-        println("Play button handler state = " + state);
-        model.setPlaying(false);        
-        handled = true;
-      }
-      return handled;
+        return true;
     }
 
-    private boolean handleLemurClearBtn(OscMessage msg) {
+    private boolean handleLemurPauseBtn(OscMessage msg) {
       return false;
+    }
+    
+    private boolean handleLemurClearBtn(OscMessage msg) {
+      model.setPlaying(false);
+      model.clearBitmap();
+      return true;
     }
   }
 

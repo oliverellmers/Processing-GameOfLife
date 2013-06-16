@@ -86,6 +86,10 @@ class AppModel {
   public void setBitmap(Bitmap b) {
     bitmap = b;
   }
+  
+  public void clearBitmap() {
+    bitmap.clear();
+  }
 
   public void setNextBitmap(Bitmap b) {
     next = b;

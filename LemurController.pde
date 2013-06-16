@@ -10,25 +10,31 @@ public class LemurController extends AbstractLemurController {
 
   LemurController() {
     messageAddresses = new ArrayList<String>();
+    controllers = new ArrayList<AbstractLemurController>();
     
     ControlButtonController cbc = new ControlButtonController();
     cbc.registerPattern(model.getAddrPattern(config.LEMUR_PLAY_BTN));
     cbc.registerPattern(model.getAddrPattern(config.LEMUR_PAUSE_BTN));
     cbc.registerPattern(model.getAddrPattern(config.LEMUR_CLEAR_BTN));
+    cbc.registerPattern(model.getAddrPattern(config.LEMUR_FILE_LOADED_PLAY_BTN));
+    controllers.add( cbc);
     
-    println("---->>>"+model.getAddrPattern(config.LEMUR_PLAY_BTN));
+    MenuController mc = new MenuController();    
+    mc.registerPattern( model.getAddrPattern(config.LEMUR_PATTERN_MENU_ADDR));
     
-    controllers = new ArrayList<AbstractLemurController>();
+    controllers.add( mc ); //new MenuController());
+
+    
     controllers.add(  new SwitchPadController());
-    controllers.add( cbc) ;//new ControlButtonController());
-    controllers.add( new MenuController());
+    
+    
   } 
 
 
   boolean handleMessage(OscMessage msg) {
     for (AbstractLemurController lc : controllers ) {
       if (lc.canHandleMessage(msg) == true) {
-//        println(" Controller is handling the message " + lc.handleMessage(msg));
+        println(" Controller is handling the message " + lc.handleMessage(msg));
         return lc.handleMessage(msg);
       }
     }
@@ -45,37 +51,42 @@ public class LemurController extends AbstractLemurController {
     public boolean handleMessage(OscMessage msg) {
       boolean handled = false;
       String component = model.getComponentFromAddrPattern(msg.addrPattern());
-      
-      
-      if( component.equals(config.LEMUR_PLAY_BTN) ) {
+
+
+      if ( component.equals(config.LEMUR_PLAY_BTN) ) {
         handled = handleLemurPlayBtn(msg);
       } 
-      else if( component.equals(config.LEMUR_CLEAR_BTN) ) {
+      else if ( component.equals(config.LEMUR_CLEAR_BTN) ) {
         handled = handleLemurClearBtn(msg);
       }
-      else if( component.equals(config.LEMUR_PAUSE_BTN) ) {
+      else if ( component.equals(config.LEMUR_PAUSE_BTN) ) {
         handled = handleLemurPauseBtn(msg);
       }
-//      else if(msg.checkAddrPattern( model.getLemurCloseFileLoadedBtnAddr()) == true ) {
-//        handled = handleLemurCloseFileLoadedBtn();
-//      }
+      else if( component.equals(config.LEMUR_FILE_LOADED_PLAY_BTN) ) {
+        handled = handleLemurCloseFileLoadedBtn(msg);
+      }
       return handled;
     }    
 
     private boolean handleLemurPlayBtn(OscMessage msg) {   
-        model.setPlaying(true);     
-        model.setBitmapPixels( model.getCurrentLemurPattern() );
-        return true;
+      model.setPlaying(true);     
+      model.setBitmapPixels( model.getCurrentLemurPattern() );
+      return true;
     }
 
     private boolean handleLemurPauseBtn(OscMessage msg) {
       model.setPlaying(false);
       return true;
     }
-    
+
     private boolean handleLemurClearBtn(OscMessage msg) {
       model.setPlaying(false);
       model.clearBitmap();
+      return true;
+    }
+    
+    private boolean handleLemurCloseFileLoadedBtn(OscMessage msg) {
+      model.setPlaying(true);
       return true;
     }
   }
@@ -83,20 +94,21 @@ public class LemurController extends AbstractLemurController {
   private class SwitchPadController extends AbstractLemurController {
 
     @Override
-    public boolean canHandleMessage(OscMessage msg) {
+      public boolean canHandleMessage(OscMessage msg) {
       boolean isButton = msg.addrPattern().indexOf( model.getLemurPadButtonRootAddress() ) >= 0;
       return isButton;
     }
-    
+
     public boolean handleMessage(OscMessage msg) {
       //find the button with the address of this message
-      int st = msg.addrPattern().indexOf("/")+1;
+      int st = msg.addrPattern().indexOf("/");
       int en = msg.addrPattern().lastIndexOf("/");
 
       String find = msg.addrPattern().substring(st, en);
 
       int count = 0;
       for (LemurButton btn : model.getPad()) {
+        println(btn.getName());
         if (btn.getName().equals(find)) {
           btn.setState( int(msg.get(0).floatValue()));
           model.setPatternPixel(count, btn.getState());
@@ -115,10 +127,11 @@ public class LemurController extends AbstractLemurController {
 
   private class MenuController extends AbstractLemurController {
     public boolean handleMessage(OscMessage msg) {
-      if (msg.checkAddrPattern(model.getLemurMenuAddrPattern()) == true) {
-
+      String component = model.getComponentFromAddrPattern(msg.addrPattern());      
+      
+      if( component.equals(config.LEMUR_PATTERN_MENU_ADDR)) {
         int selection = int(msg.get(0).floatValue());
-        println("GOT here Selection = " + selection );        
+              
         parseFile( model.getPatternFile(selection));
         return true;
       }
@@ -140,7 +153,7 @@ public class LemurController extends AbstractLemurController {
       );   
 
     //String path = dataPath("") +"/rle/glider.rle";
-  
+
     parseFile(path);
   }
 

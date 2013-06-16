@@ -1,6 +1,6 @@
 <JZML>
 <PROJECT version="4030" width="1024" height="724" osc_target="-1" midi_target="-1" kbmouse_target="-1" skin="Pixel"/>
-<WINDOW class="JAZZINTERFACE" text="Default" x="0" y="0" width="1024" height="724" state="1" group="0" font="tahoma,11,0" >
+<WINDOW class="JAZZINTERFACE" text="Default" x="0" y="0" width="1024" height="724" state="0" group="0" font="tahoma,11,0" >
 <WINDOW class="Container" text="SwitchPad" x="56" y="76" width="912" height="484" id="293" state="1" group="0" font="tahoma,10,0" send="1" osc_target="-2" midi_target="-2" kbmouse_target="-2" color="1596013" label="1" tabbar="1" meta="0">
 <WINDOW class="CustomButton" text="btn0" x="0" y="0" width="56" height="52" state="241" group="0" font="tahoma,20,0" send="1" osc_target="0" midi_target="-2" kbmouse_target="-2" behavior="0" bitmap="0,1" capture="1" color="1907997,1596013" label_off="" label_on="" outline="1">
 <PARAM name="x=" value="0.000000" send="17" osc_target="0" osc_trigger="1" osc_message="/SwitchPad/btn0/x" midi_target="0" midi_trigger="1" midi_message="0xB0,0xB0,0,0" midi_scale="0,16383" osc_scale="0.000000,1.000000" kbmouse_target="-1" kbmouse_trigger="1" kbmouse_message="0,0,0" kbmouse_scale="0,1,0,1"/>
@@ -1446,17 +1446,20 @@
 <WINDOW class="Monitor" text="Monitor" x="859" y="664" width="160" height="60" id="3" state="241" group="0" font="tahoma,20,0" send="1" osc_target="-2" midi_target="-2" kbmouse_target="-2" color="1596013" label="1" precision="3" unit="" value="1">
 <VARIABLE name="value=CustomButton2.x" value="0.000000" send="0" osc_target="0" osc_trigger="1" osc_message="/Monitor/value" midi_target="-1" midi_trigger="1" midi_message="0x90,0x90,0,0" midi_scale="0,16383" kbmouse_target="-1" kbmouse_trigger="1" kbmouse_message="0,0,0" kbmouse_scale="0,1,0,1"/>
 </WINDOW>
-<WINDOW class="LemurMenu" text="Menu" x="555" y="8" width="469" height="60" id="146" state="241" group="0" font="tahoma,14,0" send="1" osc_target="-2" midi_target="-2" kbmouse_target="-2" color="1596013" scale="0" content="big glider,glider,gosper glider gun,queen bee loop,queen bee shuttle,p246 glider shuttle,">
-<PARAM name="selection=" value="0.000000" send="1" osc_target="0" osc_trigger="1" osc_message="/Menu/selection" midi_target="0" midi_trigger="1" midi_message="0xB0,0xB0,1,1" midi_scale="0,16383" osc_scale="0.000000,1.000000" kbmouse_target="-1" kbmouse_trigger="1" kbmouse_message="0,0,0" kbmouse_scale="0,1,0,1"/>
+<WINDOW class="LemurMenu" text="mnuPattern" x="555" y="8" width="469" height="60" id="146" state="241" group="0" font="tahoma,14,0" send="1" osc_target="-2" midi_target="-2" kbmouse_target="-2" color="1596013" scale="0" content="big glider,glider,gosper glider gun,queen bee loop,queen bee shuttle,p246 glider shuttle,">
+<PARAM name="selection=" value="0.000000" send="1" osc_target="0" osc_trigger="1" osc_message="/mnuPattern/selection" midi_target="0" midi_trigger="1" midi_message="0xB0,0xB0,1,1" midi_scale="0,16383" osc_scale="0.000000,1.000000" kbmouse_target="-1" kbmouse_trigger="1" kbmouse_message="0,0,0" kbmouse_scale="0,1,0,1"/>
 </WINDOW>
-<WINDOW class="Text" text="Text" x="384" y="8" width="171" height="60" id="149" state="245" group="0" font="tahoma,14,0" send="1" osc_target="-2" midi_target="-2" kbmouse_target="-2" color="1596013" content="load a pattern:">
+<WINDOW class="Text" text="Text" x="384" y="8" width="171" height="60" id="149" state="245" group="0" font="tahoma,14,0" send="1" osc_target="-2" midi_target="-2" kbmouse_target="-2" color="1596013" content="choose a pattern to watch:">
 <VARIABLE name="light=0" send="0" osc_target="0" osc_trigger="1" osc_message="/Text/light" midi_target="-1" midi_trigger="1" midi_message="0x90,0x90,0,0" midi_scale="0,16383" kbmouse_target="-1" kbmouse_trigger="1" kbmouse_message="0,0,0" kbmouse_scale="0,1,0,1"/>
 </WINDOW>
-<WINDOW class="CustomButton" text="btnPlay" x="12" y="583" width="254" height="129" id="147" state="241" group="0" font="tahoma,20,0" send="1" osc_target="-2" midi_target="-2" kbmouse_target="-2" behavior="0" bitmap="0,0" capture="1" color="865343,1596013" label_off="play" label_on="stop" outline="1">
-<PARAM name="x=" value="0.000000" send="17" osc_target="0" osc_trigger="1" osc_message="/btnPlay/x" midi_target="0" midi_trigger="1" midi_message="0xB0,0xB0,2,2" midi_scale="0,16383" osc_scale="0.000000,1.000000" kbmouse_target="-1" kbmouse_trigger="1" kbmouse_message="0,0,0" kbmouse_scale="0,1,0,1"/>
+<WINDOW class="CustomButton" text="btnPlay" x="12" y="583" width="254" height="129" id="147" state="241" group="0" font="tahoma,20,0" send="1" osc_target="-2" midi_target="-2" kbmouse_target="-2" behavior="1" bitmap="6,6" capture="1" color="865343,1596013" label_off="play" label_on="stop" outline="1">
+<PARAM name="x=" value="0.000000" send="17" osc_target="0" osc_trigger="2" osc_message="/btnPlay/x" midi_target="0" midi_trigger="1" midi_message="0xB0,0xB0,2,2" midi_scale="0,16383" osc_scale="0.000000,1.000000" kbmouse_target="-1" kbmouse_trigger="1" kbmouse_message="0,0,0" kbmouse_scale="0,1,0,1"/>
 <VARIABLE name="light=0" send="0" osc_target="0" osc_trigger="1" osc_message="/btnPlay/light" midi_target="-1" midi_trigger="1" midi_message="0x90,0x90,0,0" midi_scale="0,16383" kbmouse_target="-1" kbmouse_trigger="1" kbmouse_message="0,0,0" kbmouse_scale="0,1,0,1"/>
+<SCRIPT name="handleclick()" script="selectinterface(1);
+
+" trigger_script="x" trigger_type="0" trigger="3" osc_message="/btnPlay/handleclick" midi_message="0x90,0x90,0,0" midi_target="-1" flag="1"/>
 </WINDOW>
-<WINDOW class="CustomButton" text="btnClear" x="278" y="583" width="254" height="129" id="148" state="241" group="0" font="tahoma,20,0" send="1" osc_target="-2" midi_target="-2" kbmouse_target="-2" behavior="1" bitmap="0,0" capture="1" color="865343,1596013" label_off="clear" label_on="" outline="1">
+<WINDOW class="CustomButton" text="btnClear" x="278" y="583" width="254" height="129" id="148" state="241" group="0" font="tahoma,20,0" send="1" osc_target="-2" midi_target="-2" kbmouse_target="-2" behavior="1" bitmap="0,0" capture="1" color="865343,1596013" label_off="clean the board" label_on="" outline="1">
 <PARAM name="x=" value="0.000000" send="17" osc_target="0" osc_trigger="1" osc_message="/btnClear/x" midi_target="0" midi_trigger="1" midi_message="0xB0,0xB0,2,2" midi_scale="0,16383" osc_scale="0.000000,1.000000" kbmouse_target="-1" kbmouse_trigger="1" kbmouse_message="0,0,0" kbmouse_scale="0,1,0,1"/>
 <VARIABLE name="light=0" send="0" osc_target="0" osc_trigger="1" osc_message="/btnClear/light" midi_target="-1" midi_trigger="1" midi_message="0x90,0x90,0,0" midi_scale="0,16383" kbmouse_target="-1" kbmouse_trigger="1" kbmouse_message="0,0,0" kbmouse_scale="0,1,0,1"/>
 <SCRIPT name="clearPad()" script="decl btn;
@@ -1470,8 +1473,15 @@ if(btnClear.x == 1) {
 }
 " trigger_script="btnClear.x" trigger_type="0" trigger="4" osc_message="/btnClear/clearPad" midi_message="0x90,0x90,0,0" midi_target="-1" flag="1"/>
 </WINDOW>
-<WINDOW class="Text" text="Console" x="532" y="583" width="487" height="48" id="294" state="209" group="0" font="tahoma,14,0" send="1" osc_target="-2" midi_target="-2" kbmouse_target="-2" color="8421376" content="got here">
+<WINDOW class="Text" text="Console" x="532" y="583" width="487" height="48" id="294" state="209" group="0" font="tahoma,14,0" send="1" osc_target="-2" midi_target="-2" kbmouse_target="-2" color="8421376" content="I am no longer clicked">
 <VARIABLE name="light=0" send="0" osc_target="0" osc_trigger="1" osc_message="/Console/light" midi_target="-1" midi_trigger="1" midi_message="0x90,0x90,0,0" midi_scale="0,16383" kbmouse_target="-1" kbmouse_trigger="1" kbmouse_message="0,0,0" kbmouse_scale="0,1,0,1"/>
+</WINDOW>
+</WINDOW>
+<WINDOW class="JAZZINTERFACE" text="PlayState" x="0" y="0" width="1024" height="724" id="1" state="1" group="0" font="tahoma,11,0" >
+<WINDOW class="CustomButton" text="btnPause" x="56" y="76" width="912" height="484" id="297" state="241" group="0" font="tahoma,23,0" send="1" osc_target="-2" midi_target="-2" kbmouse_target="-2" behavior="1" bitmap="0,0" capture="1" color="3739210,5052525" label_off="tap to enter a new pattern" label_on="tap to enter a new pattern" outline="1">
+<PARAM name="x=" value="0.000000" send="17" osc_target="0" osc_trigger="3" osc_message="/btnPause/x" midi_target="0" midi_trigger="1" midi_message="0xB0,0xB0,3,3" midi_scale="0,16383" osc_scale="0.000000,1.000000" kbmouse_target="-1" kbmouse_trigger="1" kbmouse_message="0,0,0" kbmouse_scale="0,1,0,1"/>
+<VARIABLE name="light=0" send="0" osc_target="0" osc_trigger="1" osc_message="/btnPause/light" midi_target="-1" midi_trigger="1" midi_message="0x90,0x90,0,0" midi_scale="0,16383" kbmouse_target="-1" kbmouse_trigger="1" kbmouse_message="0,0,0" kbmouse_scale="0,1,0,1"/>
+<SCRIPT name="handleclick()" script="selectinterface(0);" trigger_script="x" trigger_type="0" trigger="3" osc_message="/btnPause/handleclick" midi_message="0x90,0x90,0,0" midi_target="-1" flag="1"/>
 </WINDOW>
 </WINDOW>
 </JZML>

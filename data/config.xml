@@ -37,6 +37,10 @@
 			<value>btnPlay</value>
 		</param>	
 		<param>
+			<key>pauseButton</key>
+			<value>btnPause</value>
+		</param>		
+		<param>
 			<key>clearButton</key>
 			<value>btnClear</value>
 		</param>			

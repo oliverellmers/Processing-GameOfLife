@@ -45,7 +45,9 @@ public class LemurController implements InterfaceLemurController {
       else if ( msg.checkAddrPattern( model.getLemurClearBtnAddr()) == true) {
         handled = handleLemurClearBtn(msg);
       }
-
+      else if (msg.checkAddrPattern( model.getLemurPauseBtnAddr()) == true) {
+        handled = handleLemurPauseBtn(msg);
+      }
       return handled;
     }    
 
@@ -56,7 +58,8 @@ public class LemurController implements InterfaceLemurController {
     }
 
     private boolean handleLemurPauseBtn(OscMessage msg) {
-      return false;
+      model.setPlaying(false);
+      return true;
     }
     
     private boolean handleLemurClearBtn(OscMessage msg) {

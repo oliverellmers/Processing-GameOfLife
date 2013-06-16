@@ -1,6 +1,6 @@
 <JZML>
 <PROJECT version="4030" width="1024" height="724" osc_target="-1" midi_target="-1" kbmouse_target="-1" skin="Pixel"/>
-<WINDOW class="JAZZINTERFACE" text="Default" x="0" y="0" width="1024" height="724" state="0" group="0" font="tahoma,11,0" >
+<WINDOW class="JAZZINTERFACE" text="Default" x="0" y="0" width="1024" height="724" state="1" group="0" font="tahoma,11,0" >
 <WINDOW class="Container" text="SwitchPad" x="56" y="76" width="912" height="484" id="293" state="1" group="0" font="tahoma,10,0" send="1" osc_target="-2" midi_target="-2" kbmouse_target="-2" color="1596013" label="1" tabbar="1" meta="0">
 <WINDOW class="CustomButton" text="btn0" x="0" y="0" width="56" height="52" state="241" group="0" font="tahoma,20,0" send="1" osc_target="0" midi_target="-2" kbmouse_target="-2" behavior="0" bitmap="0,1" capture="1" color="1907997,1596013" label_off="" label_on="" outline="1">
 <PARAM name="x=" value="0.000000" send="17" osc_target="0" osc_trigger="1" osc_message="/SwitchPad/btn0/x" midi_target="0" midi_trigger="1" midi_message="0xB0,0xB0,0,0" midi_scale="0,16383" osc_scale="0.000000,1.000000" kbmouse_target="-1" kbmouse_trigger="1" kbmouse_message="0,0,0" kbmouse_scale="0,1,0,1"/>
@@ -1446,8 +1446,19 @@
 <WINDOW class="Monitor" text="Monitor" x="859" y="664" width="160" height="60" id="3" state="241" group="0" font="tahoma,20,0" send="1" osc_target="-2" midi_target="-2" kbmouse_target="-2" color="1596013" label="1" precision="3" unit="" value="1">
 <VARIABLE name="value=CustomButton2.x" value="0.000000" send="0" osc_target="0" osc_trigger="1" osc_message="/Monitor/value" midi_target="-1" midi_trigger="1" midi_message="0x90,0x90,0,0" midi_scale="0,16383" kbmouse_target="-1" kbmouse_trigger="1" kbmouse_message="0,0,0" kbmouse_scale="0,1,0,1"/>
 </WINDOW>
-<WINDOW class="LemurMenu" text="mnuPattern" x="555" y="8" width="469" height="60" id="146" state="241" group="0" font="tahoma,14,0" send="1" osc_target="-2" midi_target="-2" kbmouse_target="-2" color="1596013" scale="0" content="big glider,glider,gosper glider gun,queen bee loop,queen bee shuttle,p246 glider shuttle,">
+<WINDOW class="LemurMenu" text="mnuPattern" x="555" y="8" width="469" height="60" id="146" state="241" group="0" font="tahoma,14,0" send="1" osc_target="-2" midi_target="-2" kbmouse_target="-2" color="1596013" scale="0" content="big glider,glider,gosper glider gun,queen bee loop,queen bee shuttle,p246 glider shuttle,choose a pattern to play">
 <PARAM name="selection=" value="0.000000" send="1" osc_target="0" osc_trigger="1" osc_message="/mnuPattern/selection" midi_target="0" midi_trigger="1" midi_message="0xB0,0xB0,1,1" midi_scale="0,16383" osc_scale="0.000000,1.000000" kbmouse_target="-1" kbmouse_trigger="1" kbmouse_message="0,0,0" kbmouse_scale="0,1,0,1"/>
+<VARIABLE name="default_selection=6" send="1" osc_target="0" osc_trigger="1" osc_message="/mnuPattern/default_selection" midi_target="-1" midi_trigger="1" midi_message="0x90,0x90,0,0" midi_scale="0,16383" kbmouse_target="-1" kbmouse_trigger="1" kbmouse_message="0,0,0" kbmouse_scale="0,1,0,1"/>
+<SCRIPT name="onChange()" script="//decl defaultSelection = 6;
+decl items = getattribute(getobject(),'items');
+setattribute(Console,'content',selection);
+if(selection != default_selection) {
+	//setattribute(loadedFileContainer.txtLoadedFile,'content',items[selection]);
+	loadedFileContainer.txtLoadedFile.display(items[selection]);
+    selectinterface(state_fileload);
+}" trigger_script="selection" trigger_type="0" trigger="1" osc_message="/mnuPattern/onChange" midi_message="0x90,0x90,0,0" midi_target="-1" flag="1"/>
+<SCRIPT name="onload()" script="reset();" trigger_script="" trigger_type="5" trigger="1" osc_message="/mnuPattern/onload" midi_message="0x90,0x90,0,0" midi_target="-1" flag="1"/>
+<SCRIPT name="reset()" script="setattribute(getobject(),'selection',default_selection);" trigger_script="" trigger_type="4" trigger="1" osc_message="/mnuPattern/reset" midi_message="0x90,0x90,0,0" midi_target="-1" flag="1"/>
 </WINDOW>
 <WINDOW class="Text" text="Text" x="384" y="8" width="171" height="60" id="149" state="245" group="0" font="tahoma,14,0" send="1" osc_target="-2" midi_target="-2" kbmouse_target="-2" color="1596013" content="choose a pattern to watch:">
 <VARIABLE name="light=0" send="0" osc_target="0" osc_trigger="1" osc_message="/Text/light" midi_target="-1" midi_trigger="1" midi_message="0x90,0x90,0,0" midi_scale="0,16383" kbmouse_target="-1" kbmouse_trigger="1" kbmouse_message="0,0,0" kbmouse_scale="0,1,0,1"/>
@@ -1455,7 +1466,7 @@
 <WINDOW class="CustomButton" text="btnPlay" x="12" y="583" width="254" height="129" id="147" state="241" group="0" font="tahoma,20,0" send="1" osc_target="-2" midi_target="-2" kbmouse_target="-2" behavior="1" bitmap="6,6" capture="1" color="865343,1596013" label_off="play" label_on="stop" outline="1">
 <PARAM name="x=" value="0.000000" send="17" osc_target="0" osc_trigger="2" osc_message="/btnPlay/x" midi_target="0" midi_trigger="1" midi_message="0xB0,0xB0,2,2" midi_scale="0,16383" osc_scale="0.000000,1.000000" kbmouse_target="-1" kbmouse_trigger="1" kbmouse_message="0,0,0" kbmouse_scale="0,1,0,1"/>
 <VARIABLE name="light=0" send="0" osc_target="0" osc_trigger="1" osc_message="/btnPlay/light" midi_target="-1" midi_trigger="1" midi_message="0x90,0x90,0,0" midi_scale="0,16383" kbmouse_target="-1" kbmouse_trigger="1" kbmouse_message="0,0,0" kbmouse_scale="0,1,0,1"/>
-<SCRIPT name="handleclick()" script="selectinterface(1);
+<SCRIPT name="handleclick()" script="selectinterface(state_play);
 
 " trigger_script="x" trigger_type="0" trigger="3" osc_message="/btnPlay/handleclick" midi_message="0x90,0x90,0,0" midi_target="-1" flag="1"/>
 </WINDOW>
@@ -1473,15 +1484,41 @@ if(btnClear.x == 1) {
 }
 " trigger_script="btnClear.x" trigger_type="0" trigger="4" osc_message="/btnClear/clearPad" midi_message="0x90,0x90,0,0" midi_target="-1" flag="1"/>
 </WINDOW>
-<WINDOW class="Text" text="Console" x="532" y="583" width="487" height="48" id="294" state="209" group="0" font="tahoma,14,0" send="1" osc_target="-2" midi_target="-2" kbmouse_target="-2" color="8421376" content="I am no longer clicked">
+<WINDOW class="Text" text="Console" x="532" y="583" width="487" height="48" id="294" state="209" group="0" font="tahoma,14,0" send="1" osc_target="-2" midi_target="-2" kbmouse_target="-2" color="8421376" content="hell">
 <VARIABLE name="light=0" send="0" osc_target="0" osc_trigger="1" osc_message="/Console/light" midi_target="-1" midi_trigger="1" midi_message="0x90,0x90,0,0" midi_scale="0,16383" kbmouse_target="-1" kbmouse_trigger="1" kbmouse_message="0,0,0" kbmouse_scale="0,1,0,1"/>
 </WINDOW>
 </WINDOW>
-<WINDOW class="JAZZINTERFACE" text="PlayState" x="0" y="0" width="1024" height="724" id="1" state="1" group="0" font="tahoma,11,0" >
+<WINDOW class="JAZZINTERFACE" text="FileLoadedState" x="0" y="0" width="1024" height="724" id="2" state="0" group="0" font="tahoma,11,0" >
+<WINDOW class="Container" text="loadedFileContainer" x="56" y="76" width="912" height="484" id="298" state="1" group="0" font="tahoma,10,0" send="1" osc_target="-2" midi_target="-2" kbmouse_target="-2" color="1596013" label="1" tabbar="1" meta="0">
+<WINDOW class="Text" text="txtLoadedFile" x="199" y="125" width="266" height="48" state="225" group="0" font="tahoma,24,0" send="1" osc_target="-2" midi_target="-2" kbmouse_target="-2" color="1596013" content="big glider">
+<VARIABLE name="light=0" send="0" osc_target="0" osc_trigger="1" osc_message="/loadedFileContainer/txtLoadedFile/light" midi_target="-1" midi_trigger="1" midi_message="0x90,0x90,0,0" midi_scale="0,16383" kbmouse_target="-1" kbmouse_trigger="1" kbmouse_message="0,0,0" kbmouse_scale="0,1,0,1"/>
+<SCRIPT name="display(x)" script="setattribute(getobject(),'content',x);
+" trigger_script="" trigger_type="4" trigger="1" osc_message="/loadedFileContainer/txtLoadedFile/display" midi_message="0x90,0x90,0,0" midi_target="-1" flag="1"/>
+</WINDOW>
+<WINDOW class="Text" text="Text2" x="472" y="125" width="192" height="48" id="1" state="241" group="0" font="tahoma,24,0" send="1" osc_target="-2" midi_target="-2" kbmouse_target="-2" color="1596013" content="... is loaded">
+<VARIABLE name="light=0" send="0" osc_target="0" osc_trigger="1" osc_message="/loadedFileContainer/Text2/light" midi_target="-1" midi_trigger="1" midi_message="0x90,0x90,0,0" midi_scale="0,16383" kbmouse_target="-1" kbmouse_trigger="1" kbmouse_message="0,0,0" kbmouse_scale="0,1,0,1"/>
+</WINDOW>
+<WINDOW class="CustomButton" text="btnPlayFileLoaded" x="213" y="267" width="147" height="110" id="2" state="241" group="0" font="tahoma,20,0" send="1" osc_target="-2" midi_target="-2" kbmouse_target="-2" behavior="1" bitmap="6,0" capture="1" color="865343,1596013" label_off="" label_on="" outline="1">
+<PARAM name="x=" value="0.000000" send="17" osc_target="0" osc_trigger="1" osc_message="/loadedFileContainer/btnPlayFileLoaded/x" midi_target="0" midi_trigger="1" midi_message="0xB0,0xB0,4,4" midi_scale="0,16383" osc_scale="0.000000,1.000000" kbmouse_target="-1" kbmouse_trigger="1" kbmouse_message="0,0,0" kbmouse_scale="0,1,0,1"/>
+<VARIABLE name="light=0" send="0" osc_target="0" osc_trigger="1" osc_message="/loadedFileContainer/btnPlayFileLoaded/light" midi_target="-1" midi_trigger="1" midi_message="0x90,0x90,0,0" midi_scale="0,16383" kbmouse_target="-1" kbmouse_trigger="1" kbmouse_message="0,0,0" kbmouse_scale="0,1,0,1"/>
+<SCRIPT name="onclick()" script="selectinterface(state_play);" trigger_script="x" trigger_type="0" trigger="3" osc_message="/loadedFileContainer/btnPlayFileLoaded/onclick" midi_message="0x90,0x90,0,0" midi_target="-1" flag="1"/>
+</WINDOW>
+<WINDOW class="CustomButton" text="btnCloseFileLoaded" x="520" y="267" width="144" height="110" id="3" state="241" group="0" font="tahoma,20,0" send="1" osc_target="-2" midi_target="-2" kbmouse_target="-2" behavior="1" bitmap="14,0" capture="1" color="865343,1596013" label_off="" label_on="" outline="1">
+<PARAM name="x=" value="0.000000" send="25" osc_target="0" osc_trigger="1" osc_message="/btnCloseFileLoaded/x" midi_target="0" midi_trigger="1" midi_message="0xB0,0xB0,5,5" midi_scale="0,16383" osc_scale="0.000000,1.000000" kbmouse_target="-1" kbmouse_trigger="1" kbmouse_message="0,0,0" kbmouse_scale="0,1,0,1"/>
+<VARIABLE name="light=0" send="0" osc_target="0" osc_trigger="1" osc_message="/loadedFileContainer/btnCloseFileLoaded/light" midi_target="-1" midi_trigger="1" midi_message="0x90,0x90,0,0" midi_scale="0,16383" kbmouse_target="-1" kbmouse_trigger="1" kbmouse_message="0,0,0" kbmouse_scale="0,1,0,1"/>
+<SCRIPT name="onclick()" script="selectinterface(state_default);
+" trigger_script="x" trigger_type="0" trigger="3" osc_message="/loadedFileContainer/btnCloseFileLoaded/onclick" midi_message="0x90,0x90,0,0" midi_target="-1" flag="1"/>
+</WINDOW>
+</WINDOW>
+</WINDOW>
+<WINDOW class="JAZZINTERFACE" text="PlayState" x="0" y="0" width="1024" height="724" id="1" state="0" group="0" font="tahoma,11,0" >
 <WINDOW class="CustomButton" text="btnPause" x="56" y="76" width="912" height="484" id="297" state="241" group="0" font="tahoma,23,0" send="1" osc_target="-2" midi_target="-2" kbmouse_target="-2" behavior="1" bitmap="0,0" capture="1" color="3739210,5052525" label_off="tap to enter a new pattern" label_on="tap to enter a new pattern" outline="1">
 <PARAM name="x=" value="0.000000" send="17" osc_target="0" osc_trigger="3" osc_message="/btnPause/x" midi_target="0" midi_trigger="1" midi_message="0xB0,0xB0,3,3" midi_scale="0,16383" osc_scale="0.000000,1.000000" kbmouse_target="-1" kbmouse_trigger="1" kbmouse_message="0,0,0" kbmouse_scale="0,1,0,1"/>
 <VARIABLE name="light=0" send="0" osc_target="0" osc_trigger="1" osc_message="/btnPause/light" midi_target="-1" midi_trigger="1" midi_message="0x90,0x90,0,0" midi_scale="0,16383" kbmouse_target="-1" kbmouse_trigger="1" kbmouse_message="0,0,0" kbmouse_scale="0,1,0,1"/>
 <SCRIPT name="handleclick()" script="selectinterface(0);" trigger_script="x" trigger_type="0" trigger="3" osc_message="/btnPause/handleclick" midi_message="0x90,0x90,0,0" midi_target="-1" flag="1"/>
 </WINDOW>
 </WINDOW>
+<VARIABLE name="state_play=2" send="1" osc_target="0" osc_trigger="1" osc_message="/state_play" midi_target="-1" midi_trigger="1" midi_message="0x90,0x90,0,0" midi_scale="0,16383" kbmouse_target="-1" kbmouse_trigger="1" kbmouse_message="0,0,0" kbmouse_scale="0,1,0,1"/>
+<VARIABLE name="state_fileload=1" send="1" osc_target="0" osc_trigger="1" osc_message="/state_fileload" midi_target="-1" midi_trigger="1" midi_message="0x90,0x90,0,0" midi_scale="0,16383" kbmouse_target="-1" kbmouse_trigger="1" kbmouse_message="0,0,0" kbmouse_scale="0,1,0,1"/>
+<VARIABLE name="state_default=0" send="1" osc_target="0" osc_trigger="1" osc_message="/state_default" midi_target="-1" midi_trigger="1" midi_message="0x90,0x90,0,0" midi_scale="0,16383" kbmouse_target="-1" kbmouse_trigger="1" kbmouse_message="0,0,0" kbmouse_scale="0,1,0,1"/>
 </JZML>

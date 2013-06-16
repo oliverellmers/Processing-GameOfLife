@@ -83,14 +83,19 @@ void initialize() {
     //    lemurIPInAddr = lemurConfig.getValue(config.LEMUR_IPADDR);
     //    lemurSendPort = Integer.parseInt(lemurConfig.getValue(config.LEMUR_IN_PORT));
 
+  
+    // --- button config
+    //TODO: refactor this into an address map
+    model.setLemurPlayBtnAddr(lemurConfig.getValue(config.LEMUR_PLAY_BTN));
+    model.setLemurPauseBtnAddr(lemurConfig.getValue(config.LEMUR_PAUSE_BTN));
+    model.setLemurClearBtnAddr(lemurConfig.getValue(config.LEMUR_CLEAR_BTN));
+
+
+    // --- pad config
     String[] lemurPadSize = lemurConfig.getValue(config.LEMUR_PADSIZE).split(","); 
     int lemurRows = Integer.parseInt(lemurPadSize[0]);
     int lemurCols = Integer.parseInt(lemurPadSize[1]);   
-    String padRootName = lemurConfig.getValue(config.LEMUR_PAD_BTN_NAME);
-
-
-    model.setLemurPlayBtnAddr(lemurConfig.getValue(config.LEMUR_PLAY_BTN));
-    model.setLemurClearBtnAddr(lemurConfig.getValue(config.LEMUR_CLEAR_BTN));    
+    String padRootName = lemurConfig.getValue(config.LEMUR_PAD_BTN_NAME);    
     model.initializePad(lemurRows, lemurCols, padRootName);
 
     //center the lemurPad grid on the Bitmap

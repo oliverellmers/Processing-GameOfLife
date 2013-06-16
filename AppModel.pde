@@ -12,7 +12,8 @@ class AppModel {
   private ArrayListPattern pattern;
   private Bitmap bitmap, next;
 
-  String playBtnAddr, clearBtnAddr, patternMenuAddr;
+  //TODO: Refactor this into a map
+  String playBtnAddr, pauseBtnAddr, clearBtnAddr, patternMenuAddr;
 
   boolean playing = false;
 
@@ -65,8 +66,9 @@ class AppModel {
 
   public ArrayListPattern getCurrentLemurPattern() { 
     return pattern;
-  }  
+  } 
 
+  
   public void setBitmapPixels(LifePattern pattern ) {
     Bitmap b = new Bitmap( pattern, bitmap.getW(), bitmap.getH(), model.getRows(), model.getCols(), model.getRows() / 2 - pattern.getRows() / 2, model.getCols() / 2 - pattern.getCols() / 2 );
 
@@ -120,6 +122,15 @@ class AppModel {
   }
   public Bitmap getNextBitmap() { 
     return next;
+  }
+
+
+  public void setLemurPauseBtnAddr(String addrRoot) {
+    pauseBtnAddr = formatAddrPattern(addrRoot, "x");
+  }
+
+  public String getLemurPauseBtnAddr() {
+    return pauseBtnAddr;
   }
 
   public void setLemurPlayBtnAddr(String addrRoot) {

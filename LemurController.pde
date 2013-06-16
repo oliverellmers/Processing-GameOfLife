@@ -41,31 +41,19 @@ public class LemurController extends AbstractLemurController {
     controllers.add(ctrl);
   }
 
-
   private class ControlButtonController extends AbstractLemurController {
-    final int PLAY = 1;
-    final int PAUSE = 0; 
-    
-
-
     public boolean handleMessage(OscMessage msg) {
       boolean handled = false;
       String component = model.getComponentFromAddrPattern(msg.addrPattern());
       
       
       if( component.equals(config.LEMUR_PLAY_BTN) ) {
-      //if ( msg.checkAddrPattern( model.getLemurPlayBtnAddr()) == true) {
-        println("handling play button click");
         handled = handleLemurPlayBtn(msg);
       } 
       else if( component.equals(config.LEMUR_CLEAR_BTN) ) {
-       println("handling clear button click"); 
-      //if ( msg.checkAddrPattern( model.getLemurClearBtnAddr()) == true) {
         handled = handleLemurClearBtn(msg);
       }
       else if( component.equals(config.LEMUR_PAUSE_BTN) ) {
-        println("handling pause button click");        
-        //if (msg.checkAddrPattern( model.getLemurPauseBtnAddr()) == true) {
         handled = handleLemurPauseBtn(msg);
       }
 //      else if(msg.checkAddrPattern( model.getLemurCloseFileLoadedBtnAddr()) == true ) {
@@ -96,9 +84,7 @@ public class LemurController extends AbstractLemurController {
 
     @Override
     public boolean canHandleMessage(OscMessage msg) {
-      //if the message has the LemurBtn in it. It is for me
       boolean isButton = msg.addrPattern().indexOf( model.getLemurPadButtonRootAddress() ) >= 0;
-     println("is a button = " + isButton + "  " + msg.addrPattern() + "   " + config.LEMUR_PAD_BTN_NAME); 
       return isButton;
     }
     
@@ -114,8 +100,8 @@ public class LemurController extends AbstractLemurController {
         if (btn.getName().equals(find)) {
           btn.setState( int(msg.get(0).floatValue()));
           model.setPatternPixel(count, btn.getState());
-          println("SwitchPadController::handleMessage\n" + model.getCurrentLemurPattern());
 
+          println("SwitchPadController::handleMessage\n" + model.getCurrentLemurPattern());
 
           model.setBitmapPixelFromLemur(btn);          
           return true;

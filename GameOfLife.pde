@@ -85,13 +85,9 @@ void initialize() {
 
 
     // --- button config
-    //TODO: refactor this into an address map
     model.addAddrPattern(config.LEMUR_PLAY_BTN, lemurConfig.getValue(config.LEMUR_PLAY_BTN), "x");
     model.addAddrPattern(config.LEMUR_PAUSE_BTN, lemurConfig.getValue(config.LEMUR_PAUSE_BTN), "x");
     model.addAddrPattern(config.LEMUR_CLEAR_BTN, lemurConfig.getValue(config.LEMUR_CLEAR_BTN), "x");
-//    model.setLemurPlayBtnAddr(lemurConfig.getValue(config.LEMUR_PLAY_BTN));
-//    model.setLemurPauseBtnAddr(lemurConfig.getValue(config.LEMUR_PAUSE_BTN));
-//    model.setLemurClearBtnAddr(lemurConfig.getValue(config.LEMUR_CLEAR_BTN));
 
 
     // --- pad config

@@ -1,7 +1,7 @@
 class BitmapCell {
 
   private int value;
-  private PVector pos, dimension, index;
+  private PVector pos, dimension;
 
   float targetAlpha, alpha;
   float alphaEasing = 0.8;
@@ -15,7 +15,6 @@ class BitmapCell {
     value = 0;
     dimension = new PVector(w, h);
     pos = new PVector(ax, ay);
-    index = new PVector(i,j);
     
   }
 

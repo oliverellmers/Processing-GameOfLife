@@ -14,7 +14,7 @@ class AppModel {
 
   //TODO: Refactor this into an ENUM - String
   Map<String,String> addrPatternMap = new HashMap<String,String>();
-  String playBtnAddr, pauseBtnAddr, clearBtnAddr, patternMenuAddr;
+  String patternMenuAddr;
 
   String lemurPadButtonRootAddress;
   boolean playing = false;
@@ -159,28 +159,6 @@ class AppModel {
     return next;
   }
 
-
-//  public void setLemurPauseBtnAddr(String addrRoot) {
-//    pauseBtnAddr = formatAddrPattern(addrRoot, "x");
-//  }
-//
-//  public String getLemurPauseBtnAddr() {
-//    return pauseBtnAddr;
-//  }
-
-//  public void setLemurPlayBtnAddr(String addrRoot) {
-//    playBtnAddr = formatAddrPattern(addrRoot, "x"); //"/"+addrRoot+"/x";
-//    
-//  }
-//
-//  public String getLemurPlayBtnAddr() {
-//    return playBtnAddr;
-//  }
-//
-//  public void setLemurClearBtnAddr(String addrRoot) {
-//    clearBtnAddr  = formatAddrPattern(addrRoot, "x"); //"/"+addrRoot+"/x";
-//  }  
-
   public void setLemurMenuAddrPattern(String addrRoot) {
     patternMenuAddr = formatAddrPattern(addrRoot, "selection");// ;addrRoot;
   }
@@ -200,10 +178,6 @@ class AppModel {
   public boolean isPlaying() {
     return playing;
   }
-
-//  public String getLemurClearBtnAddr() {
-//    return clearBtnAddr;
-//  }  
 
   public int getRows() { 
     return rows;

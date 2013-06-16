@@ -134,7 +134,7 @@ void draw() {
   model.getBitmap().update();
   model.getBitmap().draw();
 
-  if (frameCount % model.getRenderSpeed() == 0 && !model.isPaused() ) {
+  if (frameCount % model.getRenderSpeed() == 0 && model.isPlaying() ) {
     calculateLifeValue(model.getBitmap());
     model.getBitmap().setPixels(model.getNextBitmap().getPixels());
   }
@@ -171,7 +171,7 @@ void keyPressed() {
     loadFile();
   }
   else if ( key  == 'p' || key =='P') {
-    model.setPause( !model.isPaused() );
+    model.setPlaying( !model.isPlaying() );
   }
 }
 
@@ -256,8 +256,7 @@ void loadFile() {
 void oscEvent(OscMessage msg) {
   //  println("### received an osc message with addrpattern "+msg.addrPattern()+" and typetag "+msg.typetag());  
   //println("Lemur controller can handle message: " + lemurController.canHandleMessage(msg));
-
-msg.print();
+  
   boolean handled = lemurController.handleMessage(msg);
   if (!handled) {
     println("** OSC message NOT handled ---> " );    

@@ -55,13 +55,14 @@ public class LemurController implements InterfaceLemurController {
       boolean handled = false;
       int state = msg.get(0).floatValue() > 0 ? 1 : 0;
       if (state == PLAY) {
-        println("Play button handler state = " + state);        
+        println("Play button handler state = " + state);   
+        model.setPlaying(true);     
         model.setBitmapPixels( model.getCurrentLemurPattern() );
         handled = true;
       } 
       else if (state == PAUSE ) {
         println("Play button handler state = " + state);
-        model.setPause(!model.isPaused());        
+        model.setPlaying(false);        
         handled = true;
       }
       return handled;

@@ -49,7 +49,7 @@ Config config;
 void initialize() {
   config = new Config(configurationFile);
   lemurConfig = config.getLemurConfig();
-  lemurController = new LemurController();
+ 
 
   try {
     String[] matrixSize = config.getValue(config.APP_GMATRIXSIZE).split(",");
@@ -83,12 +83,15 @@ void initialize() {
     //    lemurIPInAddr = lemurConfig.getValue(config.LEMUR_IPADDR);
     //    lemurSendPort = Integer.parseInt(lemurConfig.getValue(config.LEMUR_IN_PORT));
 
-  
+
     // --- button config
     //TODO: refactor this into an address map
-    model.setLemurPlayBtnAddr(lemurConfig.getValue(config.LEMUR_PLAY_BTN));
-    model.setLemurPauseBtnAddr(lemurConfig.getValue(config.LEMUR_PAUSE_BTN));
-    model.setLemurClearBtnAddr(lemurConfig.getValue(config.LEMUR_CLEAR_BTN));
+    model.addAddrPattern(config.LEMUR_PLAY_BTN, lemurConfig.getValue(config.LEMUR_PLAY_BTN), "x");
+    model.addAddrPattern(config.LEMUR_PAUSE_BTN, lemurConfig.getValue(config.LEMUR_PAUSE_BTN), "x");
+    model.addAddrPattern(config.LEMUR_CLEAR_BTN, lemurConfig.getValue(config.LEMUR_CLEAR_BTN), "x");
+//    model.setLemurPlayBtnAddr(lemurConfig.getValue(config.LEMUR_PLAY_BTN));
+//    model.setLemurPauseBtnAddr(lemurConfig.getValue(config.LEMUR_PAUSE_BTN));
+//    model.setLemurClearBtnAddr(lemurConfig.getValue(config.LEMUR_CLEAR_BTN));
 
 
     // --- pad config
@@ -96,7 +99,8 @@ void initialize() {
     int lemurRows = Integer.parseInt(lemurPadSize[0]);
     int lemurCols = Integer.parseInt(lemurPadSize[1]);   
     String padRootName = lemurConfig.getValue(config.LEMUR_PAD_BTN_NAME);    
-    model.initializePad(lemurRows, lemurCols, padRootName);
+    model.setLemurPadButtonRootAddress( padRootName );
+    model.initializePad(lemurRows, lemurCols);
 
     //center the lemurPad grid on the Bitmap
 
@@ -107,6 +111,12 @@ void initialize() {
 
     int offset = model.getBitmap().getCols() - model.getLemurCols() ;
     model.setLemurColOffset(offset );
+    
+    
+    //initialize the controller
+    lemurController = new LemurController();
+    
+    
   } 
   catch (Exception e) {
     println(e);
@@ -261,7 +271,7 @@ void loadFile() {
 void oscEvent(OscMessage msg) {
   //  println("### received an osc message with addrpattern "+msg.addrPattern()+" and typetag "+msg.typetag());  
   //println("Lemur controller can handle message: " + lemurController.canHandleMessage(msg));
-  
+
   boolean handled = lemurController.handleMessage(msg);
   if (!handled) {
     println("** OSC message NOT handled ---> " );    
@@ -277,8 +287,30 @@ interface ConfigInterface {
   public String getValue(String configKey) throws Exception;
 }
 
-interface InterfaceLemurController {
-  public boolean handleMessage(OscMessage msg);
+abstract class AbstractLemurController {
+  protected ArrayList<String> myPatterns = new ArrayList<String>();
+  protected ArrayList<String> components = new ArrayList<String>();
+
+  abstract boolean handleMessage(OscMessage msg);
+
+  public void registerPattern(String p) {
+    myPatterns.add(p);
+  }
+  
+  public void registerComponent(String c) {
+    components.add(c);
+  }
+
+  public boolean canHandleMessage(OscMessage msg) {
+    boolean ret = false;
+    for ( String p : myPatterns ) {
+      if (msg.checkAddrPattern(p) == true ) {
+        ret = true;
+        break;
+      }
+    }
+    return ret;
+  }
 }
 
 interface LifePattern {

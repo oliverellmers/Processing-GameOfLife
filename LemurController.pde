@@ -1,7 +1,7 @@
-public class LemurController implements InterfaceLemurController {
+public class LemurController extends AbstractLemurController {
 
   ArrayList<String> messageAddresses;
-  ArrayList<InterfaceLemurController> controllers;
+  ArrayList<AbstractLemurController> controllers;
 
   //MOVE TO MODEL
   Pattern padButtonRE; 
@@ -10,17 +10,26 @@ public class LemurController implements InterfaceLemurController {
 
   LemurController() {
     messageAddresses = new ArrayList<String>();
-    controllers = new ArrayList<InterfaceLemurController>();
+    
+    ControlButtonController cbc = new ControlButtonController();
+    cbc.registerPattern(model.getAddrPattern(config.LEMUR_PLAY_BTN));
+    cbc.registerPattern(model.getAddrPattern(config.LEMUR_PAUSE_BTN));
+    cbc.registerPattern(model.getAddrPattern(config.LEMUR_CLEAR_BTN));
+    
+    println("---->>>"+model.getAddrPattern(config.LEMUR_PLAY_BTN));
+    
+    controllers = new ArrayList<AbstractLemurController>();
     controllers.add(  new SwitchPadController());
-    controllers.add( new ControlButtonController());
+    controllers.add( cbc) ;//new ControlButtonController());
     controllers.add( new MenuController());
   } 
 
 
   boolean handleMessage(OscMessage msg) {
-    for (InterfaceLemurController lc : controllers ) {
-      if (lc.handleMessage(msg) == true) {
-        return true;
+    for (AbstractLemurController lc : controllers ) {
+      if (lc.canHandleMessage(msg) == true) {
+//        println(" Controller is handling the message " + lc.handleMessage(msg));
+        return lc.handleMessage(msg);
       }
     }
     return false;
@@ -28,26 +37,40 @@ public class LemurController implements InterfaceLemurController {
 
 
 
-  public void addController(InterfaceLemurController ctrl) {
+  public void addController(AbstractLemurController ctrl) {
     controllers.add(ctrl);
   }
 
 
-  private class ControlButtonController implements InterfaceLemurController {
+  private class ControlButtonController extends AbstractLemurController {
     final int PLAY = 1;
-    final int PAUSE = 0;
+    final int PAUSE = 0; 
+    
+
 
     public boolean handleMessage(OscMessage msg) {
       boolean handled = false;
-      if ( msg.checkAddrPattern( model.getLemurPlayBtnAddr()) == true) {
+      String component = model.getComponentFromAddrPattern(msg.addrPattern());
+      
+      
+      if( component.equals(config.LEMUR_PLAY_BTN) ) {
+      //if ( msg.checkAddrPattern( model.getLemurPlayBtnAddr()) == true) {
+        println("handling play button click");
         handled = handleLemurPlayBtn(msg);
       } 
-      else if ( msg.checkAddrPattern( model.getLemurClearBtnAddr()) == true) {
+      else if( component.equals(config.LEMUR_CLEAR_BTN) ) {
+       println("handling clear button click"); 
+      //if ( msg.checkAddrPattern( model.getLemurClearBtnAddr()) == true) {
         handled = handleLemurClearBtn(msg);
       }
-      else if (msg.checkAddrPattern( model.getLemurPauseBtnAddr()) == true) {
+      else if( component.equals(config.LEMUR_PAUSE_BTN) ) {
+        println("handling pause button click");        
+        //if (msg.checkAddrPattern( model.getLemurPauseBtnAddr()) == true) {
         handled = handleLemurPauseBtn(msg);
       }
+//      else if(msg.checkAddrPattern( model.getLemurCloseFileLoadedBtnAddr()) == true ) {
+//        handled = handleLemurCloseFileLoadedBtn();
+//      }
       return handled;
     }    
 
@@ -69,8 +92,16 @@ public class LemurController implements InterfaceLemurController {
     }
   }
 
-  private class SwitchPadController implements InterfaceLemurController {
+  private class SwitchPadController extends AbstractLemurController {
 
+    @Override
+    public boolean canHandleMessage(OscMessage msg) {
+      //if the message has the LemurBtn in it. It is for me
+      boolean isButton = msg.addrPattern().indexOf( model.getLemurPadButtonRootAddress() ) >= 0;
+     println("is a button = " + isButton + "  " + msg.addrPattern() + "   " + config.LEMUR_PAD_BTN_NAME); 
+      return isButton;
+    }
+    
     public boolean handleMessage(OscMessage msg) {
       //find the button with the address of this message
       int st = msg.addrPattern().indexOf("/")+1;
@@ -96,7 +127,7 @@ public class LemurController implements InterfaceLemurController {
   }
 
 
-  private class MenuController implements InterfaceLemurController {
+  private class MenuController extends AbstractLemurController {
     public boolean handleMessage(OscMessage msg) {
       if (msg.checkAddrPattern(model.getLemurMenuAddrPattern()) == true) {
 

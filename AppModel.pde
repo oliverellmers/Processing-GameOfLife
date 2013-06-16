@@ -12,9 +12,11 @@ class AppModel {
   private ArrayListPattern pattern;
   private Bitmap bitmap, next;
 
-  //TODO: Refactor this into a map
+  //TODO: Refactor this into an ENUM - String
+  Map<String,String> addrPatternMap = new HashMap<String,String>();
   String playBtnAddr, pauseBtnAddr, clearBtnAddr, patternMenuAddr;
 
+  String lemurPadButtonRootAddress;
   boolean playing = false;
 
   String[] patternFiles;
@@ -27,7 +29,7 @@ class AppModel {
     return padButtons;
   }
 
-  void initializePad(int padRows, int padCols, String padRootName) {
+  void initializePad(int padRows, int padCols) {
     lemurRows = padRows;
     lemurCols = padCols;
     
@@ -35,7 +37,7 @@ class AppModel {
     pattern = new ArrayListPattern(padRows, padCols);
 
     for (int i=0; i<padCount; ++i) {      
-      LemurButton lb = new LemurButton(padRootName, i); 
+      LemurButton lb = new LemurButton(model.getLemurPadButtonRootAddress(), i); 
       padButtons.add(lb);
       pattern.setValue(i, 0);
     }
@@ -68,6 +70,39 @@ class AppModel {
     return pattern;
   } 
 
+
+  public void addAddrPattern(String configName, String addrRoot, String oscMsgVariable ) {
+//    println("model::addAddrPattern = " + configName + "  " + addrRoot + "  " + oscMsgVariable);
+    addrPatternMap.put(configName, formatAddrPattern(addrRoot, oscMsgVariable));
+//    println(addrPatternMap);
+  }
+  
+  public String getAddrPattern(String configName) {
+//    println("model::getAddrPattern configName = " + configName );
+    return addrPatternMap.get(configName);
+  }
+  
+  public String getComponentFromAddrPattern(String addrPattern) {
+//    println("model:: getComponentFromAddrPattern for pattern = " + addrPattern);
+    for(String k : addrPatternMap.keySet()) {
+//      println("\t component = " + k + "   -->  " + addrPatternMap.get(k) );
+      
+      if( addrPatternMap.get(k).equals(addrPattern)) {
+//        println("\t found it" + k);
+        return k;
+      }
+    }
+//    println("** Can't find component for address: " + addrPattern);
+    return null;
+  }
+  
+  public void setLemurPadButtonRootAddress(String s) {
+    lemurPadButtonRootAddress = s;
+  }
+  
+  public String getLemurPadButtonRootAddress() {
+    return lemurPadButtonRootAddress;
+  }
   
   public void setBitmapPixels(LifePattern pattern ) {
     Bitmap b = new Bitmap( pattern, bitmap.getW(), bitmap.getH(), model.getRows(), model.getCols(), model.getRows() / 2 - pattern.getRows() / 2, model.getCols() / 2 - pattern.getCols() / 2 );
@@ -125,26 +160,26 @@ class AppModel {
   }
 
 
-  public void setLemurPauseBtnAddr(String addrRoot) {
-    pauseBtnAddr = formatAddrPattern(addrRoot, "x");
-  }
+//  public void setLemurPauseBtnAddr(String addrRoot) {
+//    pauseBtnAddr = formatAddrPattern(addrRoot, "x");
+//  }
+//
+//  public String getLemurPauseBtnAddr() {
+//    return pauseBtnAddr;
+//  }
 
-  public String getLemurPauseBtnAddr() {
-    return pauseBtnAddr;
-  }
-
-  public void setLemurPlayBtnAddr(String addrRoot) {
-    playBtnAddr = formatAddrPattern(addrRoot, "x"); //"/"+addrRoot+"/x";
-    
-  }
-
-  public String getLemurPlayBtnAddr() {
-    return playBtnAddr;
-  }
-
-  public void setLemurClearBtnAddr(String addrRoot) {
-    clearBtnAddr  = formatAddrPattern(addrRoot, "x"); //"/"+addrRoot+"/x";
-  }  
+//  public void setLemurPlayBtnAddr(String addrRoot) {
+//    playBtnAddr = formatAddrPattern(addrRoot, "x"); //"/"+addrRoot+"/x";
+//    
+//  }
+//
+//  public String getLemurPlayBtnAddr() {
+//    return playBtnAddr;
+//  }
+//
+//  public void setLemurClearBtnAddr(String addrRoot) {
+//    clearBtnAddr  = formatAddrPattern(addrRoot, "x"); //"/"+addrRoot+"/x";
+//  }  
 
   public void setLemurMenuAddrPattern(String addrRoot) {
     patternMenuAddr = formatAddrPattern(addrRoot, "selection");// ;addrRoot;
@@ -166,9 +201,9 @@ class AppModel {
     return playing;
   }
 
-  public String getLemurClearBtnAddr() {
-    return clearBtnAddr;
-  }  
+//  public String getLemurClearBtnAddr() {
+//    return clearBtnAddr;
+//  }  
 
   public int getRows() { 
     return rows;

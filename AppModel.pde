@@ -14,7 +14,7 @@ class AppModel {
 
   String playBtnAddr, clearBtnAddr, patternMenuAddr;
 
-  boolean paused = true;
+  boolean playing = false;
 
   String[] patternFiles;
 
@@ -143,12 +143,12 @@ class AppModel {
     return String.format("/%s/%s",addr,variable);
   }
   
-  public void setPause(boolean b) {
-    paused = b;
+  public void setPlaying(boolean b) {
+    playing = b;
   }
 
-  public boolean isPaused() {
-    return paused;
+  public boolean isPlaying() {
+    return playing;
   }
 
   public String getLemurClearBtnAddr() {

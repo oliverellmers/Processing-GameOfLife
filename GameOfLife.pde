@@ -69,6 +69,8 @@ void initialize() {
 
 
     //LEMUR configuration
+    
+    // -- example pattern files configuration
     String patternFilePath = config.getValue(config.APP_RLE_PATH);
 
     String[] patternFiles = lemurConfig.getValue(config.PATTERN_FILE_NAME).split(",");
@@ -76,18 +78,16 @@ void initialize() {
       patternFiles[i] = dataPath(patternFilePath) +"/" + patternFiles[i];
     }
 
+    // --- lemur UI widget configuration and setup 
     model.setPatternFiles(patternFiles);
-    model.setLemurMenuAddrPattern(lemurConfig.getValue(config.LEMUR_PATTERN_MENU_ADDR));
-
-
+    model.addAddrPattern( config.LEMUR_PATTERN_MENU_ADDR,     lemurConfig.getValue(config.LEMUR_PATTERN_MENU_ADDR),     "selection" );
+    model.addAddrPattern( config.LEMUR_FILE_LOADED_PLAY_BTN,  lemurConfig.getValue(config.LEMUR_FILE_LOADED_PLAY_BTN),  "x");    
+    model.addAddrPattern(config.LEMUR_PLAY_BTN,   lemurConfig.getValue(config.LEMUR_PLAY_BTN),   "x");
+    model.addAddrPattern(config.LEMUR_PAUSE_BTN,  lemurConfig.getValue(config.LEMUR_PAUSE_BTN),  "x");
+    model.addAddrPattern(config.LEMUR_CLEAR_BTN,  lemurConfig.getValue(config.LEMUR_CLEAR_BTN),  "x");
+    
     //    lemurIPInAddr = lemurConfig.getValue(config.LEMUR_IPADDR);
-    //    lemurSendPort = Integer.parseInt(lemurConfig.getValue(config.LEMUR_IN_PORT));
-
-
-    // --- button config
-    model.addAddrPattern(config.LEMUR_PLAY_BTN, lemurConfig.getValue(config.LEMUR_PLAY_BTN), "x");
-    model.addAddrPattern(config.LEMUR_PAUSE_BTN, lemurConfig.getValue(config.LEMUR_PAUSE_BTN), "x");
-    model.addAddrPattern(config.LEMUR_CLEAR_BTN, lemurConfig.getValue(config.LEMUR_CLEAR_BTN), "x");
+    //    lemurSendPort = Integer.parseInt(lemurConfig.getValue(config.LEMUR_IN_PORT));    
 
 
     // --- pad config

@@ -72,9 +72,9 @@ class AppModel {
 
 
   public void addAddrPattern(String configName, String addrRoot, String oscMsgVariable ) {
-//    println("model::addAddrPattern = " + configName + "  " + addrRoot + "  " + oscMsgVariable);
+    println("model::addAddrPattern = " + configName + "  " + addrRoot + "  " + oscMsgVariable);
     addrPatternMap.put(configName, formatAddrPattern(addrRoot, oscMsgVariable));
-//    println(addrPatternMap);
+    println(addrPatternMap);
   }
   
   public String getAddrPattern(String configName) {
@@ -159,16 +159,16 @@ class AppModel {
     return next;
   }
 
-  public void setLemurMenuAddrPattern(String addrRoot) {
-    patternMenuAddr = formatAddrPattern(addrRoot, "selection");// ;addrRoot;
-  }
-  
-  public String getLemurMenuAddrPattern() {
-    return patternMenuAddr;
-  }
+//  public void setLemurMenuAddrPattern(String addrRoot) {
+//    patternMenuAddr = formatAddrPattern(addrRoot, "selection");// ;addrRoot;
+//  }
+//  
+//  public String getLemurMenuAddrPattern() {
+//    return patternMenuAddr;
+//  }
   
   private String formatAddrPattern(String addr,String variable) {
-    return String.format("/%s/%s",addr,variable);
+    return String.format("%s/%s",addr,variable);
   }
   
   public void setPlaying(boolean b) {

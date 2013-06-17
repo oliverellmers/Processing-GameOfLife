@@ -20,6 +20,8 @@ class AppModel {
   boolean playing = false;
 
   String[] patternFiles;
+   boolean runSyphon = false;
+   String syphonServer = "";
 
   AppModel() {
     padButtons = new ArrayList<LemurButton>();
@@ -225,5 +227,11 @@ class AppModel {
     }
    return ret; 
   }
+  
+  public boolean getRunSyphon() { return runSyphon; }
+ public void setRunSyphon(boolean b) { runSyphon = b; } 
+ 
+ public String getSyphonServer() { return syphonServer; }
+ public void setSyphonServer(String server) { syphonServer = server; }
 }
 

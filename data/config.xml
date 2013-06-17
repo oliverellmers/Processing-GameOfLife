@@ -17,6 +17,15 @@
 		<value>5</value>
 	</param>
 	<param>
+		<key>runSyphon</key>
+		<value>true</value>
+	</param>
+	<param>
+		<key>syphonServer</key>
+		<value>Simple Server</value>
+	</param>
+
+	<param>
 		<key>cellShape</key>
 		<value>rectangle</value> <!-- rectangle or ellipse -->
 	</param>	

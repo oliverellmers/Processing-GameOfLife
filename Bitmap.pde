@@ -30,7 +30,7 @@ class Bitmap {
 
   public Bitmap(LifePattern pattern, int w, int h, int r, int c, int startRow, int startCol ) {
     this(0, 0, w, h, r, c);
-    
+
     int padding = (cols - pattern.getCols());
     int cursor = 0;
 
@@ -38,42 +38,41 @@ class Bitmap {
       (startRow * cols + startCol + pattern.getPixels().size() <= this.getPixelCount() )) {
       cursor = startRow * cols + startCol;
     }
-    
+
 
     setPixel(0, pattern.getPixels().get(0));
     ++cursor;
     for (int i=1; i < pattern.getPixels().size(); ++i ) {
-      
+
       if ( i % pattern.getCols() == 0 ) {
         cursor += padding;
-    
       }
       setPixel(cursor, pattern.getPixels().get(i));
       ++cursor;
     }
   }  
 
-//  public Bitmap(ArrayListPattern pattern, int w, int h, int r, int c, int startRow, int startCol ) {    
-//    this(0, 0, w, h, r, c);
-//
-//    int padding = (cols - pattern.cols);
-//    int cursor = 0;
-//
-//    if ( startCol + pattern.cols <= cols && 
-//      (startRow * cols + startCol + pattern.pixels.size() <= this.getPixelCount() )) {
-//      cursor = startRow * cols + startCol;
-//    }
-//
-//    setPixel(0, pattern.pixels.get(0));
-//    ++cursor;
-//    for (int i=1; i < pattern.pixels.size(); ++i ) {
-//      if ( i % pattern.cols == 0 ) {
-//        cursor += padding;
-//      }
-//      setPixel(cursor, pattern.pixels.get(i));
-//      ++cursor;
-//    }
-//  }
+  //  public Bitmap(ArrayListPattern pattern, int w, int h, int r, int c, int startRow, int startCol ) {    
+  //    this(0, 0, w, h, r, c);
+  //
+  //    int padding = (cols - pattern.cols);
+  //    int cursor = 0;
+  //
+  //    if ( startCol + pattern.cols <= cols && 
+  //      (startRow * cols + startCol + pattern.pixels.size() <= this.getPixelCount() )) {
+  //      cursor = startRow * cols + startCol;
+  //    }
+  //
+  //    setPixel(0, pattern.pixels.get(0));
+  //    ++cursor;
+  //    for (int i=1; i < pattern.pixels.size(); ++i ) {
+  //      if ( i % pattern.cols == 0 ) {
+  //        cursor += padding;
+  //      }
+  //      setPixel(cursor, pattern.pixels.get(i));
+  //      ++cursor;
+  //    }
+  //  }
 
   private void initialize() {
     try {
@@ -125,7 +124,7 @@ class Bitmap {
   }
 
   public void setPixels(ArrayList<BitmapCell> cells) {
-   
+
     if (cells.size() == getPixelCount() ) {
       for (int i=0; i < cells.size(); ++i) {
         borderPixelValues.get(i).setValue(cells.get(i).getValue());
@@ -172,25 +171,25 @@ class Bitmap {
   public String toString() {
     return borderPixelValues.toString();
   }
-  
+
   public String imageString() {
-   String ret = "";
-   String separator = "   ";
-   String zeroValue = ".";
-   String oneValue = "1";
-   
-   for(int j=0; j < rows; ++j) {
-     for(int i=0; i < cols; ++i) {
-       int ind = j * cols + i;
-       if( ind < getPixels().size() ) {
-         ret += getPixels().get(j*cols + i ).getValue() == 0 ? zeroValue : oneValue;
-         ret += separator;
-       }
-     }
-     ret += "\n";
-   }
-   
-   return ret;    
+    String ret = "";
+    String separator = "   ";
+    String zeroValue = ".";
+    String oneValue = "1";
+
+    for (int j=0; j < rows; ++j) {
+      for (int i=0; i < cols; ++i) {
+        int ind = j * cols + i;
+        if ( ind < getPixels().size() ) {
+          ret += getPixels().get(j*cols + i ).getValue() == 0 ? zeroValue : oneValue;
+          ret += separator;
+        }
+      }
+      ret += "\n";
+    }
+
+    return ret;
   }
 
   public void save(String filename) {
@@ -223,20 +222,36 @@ class Bitmap {
       stroke(100, 100);
       for (float u = 0.0; u <= 1.0; u += uStep) {
         float _x = lerp(pos.x, pos.x + dim.x, u);
-        line(_x, pos.y, _x, pos.y + dim.y);
+        if (model.getRunSyphon()) {
+          canvas.line(_x, pos.y, _x, pos.y + dim.y);
+        } 
+        else {
+          line(_x, pos.y, _x, pos.y + dim.y);
+        }
       }
       for (float v = 0.0; v <= 1.0; v += vStep) {      
         float _y = lerp(pos.y, pos.y + dim.y, v);
-        line(pos.x, _y, pos.x + dim.x, _y);
+        if (model.getRunSyphon()) {
+          canvas.line(pos.x, _y, pos.x + dim.x, _y);
+        } 
+        else {
+          line(pos.x, _y, pos.x + dim.x, _y);
+        }
       } 
 
-      line(pos.x + dim.x, pos.y, pos.x + dim.x, pos.y + dim.y);
-      line(pos.x, pos.y + dim.y, pos.x + dim.x, pos.y + dim.y);
+      if (model.getRunSyphon()) {
+        canvas.line(pos.x + dim.x, pos.y, pos.x + dim.x, pos.y + dim.y);
+        canvas.line(pos.x, pos.y + dim.y, pos.x + dim.x, pos.y + dim.y);
+      }  
+      else {
+        line(pos.x + dim.x, pos.y, pos.x + dim.x, pos.y + dim.y);
+        line(pos.x, pos.y + dim.y, pos.x + dim.x, pos.y + dim.y);
+      }
     }
 
     for (BitmapCell b : borderPixelValues ) {
       if (b.getValue() > 0 ) {        
-        b.draw();                
+        b.draw();
       }
     }
   }
@@ -257,7 +272,7 @@ class Bitmap {
       float _y = lerp(pos.y, pos.y + dim.y, jnorm);
 
       BitmapCell bmp = new BitmapCell(currentR, currentC, _x, _y, cellDim.x, cellDim.y);
-      
+
       bmp.setValue(0);
       borderPixelValues.add( bmp );
     }

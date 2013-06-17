@@ -8,6 +8,10 @@ import java.util.regex.*;
 import oscP5.*;
 import netP5.*;
 
+import codeanticode.syphon.*;
+PGraphics canvas;
+SyphonServer server;
+
 // -=-=-=-=--=-==-=-=-=-=-=-=
 // -=-=- OUTPUT DATA -=-=--=-
 // -=-=-=-=--=-==-=-=-=-=-=-=
@@ -49,7 +53,7 @@ Config config;
 void initialize() {
   config = new Config(configurationFile);
   lemurConfig = config.getLemurConfig();
- 
+
 
   try {
     String[] matrixSize = config.getValue(config.APP_GMATRIXSIZE).split(",");
@@ -61,7 +65,8 @@ void initialize() {
     model.setGridHeight(Integer.parseInt(configSize[1]));
 
     model.setRenderSpeed(Integer.parseInt(config.getValue( config.APP_RENDERSPEED)));
-
+    model.setRunSyphon( Boolean.valueOf(config.getValue(config.SYPHON)));
+    model.setSyphonServer( config.getValue( config.SYPHON_SERVER ) );
     model.initializeBitmap();      
 
     //BITMAP configuration
@@ -69,7 +74,7 @@ void initialize() {
 
 
     //LEMUR configuration
-    
+
     // -- example pattern files configuration
     String patternFilePath = config.getValue(config.APP_RLE_PATH);
 
@@ -80,12 +85,12 @@ void initialize() {
 
     // --- lemur UI widget configuration and setup 
     model.setPatternFiles(patternFiles);
-    model.addAddrPattern( config.LEMUR_PATTERN_MENU_ADDR,     lemurConfig.getValue(config.LEMUR_PATTERN_MENU_ADDR),     "selection" );
-    model.addAddrPattern( config.LEMUR_FILE_LOADED_PLAY_BTN,  lemurConfig.getValue(config.LEMUR_FILE_LOADED_PLAY_BTN),  "x");    
-    model.addAddrPattern(config.LEMUR_PLAY_BTN,   lemurConfig.getValue(config.LEMUR_PLAY_BTN),   "x");
-    model.addAddrPattern(config.LEMUR_PAUSE_BTN,  lemurConfig.getValue(config.LEMUR_PAUSE_BTN),  "x");
-    model.addAddrPattern(config.LEMUR_CLEAR_BTN,  lemurConfig.getValue(config.LEMUR_CLEAR_BTN),  "x");
-    
+    model.addAddrPattern( config.LEMUR_PATTERN_MENU_ADDR, lemurConfig.getValue(config.LEMUR_PATTERN_MENU_ADDR), "selection" );
+    model.addAddrPattern( config.LEMUR_FILE_LOADED_PLAY_BTN, lemurConfig.getValue(config.LEMUR_FILE_LOADED_PLAY_BTN), "x");    
+    model.addAddrPattern(config.LEMUR_PLAY_BTN, lemurConfig.getValue(config.LEMUR_PLAY_BTN), "x");
+    model.addAddrPattern(config.LEMUR_PAUSE_BTN, lemurConfig.getValue(config.LEMUR_PAUSE_BTN), "x");
+    model.addAddrPattern(config.LEMUR_CLEAR_BTN, lemurConfig.getValue(config.LEMUR_CLEAR_BTN), "x");
+
     //    lemurIPInAddr = lemurConfig.getValue(config.LEMUR_IPADDR);
     //    lemurSendPort = Integer.parseInt(lemurConfig.getValue(config.LEMUR_IN_PORT));    
 
@@ -107,12 +112,10 @@ void initialize() {
 
     int offset = model.getBitmap().getCols() - model.getLemurCols() ;
     model.setLemurColOffset(offset );
-    
-    
+
+
     //initialize the controller
     lemurController = new LemurController();
-    
-    
   } 
   catch (Exception e) {
     println(e);
@@ -127,20 +130,28 @@ void setup() {
   model = new AppModel();
 
   initialize();
-
+  
+  if (model.getRunSyphon() ) {
+    server = new SyphonServer(this, model.getSyphonServer());
+    canvas = createGraphics(width, height, P2D);    
+    println(model.getSyphonServer());
+  }  
 
   if (OSC_CONNECT) {
     osc = new OscP5(this, listenPort);
   }
-
-
-
   //  loadFile();
 }
 
 
 void draw() {
-  background(0);
+  if (model.getRunSyphon()) {
+    canvas.beginDraw();
+    canvas.background(0);
+  } 
+  else {
+    background(0);
+  }
 
   model.getBitmap().update();
   model.getBitmap().draw();
@@ -148,9 +159,14 @@ void draw() {
   if (frameCount % model.getRenderSpeed() == 0 && model.isPlaying() ) {
     calculateLifeValue(model.getBitmap());
     model.getBitmap().setPixels(model.getNextBitmap().getPixels());
-  }
-}
+  }        
 
+  if (model.getRunSyphon()) {
+    canvas.endDraw();
+    image(canvas, 0, 0);
+    server.sendImage(canvas);
+  }
+} 
 
 void randomBitmap() {
   for (int i=0; i < model.getBitmap().getPixelCount(); ++i ) {
@@ -292,7 +308,7 @@ abstract class AbstractLemurController {
   public void registerPattern(String p) {
     myPatterns.add(p);
   }
-  
+
   public void registerComponent(String c) {
     components.add(c);
   }

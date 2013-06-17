@@ -13,6 +13,8 @@ class Config implements ConfigInterface {
   final String APP_GSIZE = "gridSize";
   final String APP_RENDERSPEED = "renderSpeed";  
   final String APP_RLE_PATH = "rlePath";
+  final String SYPHON = "runSyphon";
+  final String SYPHON_SERVER = "syphonServer";
 
   //Bitmap Properties
   final String CELL_SHAPE = "cellShape";

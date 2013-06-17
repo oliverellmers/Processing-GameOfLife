@@ -13,13 +13,16 @@ class AppModel {
   private Bitmap bitmap, next;
 
   //TODO: Refactor this into an ENUM - String
-  Map<String,String> addrPatternMap = new HashMap<String,String>();
+  Map<String, String> addrPatternMap = new HashMap<String, String>();
   String patternMenuAddr;
 
   String lemurPadButtonRootAddress;
   boolean playing = false;
 
   String[] patternFiles;
+
+  boolean runSyphon = false;
+  String syphonServer = "";
 
   AppModel() {
     padButtons = new ArrayList<LemurButton>();
@@ -32,7 +35,7 @@ class AppModel {
   void initializePad(int padRows, int padCols) {
     lemurRows = padRows;
     lemurCols = padCols;
-    
+
     int padCount = padRows * padCols;
     pattern = new ArrayListPattern(padRows, padCols);
 
@@ -76,34 +79,34 @@ class AppModel {
     addrPatternMap.put(configName, formatAddrPattern(addrRoot, oscMsgVariable));
     println(addrPatternMap);
   }
-  
+
   public String getAddrPattern(String configName) {
-//    println("model::getAddrPattern configName = " + configName );
+    //    println("model::getAddrPattern configName = " + configName );
     return addrPatternMap.get(configName);
   }
-  
+
   public String getComponentFromAddrPattern(String addrPattern) {
-//    println("model:: getComponentFromAddrPattern for pattern = " + addrPattern);
-    for(String k : addrPatternMap.keySet()) {
-//      println("\t component = " + k + "   -->  " + addrPatternMap.get(k) );
-      
-      if( addrPatternMap.get(k).equals(addrPattern)) {
-//        println("\t found it" + k);
+    //    println("model:: getComponentFromAddrPattern for pattern = " + addrPattern);
+    for (String k : addrPatternMap.keySet()) {
+      //      println("\t component = " + k + "   -->  " + addrPatternMap.get(k) );
+
+      if ( addrPatternMap.get(k).equals(addrPattern)) {
+        //        println("\t found it" + k);
         return k;
       }
     }
-//    println("** Can't find component for address: " + addrPattern);
+    //    println("** Can't find component for address: " + addrPattern);
     return null;
   }
-  
+
   public void setLemurPadButtonRootAddress(String s) {
     lemurPadButtonRootAddress = s;
   }
-  
+
   public String getLemurPadButtonRootAddress() {
     return lemurPadButtonRootAddress;
   }
-  
+
   public void setBitmapPixels(LifePattern pattern ) {
     Bitmap b = new Bitmap( pattern, bitmap.getW(), bitmap.getH(), model.getRows(), model.getCols(), model.getRows() / 2 - pattern.getRows() / 2, model.getCols() / 2 - pattern.getCols() / 2 );
 
@@ -115,7 +118,7 @@ class AppModel {
     int r = btn.getId() / lemurCols;
     int c = btn.getId() % lemurCols;
     int offset = r * getBitmap().getCols()+ c;//lemurColOffset + c;
-    
+
     int i = lemurInsertIndex + offset;
     bitmap.setPixel(i, btn.getState());
   }
@@ -123,7 +126,7 @@ class AppModel {
   public void setBitmap(Bitmap b) {
     bitmap = b;
   }
-  
+
   public void clearBitmap() {
     bitmap.clear();
   }
@@ -135,14 +138,18 @@ class AppModel {
   public void setLemurColOffset( int offset ) {
     lemurColOffset = offset;
   }
-  
-  public int getLemurColOffset() { return lemurColOffset; }
-  
+
+  public int getLemurColOffset() { 
+    return lemurColOffset;
+  }
+
   public void setLemurInsertIndex(int i) {
     lemurInsertIndex = i;
   }
-  
-  public int  getLemurInsertIndex() { return lemurInsertIndex;}  
+
+  public int  getLemurInsertIndex() { 
+    return lemurInsertIndex;
+  }  
 
   public int getLemurRows() { 
     return lemurRows;
@@ -159,18 +166,18 @@ class AppModel {
     return next;
   }
 
-//  public void setLemurMenuAddrPattern(String addrRoot) {
-//    patternMenuAddr = formatAddrPattern(addrRoot, "selection");// ;addrRoot;
-//  }
-//  
-//  public String getLemurMenuAddrPattern() {
-//    return patternMenuAddr;
-//  }
-  
-  private String formatAddrPattern(String addr,String variable) {
-    return String.format("%s/%s",addr,variable);
+  //  public void setLemurMenuAddrPattern(String addrRoot) {
+  //    patternMenuAddr = formatAddrPattern(addrRoot, "selection");// ;addrRoot;
+  //  }
+  //  
+  //  public String getLemurMenuAddrPattern() {
+  //    return patternMenuAddr;
+  //  }
+
+  private String formatAddrPattern(String addr, String variable) {
+    return String.format("%s/%s", addr, variable);
   }
-  
+
   public void setPlaying(boolean b) {
     playing = b;
   }
@@ -213,17 +220,31 @@ class AppModel {
   public void setRenderSpeed( int s ) { 
     renderSpeed = s;
   }
-  
+
   public void setPatternFiles(String[] fs) {
     patternFiles = fs;
   }
-  
+
   public String getPatternFile(int i) {
     String ret = null;
-    if(i < patternFiles.length) {
+    if (i < patternFiles.length) {
       ret = patternFiles[i];
     }
-   return ret; 
+    return ret;
+  }
+
+  public boolean getRunSyphon() { 
+    return runSyphon;
+  }
+  public void setRunSyphon(boolean b) { 
+    runSyphon = b;
+  } 
+
+  public String getSyphonServer() { 
+    return syphonServer;
+  }
+  public void setSyphonServer(String server) { 
+    syphonServer = server;
   }
 }
 

@@ -23,6 +23,11 @@ class BitmapCell {
   }
 
   void draw() {
+    if( model.getRunSyphon() ) {
+      drawIntoCanvas();
+      return;
+    }
+   
     noStroke();
     fill(r, g, b, alpha);
 
@@ -37,6 +42,22 @@ class BitmapCell {
     }
   }
 
+  private void drawIntoCanvas() {
+    
+    canvas.noStroke();
+    canvas.fill(r, g, b, alpha);
+
+    if (alpha > 0 ) {
+      if (drawAsRectangle) {
+        //shift by 1 pixel and shorten 1 pixel for border      
+        canvas.rect( pos.x+1, pos.y+1, dimension.x-2, dimension.y-2);        
+      }
+      else {
+        canvas.ellipse(pos.x+1, pos.y+1, dimension.x-2, dimension.y-2);        
+      }
+    }    
+  }
+  
   void setValue(int newValue ) {
     if (newValue != value) {
       if (newValue == 0) {

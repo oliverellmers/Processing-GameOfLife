@@ -1,4 +1,4 @@
-class Bitmap {
+ class Bitmap {
 
   private PVector pos, dim;
   private int rows;
@@ -285,4 +285,3 @@ class Bitmap {
     cellDim = new PVector(uStep * dim.x, vStep * dim.y);
   }
 }
-

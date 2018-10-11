@@ -12,7 +12,7 @@ import codeanticode.syphon.*;
 
 
 PGraphics canvas;
-SyphonServer server;
+//SyphonServer server;
 
 // -=-=-=-=--=-==-=-=-=-=-=-=
 // -=-=- OUTPUT DATA -=-=--=-
@@ -26,6 +26,8 @@ String outputFile;
 int outFileCounter = 0;
 
 boolean DEBUG = false;
+
+boolean canSaveFrame = false;
 
 
 RLEParser parser = new RLEParser();
@@ -67,8 +69,8 @@ void initialize() {
     model.setGridHeight(Integer.parseInt(configSize[1]));
 
     model.setRenderSpeed(Integer.parseInt(config.getValue( config.APP_RENDERSPEED)));
-    model.setRunSyphon( Boolean.valueOf(config.getValue(config.SYPHON)));
-    model.setSyphonServer( config.getValue( config.SYPHON_SERVER ) );
+    //model.setRunSyphon( Boolean.valueOf(config.getValue(config.SYPHON)));
+    //model.setSyphonServer( config.getValue( config.SYPHON_SERVER ) );
     model.initializeBitmap();      
 
     //BITMAP configuration
@@ -121,7 +123,7 @@ void initialize() {
 }
 
 void setup() {
-  size(1024, 768, P2D);
+  size(1920, 1280, P2D);
   frameRate(30);
   rectMode(CENTER);
   model = new AppModel();
@@ -130,9 +132,9 @@ void setup() {
   initialize();
   
   if (model.getRunSyphon() ) {
-    server = new SyphonServer(this, model.getSyphonServer());
+    //server = new SyphonServer(this, model.getSyphonServer());
     canvas = createGraphics(width, height, P2D);    
-    println(model.getSyphonServer());
+    //println(model.getSyphonServer());
   }  
 
   if (OSC_CONNECT) {
@@ -162,8 +164,14 @@ void draw() {
   if (model.getRunSyphon()) {
     canvas.endDraw();
     image(canvas, 0, 0);
-    server.sendImage(canvas);
+    //server.sendImage(canvas);
   }
+   
+  if(canSaveFrame == true){
+    saveFrame("sequence/sequence_grab#####.png");
+    
+  }
+  
 } 
 
 
@@ -190,6 +198,18 @@ void keyPressed() {
     println("saving frame = " + frame );
     saveFrame("screengrabs/grab#####.png");
   }
+  
+  if (key == 'v' || key == 'V') {
+    println("start saving frame sequence");
+    canSaveFrame = true;
+  }
+  
+  if (key == 'b' || key == 'B') {
+    println("stop saving frame sequence");
+    canSaveFrame = false;
+  }
+  
+  
   if (key == 'e' || key == 'E') {
     println("exporting bitmap to " + outputFile);
     model.getBitmap().save(outputFile);
@@ -335,4 +355,3 @@ interface LifePattern {
 //  Static variables
 // -=-=-=-=--=-==-=-=-
 static boolean drawAsRectangle = true;
-

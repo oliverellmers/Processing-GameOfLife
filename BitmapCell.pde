@@ -76,4 +76,3 @@ class BitmapCell {
   
   String toString() { return "" + getValue(); }
 }
-

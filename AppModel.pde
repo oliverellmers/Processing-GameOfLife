@@ -247,4 +247,3 @@ class AppModel {
     syphonServer = server;
   }
 }
-

@@ -110,4 +110,3 @@ class Config implements ConfigInterface {
     return value;
   }
 }
-
